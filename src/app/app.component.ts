@@ -1,13 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
-import axios from 'axios';
-import { ApiService } from './service/api.service';
-import { HttpClientModule } from '@angular/common/http';
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 
@@ -25,24 +20,12 @@ accommodations: any;
 
 constructor(private http: HttpClient) {}
 
-
 ngOnInit(){
   this.http.get<any>("http://localhost:4000/api/accommodations").subscribe({
     next: res => {this.accommodations = res},
     error: err => {alert("Cargar fallo" + err);}
   });
-  console.log(this.accommodations);
-}
-  
-  /*getAllRequest(){
-    axios.get('http://localhost:4000/api/accommodations').then(function (res) {
-      
-      //console.log(res);
-    }).catch(function (error) {
-      console.log(error);
-    }).then(function () {
-    });
-  };*/
+};
 
   title: string = 'exam-project';
 

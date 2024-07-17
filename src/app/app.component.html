@@ -38,9 +38,13 @@
   </button>
 </div>
 <div class="m-5 border mx-5 rounded-3">
-  <h2 class="mb-4 text-center">Preguntas elegidas</h2>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet porttitor eget dolor morbi non arcu risus quis varius. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Cursus risus at ultrices mi. Arcu ac tortor dignissim convallis aenean et tortor at risus. Tellus cras adipiscing enim eu turpis. At in tellus integer feugiat. Lacus sed turpis tincidunt id aliquet.</p>
-  <br>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Amet porttitor eget dolor morbi non arcu risus quis varius. Vel orci porta non pulvinar neque laoreet suspendisse interdum consectetur. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Cursus risus at ultrices mi. Arcu ac tortor dignissim convallis aenean et tortor at risus. Tellus cras adipiscing enim eu turpis. At in tellus integer feugiat. Lacus sed turpis tincidunt id aliquet.</p>
+  <h2 class="mb-4 text-center">Accommodations</h2>
+  
+  <div class="text-center">
+    @for(accommodation of accommodations; track accommodation.idaccommodation){
+      <p>{{accommodation.nombreaccommodation}}</p>
+    }
+  </div>
+
   <div class="text-center"><button type="button" class="btn btn-danger mx-auto">Crear PDF</button></div>
 </div>

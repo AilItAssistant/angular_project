@@ -17,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent {
 
 accommodations: any;
+alumnos: any;
 
 constructor(private http: HttpClient) {}
 
@@ -25,6 +26,11 @@ ngOnInit(){
     next: res => {this.accommodations = res},
     error: err => {alert("Cargar fallo" + err);}
   });
+
+  this.http.get<any>("http://localhost:4000/api/alumnos").subscribe({
+    next: res => {this.alumnos = res},
+    error: err => {alert("Cargar fallo" + err);}
+  })
 };
 
   title: string = 'exam-project';

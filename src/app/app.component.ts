@@ -39,7 +39,7 @@ export class AppComponent {
   }
 
   generatePdf() {
-    this.http.get<any>('http://localhost:4000/api/pdf');
+    this.http.get<any>('http://localhost:4000/api/examPdf');
   }
 
   title: string = 'exam-project';

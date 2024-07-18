@@ -4,6 +4,7 @@
   
   <div class="carousel-inner">
 
+    <!-- EXAMS -->
     <div class="carousel-item active text-center"><p>Temporal fix to carousel</p></div>
 
     @for(exam of exams; track exam.id){
@@ -37,6 +38,8 @@
     <span class="visually-hidden">Next</span>
   </button>
 </div>
+
+<!--- ACCOMMODATIONS -->
 <div class="m-5 border mx-5 rounded-3">
   <h2 class="mb-4 text-center">Accommodations</h2>
   
@@ -46,6 +49,7 @@
     }
   </div>
 
+  <!-- ALUMNOS -->
   <div class="text-center card-group">
     @for(alumno of alumnos; track alumnos.idalumnos){
       <div class="mx-auto">
@@ -68,5 +72,5 @@
 
 
 
-  <div class="text-center"><a href="http://localhost:4000/api/pdf"><button type="button" class="btn btn-danger mx-auto">Crear PDF</button></a></div>
+  <div class="text-center"><a href="http://localhost:4000/api/examPdf"><button type="button" class="btn btn-danger mx-auto">Crear PDF</button></a></div>
 </div>

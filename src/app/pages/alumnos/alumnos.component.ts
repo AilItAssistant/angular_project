@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

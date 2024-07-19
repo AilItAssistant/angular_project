@@ -1,19 +1,22 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './components/header/header.component';
-import { FooterComponent } from './components/footer/footer.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { HeaderComponent } from '../../components/header/header.component';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-exams',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, FooterComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [HeaderComponent, FooterComponent],
+  templateUrl: './exams.component.html',
+  styleUrl: './exams.component.scss'
 })
-export class AppComponent {
+export class ExamsComponent {
+  
+  constructor(private http: HttpClient) {}
 
-
-  title: string = 'exam-project';
+  generatePdf() {
+    this.http.get<any>('http://localhost:4000/api/examPdf');
+  }
 
   exams = [
     {

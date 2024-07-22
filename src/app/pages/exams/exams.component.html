@@ -9,7 +9,7 @@
         </div>
         @for(question of exam.question; track question.id){
           <ul class="list-group list-group p-3">
-            <input class="form-check-input" type="checkbox" value="" id="firstCheckbox" (click)="select(question.id)">
+            <input class="form-check-input" type="checkbox" value="" id="firstCheckbox" (click)="select(question)">
             <label class="form-check-label" for="firstCheckbox">{{question.statement}}</label>
           @for(response of question.responses; track response){
             <ul class="list-group list-group">
@@ -22,5 +22,21 @@
     </div>
   }
 </div>
+
+<div class="text-center card-group mx-auto">
+    @for(question of selected; track question.id){
+      <ul class="list-group list-group p-3">
+        <input class="form-check-input" type="checkbox" value="" id="firstCheckbox" (click)="select(question)">
+        <label class="form-check-label" for="firstCheckbox">{{question.statement}}</label>
+      @for(response of question.responses; track response){
+        <ul class="list-group list-group">
+          <li class="list-group">{{response.letter}}. {{response.response}}</li>
+        </ul>
+      }
+      </ul>
+    }
+</div>
+
+
 
 <app-footer></app-footer>

@@ -14,6 +14,7 @@ export class ExamsComponent {
 
   exams: any;
   selected: any = [];
+  pushed: boolean = false;
   
   constructor(private http: HttpClient) {}
 
@@ -32,21 +33,21 @@ export class ExamsComponent {
   }
 
   select(question: any){
-    console.log("id del seleccionado: " + question);
+    this.pushed = false;
 
-    if(this.selected.includes(question)){
+    if(this.selected.length !== 0){
 
-      for(let i: number = 0; this.selected.length > i; i++){
-        console.log("longitud: " + i);
+        for(let i: number = 0; this.selected.length > i; i++){
 
-        if(this.selected[i] === question){
-          this.selected.splice(i, 1);
+          if(this.selected[i].id === question.id){
+            this.selected.splice(i, 1);
+            this.pushed = true;
+          }
         }
-      }
+        if(!this.pushed){this.selected.push(question);}
+      
     } else {
-      this.selected.push(question);
-      console.log("no estaba: " + question);
-      }
-    console.log("queda: " + this.selected + typeof(this.selected) + this.selected.length);
+        this.selected.push(question);
+    }
   }
 }

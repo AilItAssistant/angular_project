@@ -32,26 +32,21 @@ export class ExamsComponent {
   }
 
   select(question: any){
-    console.log(question.id);
+    console.log("id del seleccionado: " + question);
 
-    if(this.selected.length === 0 ){
-      this.selected.push(question);
-      console.log("1if")
-    } else {
-      for(let i: number = 0; i < this.selected.length; i++){
-      console.log(i)
-      if(this.selected[i] === question){
-        this.selected.splice(i, 1);
-        console.log("borrar")
-      } else {
-        this.selected.push(question);
-        console.log("subir" + question)
+    if(this.selected.includes(question)){
+
+      for(let i: number = 0; this.selected.length > i; i++){
+        console.log("longitud: " + i);
+
+        if(this.selected[i] === question){
+          this.selected.splice(i, 1);
+        }
       }
-    }
-    }
-    
-
-    console.log(this.selected);
+    } else {
+      this.selected.push(question);
+      console.log("no estaba: " + question);
+      }
+    console.log("queda: " + this.selected + typeof(this.selected) + this.selected.length);
   }
-
 }

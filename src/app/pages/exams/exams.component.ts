@@ -19,7 +19,7 @@ export class ExamsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any>('http://localhost:4000/api/examsA1').subscribe({
+    this.http.get<any>('http://localhost:4000/api/exams').subscribe({
       next: (res) => {
         this.exams = res;
       },
@@ -28,9 +28,7 @@ export class ExamsComponent {
       },
     });
   }
-  generatePdf() {
-    this.http.get<any>('http://localhost:4000/api/examPdf');
-  }
+  generatePdf() { }
 
   select(question: any){
     this.pushed = false;

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-exams',
@@ -48,6 +48,16 @@ export class ExamsComponent {
       
     } else {
         this.selected.push(question);
+    }
+  }
+
+  deleteToArray(question: any){
+    for(let i: number = 0; this.selected.length > i; i++){
+
+      if(this.selected[i].id === question.id){
+        this.selected.splice(i, 1);
+        this.pushed = true;
+      }
     }
   }
 }

@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { FooterComponent } from '../../components/footer/footer.component';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 
 @Component({
-  selector: 'app-manage-questions',
+  selector: 'app-validate-questions',
   standalone: true,
-  imports: [FooterComponent, HeaderComponent],
-  templateUrl: './manage-questions.component.html',
-  styleUrl: './manage-questions.component.scss'
+  imports: [HeaderComponent, FooterComponent],
+  templateUrl: './validate-questions.component.html',
+  styleUrl: './validate-questions.component.scss'
 })
-export class ManageQuestionsComponent {
+export class ValidateQuestionsComponent {
 
   exams: any;
 
@@ -27,4 +27,5 @@ export class ManageQuestionsComponent {
       },
     });
   }
+
 }

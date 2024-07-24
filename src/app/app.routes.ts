@@ -5,6 +5,7 @@ import { ExamsComponent } from './pages/exams/exams.component';
 import { AccommodationsComponent } from './pages/accommodations/accommodations.component';
 import { AddQuestionsComponent } from './pages/add-questions/add-questions.component';
 import { ManageQuestionsComponent } from './pages/manage-questions/manage-questions.component';
+import { ValidateQuestionsComponent } from './pages/validate-questions/validate-questions.component';
 
 export const routes: Routes = [
     {
@@ -31,4 +32,8 @@ export const routes: Routes = [
         path: "manage_questions",
         component: ManageQuestionsComponent
     },
+    {
+        path: "validate_questions",
+        component: ValidateQuestionsComponent
+    }
 ];

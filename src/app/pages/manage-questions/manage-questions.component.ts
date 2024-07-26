@@ -18,6 +18,10 @@ export class ManageQuestionsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+    this.loadQuestions();
+  }
+
+  loadQuestions(){
     this.http.get<any>('http://localhost:4000/api/exams').subscribe({
       next: (res) => {
         this.exams = res;
@@ -27,4 +31,22 @@ export class ManageQuestionsComponent {
       },
     });
   }
+  
+  deleteQuestion(exam: any, question: any){
+
+    let selectQuestion: object ={
+      exam: exam,
+      question: question
+    }
+
+    this.http.put<any>('http://localhost:4000/api/exams', selectQuestion).subscribe({
+      next: (res) => {
+        this.exams = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    
+  };
 }

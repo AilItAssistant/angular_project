@@ -61,5 +61,5 @@ export class AddQuestionsComponent {
         alert('Cargar fallo' + err);
       },
     });
-  }
+  };
 }

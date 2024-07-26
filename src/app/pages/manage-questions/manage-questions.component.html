@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <div class="text-center card-group mb-5 mt-3">
-    @for(exam of exams; track exam){
+    @for(exam of exams; track exam.id){
       <div class="mx-auto">
         <div class="card m-2" style="width: 22rem;">
           <div class="card-header">
@@ -10,7 +10,7 @@
           @for(question of exam.question; track question.id){
             <ul class="list-group list-group p-3">
               {{question.statement}}
-            @for(response of question.responses; track response){
+            @for(response of question.responses; track response.id){
               <ul class="list-group list-group">
                 <li class="list-group">{{response.letter}}. {{response.response}}</li>
               </ul>
@@ -18,7 +18,7 @@
           </ul>
           <div class="card-header">
             <button type="button" class="btn btn-primary mx-2">Editar</button>
-            <button type="button" class="btn btn-primary mx-2">Eliminar</button>
+            <button type="button" class="btn btn-primary mx-2" (click)="deleteQuestion(exam, question)">Eliminar</button>
           </div>
         }
         </div>

@@ -18,7 +18,7 @@
           </ul>
           <div class="card-header">
             <button type="button" class="btn btn-primary mx-2">Editar</button>
-            <button type="button" class="btn btn-primary mx-2" (click)="deleteDates(exam, question)" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Eliminar</button>
+            <button type="button" class="btn btn-primary mx-2" (click)="openDeleteModal(exam, question)">Eliminar</button>
           </div>
         }
         </div>
@@ -26,38 +26,44 @@
     }
   </div>
 
-  <!-- Button trigger modal 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-  Launch static backdrop modal
-</button>-->
+<!-- Delete modal -->
 
-<!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Quiere borrar la pregunta?</h1>
-        <button type="button" class="btn-close"></button>
-      </div>
-      <div class="modal-body">
-        {{modalStatement}}
-        <ul>
-          <li>{{modalResponseA}}</li>
-          <li>{{modalResponseB}}</li>
-          <li>{{modalResponseC}}</li>
-          <li>{{modalResponseD}}</li>
-          <li>{{modalResponseE}}</li>
-        </ul>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="deleteQuestion()">Borrar</button>
+  <div class="modal" id="staticBackdrop">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Quiere borrar la pregunta?</h1>
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body">
+          {{modalStatement}}
+          <ul>
+            <li>{{modalResponseA}}</li>
+            <li>{{modalResponseB}}</li>
+            <li>{{modalResponseC}}</li>
+            <li>{{modalResponseD}}</li>
+            <li>{{modalResponseE}}</li>
+          </ul>
+          
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="deleteQuestion()">Borrar</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
       </div>
     </div>
   </div>
-</div>
-
-  
 
 <app-footer></app-footer>

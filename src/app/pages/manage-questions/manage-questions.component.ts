@@ -15,8 +15,7 @@ import { response } from 'express';
 export class ManageQuestionsComponent {
 
   exams: any;
-
-  modal:any
+  charge: boolean = false;
 
   exam: any;
   question: any;
@@ -51,19 +50,33 @@ export class ManageQuestionsComponent {
       exam: this.exam,
       question: this.question
     }
+    
+    this.charge = true;
 
     this.http.put<any>('http://localhost:4000/api/exams', selectQuestion).subscribe({
       next: (res) => {
         this.exams = res;
+        this.charge = false;
+        alert("Pregunta borrada");
       },
       error: (err) => {
-        alert('Cargar fallo' + err);
+        console.log(err);
+        alert("No se pudo borrar");
+        this.charge = false;
       },
     });
     
   };
 
-  deleteDates(exam: any, question: any){
+  closeDeleteModal(){
+    let deleteModal: any;
+    deleteModal = document.getElementById('staticBackdrop');
+    deleteModal.style.display="none";
+  }
+  openDeleteModal(exam: any, question: any){
+    let deleteModal: any;
+    deleteModal = document.getElementById('staticBackdrop');
+    deleteModal.style.display="block";
     this.exam = exam;
     this.question = question;
     this.modalStatement = this.question.statement;
@@ -74,32 +87,6 @@ export class ManageQuestionsComponent {
       if(this.question.responses[i].letter === "C"){this.modalResponseC = this.question.responses[i].response;}
       if(this.question.responses[i].letter === "D"){this.modalResponseD = this.question.responses[i].response;}
       if(this.question.responses[i].letter === "E"){this.modalResponseE = this.question.responses[i].response;}
-    }
-    let deleteModal: any;
-
-        deleteModal = document.getElementById('staticBackdrop');
-    
-    deleteModal.style.display="block";
-
-    
-  };
-
-  closeModal(){
-
-    let deleteModal: any;
-    let bootstrap: any;
-
-    deleteModal = document.getElementById('staticBackdrop');
-
-    //deleteModal.style.display="none";
-    //deleteModal.classList.remove('show');
-    //deleteModal.hide();
-
-    //let body  = document.getElementsByTagName("body");
-    //body.classList.remove('show');
-
-    var myModalEl = document.getElementById('staticBackdrop');
-    var modal = bootstrap.Modal.getInstance(myModalEl)
-    modal.hide();
+    }  
   }
 }

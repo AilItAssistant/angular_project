@@ -177,6 +177,8 @@ export class ManageQuestionsComponent {
   };
 
   editQuestion(){
+    this.charge = true;
+
     let changes: any = new Object;
 
     if(this.questionForm.value.level !== this.edit.level){
@@ -214,6 +216,7 @@ export class ManageQuestionsComponent {
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
+        this.charge = false;
       },
       error: (err) => {
         console.log(err);

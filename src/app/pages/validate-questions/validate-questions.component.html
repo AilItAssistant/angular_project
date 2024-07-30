@@ -77,7 +77,7 @@
           @if(!charge){
             <button type="button" class="btn-close" (click)="closeEditModal()"></button>
           } @else {
-            <div class="spinner-border text-secondary" role="status">
+            <div class="spinner-border text-secondary mx-auto mb-3" role="status">
               <span class="visually-hidden">Loading...</span>
             </div>            
           }
@@ -96,7 +96,7 @@
                 <p class="mt-1">Elige un bloque</p>
                 <select class="form-select" formControlName="block" aria-label="Select-block">
                     <option value="Estar o hay" selected>Estar o hay</option>
-                    <option value="Tener y haber">Tener y haber</option>
+                    <option value="Tener o haber">Tener o haber</option>
                     <option value="Gustar y similares">Gustar y similares</option>
                     <option value="Presente irregular">Presente irregular</option>
                     <option value="Descripción física">Descripción física</option>
@@ -150,7 +150,7 @@
             <button type="button" class="btn btn-primary" (click)="editQuestion()">Editar</button>
           </div>
         } @else {
-          <div class="spinner-border text-primary" role="status">
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>          
         }
@@ -190,7 +190,7 @@
             <button type="button" class="btn btn-primary" (click)="addQuestion()">Añadir</button>
           </div>
         } @else {
-          <div class="spinner-border text-primary" role="status">
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>          
         }

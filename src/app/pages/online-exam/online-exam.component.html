@@ -1,0 +1,23 @@
+<div class="text-center card-group mb-5 mt-3">
+    @for(exam of exams; track exam){
+        <div class="mx-auto">
+            <div style="width: 30rem;">
+                @for(question of exam.question; track question.id){
+                    <ul class="  my-5">
+                        <div class="card-header mb-3">
+                        {{"1. !" + question.statement}}
+                        </div>
+                        @for(response of question.responses; track response){
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="exampleRadios" formControlName="statements" id="exampleRadios2" value="option2">
+                                <label class="form-check-label" for="exampleRadios2">
+                                    {{response.letter}}. {{response.response}}
+                                </label>
+                            </div>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    }
+</div>

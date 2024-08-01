@@ -7,6 +7,7 @@ import { AddQuestionsComponent } from './pages/add-questions/add-questions.compo
 import { ManageQuestionsComponent } from './pages/manage-questions/manage-questions.component';
 import { ValidateQuestionsComponent } from './pages/validate-questions/validate-questions.component';
 import { OnlineExamComponent } from './pages/online-exam/online-exam.component';
+import { LoginComponent } from './pages/login/login.component';
 
 export const routes: Routes = [
     {
@@ -40,5 +41,9 @@ export const routes: Routes = [
     {
         path: "exam/:id",
         component: OnlineExamComponent
+    },
+    {
+        path: "login",
+        component: LoginComponent
     }
 ];

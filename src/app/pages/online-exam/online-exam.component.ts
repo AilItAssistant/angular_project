@@ -11,8 +11,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OnlineExamComponent {
 
-  statements: any = "ytjrhgf";
   exams: any;
+  statements: any;
 
   constructor(private http: HttpClient, private route: ActivatedRoute) {}
 
@@ -26,7 +26,26 @@ export class OnlineExamComponent {
       },
     });
     this.getId();
+    this.takeQuestionArray();
   }
-  getId(){console.log(this.route.snapshot.paramMap.get('id'))}
+  getId(){console.log(this.route.snapshot.paramMap.get('id'))};
+
+  takeQuestionArray(){
+    this.statements = []
+    for(let i: any = 0; this.exams.length > i; i++){
+      for(let x: any = 0; this.exams[i].question.length > x; x++){
+        this.statements.push(this.exams[i].question[x]);
+      }
+    }
+  };
+
+  change(questionId: string, responseId: string){
+
+    for(let i: any = 0; this.statements.length > i; i++){
+      if(questionId === this.statements[i].id){
+        this.statements[i].responseSelected = responseId;
+      };
+    };
+  };
 
 }

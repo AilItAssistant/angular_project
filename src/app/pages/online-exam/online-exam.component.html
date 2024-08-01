@@ -9,8 +9,8 @@
                         </div>
                         @for(response of question.responses; track response){
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="exampleRadios" formControlName="statements" id="exampleRadios2" value="option2">
-                                <label class="form-check-label" for="exampleRadios2">
+                                <input class="form-check-input" type="radio" [name]="question.id" [id]="question.id" value="" (click)="change(question.id, response.id)">
+                                <label class="form-check-label" [for]="question.id">
                                     {{response.letter}}. {{response.response}}
                                 </label>
                             </div>

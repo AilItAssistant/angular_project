@@ -1,36 +1,62 @@
 <app-header></app-header>
-<div class="m-5">
-    <h2 class="mb-5">Añadir preguntas</h2>
+<div class="m-3">
+    <h2 class="mb-5 text-center">Añadir preguntas</h2>
 
     <form [formGroup] = "questionForm">
 
-        <p>Elige un nivel</p>
-        <select class="form-select" placeholder="A1" formControlName="level" aria-label="Select-level" required>
-            <option value="A1" selected>A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-        </select>
-        <p class="mt-3">Elige un bloque</p>
-        <select class="form-select" formControlName="block" aria-label="Select-block" required>
-            <option value="Estar o hay" selected>Estar o hay</option>
-            <option value="Tener y haber">Tener y haber</option>
-            <option value="Gustar y similares">Gustar y similares</option>
-            <option value="Presente irregular">Presente irregular</option>
-            <option value="Descripción física">Descripción física</option>
-            <option value="Género y número">Género y número</option>
-            <option value="Cantidad">Cantidad</option>
-            <option value="Reflexivos">Reflexivos</option>
-            <option value="Ropa">Ropa</option>
-            <option value="Tiempo atmosférico">Tiempo atmosférico</option>
-            <option value="Pretérito perfecto">Pretérito perfecto</option>
-            <option value="Pronombres OD y OI gustar">Pronombres OD y OI gustar</option>
-            <option value="Preposiciones">Preposiciones</option>
-            <option value="Vocabulario">Vocabulario</option>
-            <option value="Variadas de gramática">Variadas de gramática</option>
-        </select>
+        
+
+        <div class="container text-center">
+            <div class="row">
+                <div class="col">
+                    <p>Elige un nivel</p>
+                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="Select-level" required>
+                        <option value="A1">A1</option>
+                        <option value="A2">A2</option>
+                        <option value="B1">B1</option>
+                        <option value="B2">B2</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <p>Elige una destreza</p>
+                    <select class="form-select" placeholder="A1" formControlName="level" aria-label="Select-level" required>
+                        <option value="Vocabulario">Vocabulario</option>
+                        <option value="Comprensión">Comprensión lectora</option>
+                        <option value="Desarrollar">Desarrollar</option>
+                        <option value="Audio">Audio</option>
+                        <option value="Oral">Oral</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <p class="">Elige un bloque</p>
+                    <select class="form-select" formControlName="block" aria-label="Select-block" required>
+                        <option value="Estar o hay">Estar o hay</option>
+                        <option value="Tener y haber">Tener y haber</option>
+                        <option value="Gustar y similares">Gustar y similares</option>
+                        <option value="Presente irregular">Presente irregular</option>
+                        <option value="Descripción física">Descripción física</option>
+                        <option value="Género y número">Género y número</option>
+                        <option value="Cantidad">Cantidad</option>
+                        <option value="Reflexivos">Reflexivos</option>
+                        <option value="Ropa">Ropa</option>
+                        <option value="Tiempo atmosférico">Tiempo atmosférico</option>
+                        <option value="Pretérito perfecto">Pretérito perfecto</option>
+                        <option value="Pronombres OD y OI gustar">Pronombres OD y OI gustar</option>
+                        <option value="Preposiciones">Preposiciones</option>
+                        <option value="Vocabulario">Vocabulario</option>
+                        <option value="Variadas de gramática">Variadas de gramática</option>
+                    </select>
+                </div>
+            </div>
+          </div>
 
         <div class="input-group my-5">
+            <span class="input-group-text">Enunciado</span>
+            <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea" required></textarea>
+        </div>
+
+        <button type="button" class="btn btn-info mb-2" >Añadir pregunta</button>
+        <div class="input-group mb-5">
             <span class="input-group-text">Pregunta</span>
             <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea" required></textarea>
         </div>
@@ -68,7 +94,7 @@
         }
     </form>
 
-    <button type="submit" class="btn btn-primary my-5" (click)="addQuestion()">Añadir pregunta</button>
+    <button type="submit" class="btn btn-primary my-5" (click)="addQuestion()">Enviar pregunta</button>
 
 </div>
 

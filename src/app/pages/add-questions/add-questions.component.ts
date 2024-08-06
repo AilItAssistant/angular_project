@@ -22,7 +22,6 @@ export class AddQuestionsComponent {
   selectedStatement: any;
   charge: boolean = false;
 
-
   addResponse(){
     if(this.numberResponses < 6){
       this.numberResponses++;
@@ -79,7 +78,6 @@ export class AddQuestionsComponent {
       },
     });
   };
-
 
   closeStatementModal(){
     let statementModal: any;

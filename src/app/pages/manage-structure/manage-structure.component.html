@@ -11,8 +11,16 @@
                         <div class="col ms-5 mt-2">
                             {{level.name}}
                         </div>
+                        <div class="col col-lg-1">
+                            @if (level.status) {
+                                <p class="text-success">Activo</p>
+                            } @else {
+                                <p class="text-danger">Inactivo</p>
+                            }
+                        </div>
                         <div class="col text-end">
                             <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-secondary ms-3">Desactivar</button>
                             <button class="btn btn-danger ms-3">Eliminar</button>     
                         </div>  
                     </div>       
@@ -33,8 +41,16 @@
                         <div class="col ms-5 mt-2">
                             {{skill.name}}
                         </div>
+                        <div class="col col-lg-1">
+                            @if (skill.status) {
+                                <p class="text-success">Activo</p>
+                            } @else {
+                                <p class="text-danger">Inactivo</p>
+                            }
+                        </div>
                         <div class="col text-end">
                             <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-secondary ms-3">Desactivar</button>
                             <button class="btn btn-danger ms-3">Eliminar</button>     
                         </div>  
                     </div>       
@@ -55,8 +71,16 @@
                         <div class="col ms-5 mt-2">
                             {{block.name}}
                         </div>
+                        <div class="col col-lg-1">
+                            @if (block.status) {
+                                <p class="text-success">Activo</p>
+                            } @else {
+                                <p class="text-danger">Inactivo</p>
+                            }
+                        </div>
                         <div class="col text-end">
                             <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-secondary ms-3">Desactivar</button>
                             <button class="btn btn-danger ms-3">Eliminar</button>     
                         </div>  
                     </div>       
@@ -66,17 +90,8 @@
         <div class="row my-4">
             <div class="col text-end mt-1"><p>Bloque:</p></div>
             <div class="col"><input type="text" class="form-control" formControlName="block" id="block"></div>
-            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+            <div class="col text-start mb-5"><button class="btn btn-success">Añadir</button></div>
         </div>
-
-
-
-
-
-
-
-
-
       
     </div>
 </form>

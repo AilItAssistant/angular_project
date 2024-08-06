@@ -32,7 +32,7 @@ export class ManageStudentsComponent {
       birthday: "2000-03-03",
       mobile: "+6543765671456987",
       email: "qwerty12qwerty34@qwerty56.com",
-      status: true,
+      status: false,
       city: "Principado de Mónaco",
       genre: "mujer"
     }

@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<form [formGroup] = "questionForm">
+
+    <div class="container my-3">
+        <h3>Niveles</h3>
+        <ul class="list-group">
+            @for(level of levels; track level.id){
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col ms-5 mt-2">
+                            {{level.name}}
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                        </div>  
+                    </div>       
+                </li>
+            }
+        </ul>
+        <div class="row my-4">
+            <div class="col text-end mt-1"><p>Nivel:</p></div>
+            <div class="col"><input type="text" class="form-control" formControlName="level" id="level"></div>
+            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+        </div>
+
+        <h3>Destrezas</h3>
+        <ul class="list-group">
+            @for(skill of skills; track skill.id){
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col ms-5 mt-2">
+                            {{skill.name}}
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                        </div>  
+                    </div>       
+                </li>
+            }
+        </ul>
+        <div class="row my-4">
+            <div class="col text-end mt-1"><p>Skill:</p></div>
+            <div class="col"><input type="text" class="form-control" formControlName="skill" id="skill"></div>
+            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+        </div>
+
+        <h3>Bloques</h3>
+        <ul class="list-group">
+            @for(block of blocks; track block.id){
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col ms-5 mt-2">
+                            {{block.name}}
+                        </div>
+                        <div class="col text-end">
+                            <button class="btn btn-primary ms-5">Modificar</button>
+                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                        </div>  
+                    </div>       
+                </li>
+            }
+        </ul>
+        <div class="row my-4">
+            <div class="col text-end mt-1"><p>Bloque:</p></div>
+            <div class="col"><input type="text" class="form-control" formControlName="block" id="block"></div>
+            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+        </div>
+
+
+
+
+
+
+
+
+
+      
+    </div>
+</form>
+
+<app-footer></app-footer>

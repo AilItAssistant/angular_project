@@ -1,16 +1,13 @@
 <app-header></app-header>
-<div class="m-3">
-    <h2 class="mb-5 text-center">Añadir preguntas</h2>
+<div class="m-5">
+    <h3 class="mb-4 text-center">Añadir enunciado</h3>
 
     <form [formGroup] = "questionForm">
-
-        
-
         <div class="container text-center">
             <div class="row">
                 <div class="col">
                     <p>Elige un nivel</p>
-                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="Select-level" required>
+                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
                         <option value="A1">A1</option>
                         <option value="A2">A2</option>
                         <option value="B1">B1</option>
@@ -19,16 +16,50 @@
                 </div>
                 <div class="col">
                     <p>Elige una destreza</p>
-                    <select class="form-select" placeholder="A1" formControlName="level" aria-label="Select-level" required>
-                        <option value="Vocabulario">Vocabulario</option>
-                        <option value="Comprensión">Comprensión lectora</option>
-                        <option value="Desarrollar">Desarrollar</option>
-                        <option value="Audio">Audio</option>
-                        <option value="Oral">Oral</option>
-                    </select>
+                <select class="form-select" placeholder="Elige una destreza" formControlName="skills" aria-label="Elige una destreza" required>
+                    <option value="Vocabulario">Vocabulario</option>
+                    <option value="Desarrollar">Desarrollar</option>
+                    <option value="Comprensión">Comprensión lectora</option>
+                    <option value="Audio">Audio</option>
+                    <option value="Oral">Oral</option>
+                </select>
                 </div>
-                <div class="col">
-                    <p class="">Elige un bloque</p>
+                <div class="col mt-3">
+                    <button class="btn btn-info mt-4" (click)="openStatementModal()">Seleccionar un enunciado existente</button>
+                </div>
+            </div>
+        </div>
+
+        @if(!statement){
+            <div class="row my-3">
+                <div class="col text-center">
+                        <p>Enunciado</p>
+                        <textarea class="form-control" formControlName="statement" id="statement" aria-label="With textarea" required></textarea>
+                </div>
+            
+                <div class="col col-sm-2 text-center">
+                        <p>Puntuacion</p>
+                        <input type="text" class="form-control" formControlName="result" id="result" aria-label="" required>
+                </div>
+            </div>
+                <p class="mt-2 text-center">Texto</p>
+                <textarea class="form-control mb-4" formControlName="text" id="text" aria-label="With textarea" required></textarea>
+        
+        } @else {
+            <p>enunciado</p>
+            <p>Puntuacion</p>
+            <p>texto</p>
+        }
+
+       <h3 class="text-center my-4">Añadir pregunta</h3>
+            
+        <div class="row">
+            <div class="col">
+                    <p class="text-center">Pregunta</p>
+                    <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea" required></textarea>
+            </div>
+            <div class="col col-lg-2 text-center">
+                <p>Elige un bloque</p>
                     <select class="form-select" formControlName="block" aria-label="Select-block" required>
                         <option value="Estar o hay">Estar o hay</option>
                         <option value="Tener y haber">Tener y haber</option>
@@ -46,55 +77,112 @@
                         <option value="Vocabulario">Vocabulario</option>
                         <option value="Variadas de gramática">Variadas de gramática</option>
                     </select>
-                </div>
+                
             </div>
-          </div>
-
-        <div class="input-group my-5">
-            <span class="input-group-text">Enunciado</span>
-            <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea" required></textarea>
-        </div>
-
-        <button type="button" class="btn btn-info mb-2" >Añadir pregunta</button>
-        <div class="input-group mb-5">
-            <span class="input-group-text">Pregunta</span>
-            <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea" required></textarea>
-        </div>
-
-        <button type="button" class="btn btn-info mb-2" (click)="addResponse()">Añadir respuesta</button>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="ResponseA">Respuesta A</span>
-            <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
         </div>
         
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="ResponseB">Respuesta B</span>
-            <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-        </div>
+        <button type="button" class="btn btn-info my-4" (click)="addResponse()">Añadir respuesta</button>
 
-        @if(numberResponses >= 3){
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="ResponseC">Respuesta C</span>
-                <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+        <div class="row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="ResponseA">Respuesta A</span>
+                    <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                </div>
+                @if(numberResponses >= 4){
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="ResponseC">Respuesta D</span>
+                        <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                    </div>
+                }
             </div>
-        }
-
-        @if(numberResponses >= 4){
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="ResponseD">Respuesta D</span>
-                <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="ResponseB">Respuesta B</span>
+                    <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                </div>
+                @if(numberResponses >= 5){
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="ResponseD">Respuesta E</span>
+                        <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                    </div>
+                }
             </div>
-        }
-
-        @if(numberResponses >= 5){
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="ResponseE">Respuesta E</span>
-                <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="ResponseC">Respuesta C</span>
+                    <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                </div>
+                @if(numberResponses >= 6){
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="ResponseE">Respuesta F</span>
+                        <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                    </div>
+                }
             </div>
-        }
+            <div class="col col-lg-2 text-center">
+                <p>Respuesta correcta</p>
+                <select class="form-select" formControlName="response" id="response">
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                </select>
+            </div>
+          </div>
+        
     </form>
 
-    <button type="submit" class="btn btn-primary my-5" (click)="addQuestion()">Enviar pregunta</button>
+    <div class="row text-center my-4">
+        <div class="col">
+            <button type="submit" class="btn btn-primary ms-5" (click)="sendQuestion()">Añadir enunciado</button>
+        </div>
+        <div class="col">
+            <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>
+        </div>
+    </div>
+
+    <!-- Select statement modal -->
+
+  <div class="modal" id="statementModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Selecciona enunciado exixtente</h1>
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeStatementModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary mx-auto" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body">
+            <form [formGroup] = "questionForm">
+                <p>Elige un enunciado</p>
+                <select class="form-select mb-3" placeholder="A1" formControlName="modalLevel" aria-label="A1" required>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                </select>
+        </form>
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeStatementModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary">Seleccionar</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
+      </div>
+    </div>
+  </div>
 
 </div>
 

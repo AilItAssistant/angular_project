@@ -8,6 +8,7 @@ import { ManageQuestionsComponent } from './pages/manage-questions/manage-questi
 import { ValidateQuestionsComponent } from './pages/validate-questions/validate-questions.component';
 import { OnlineExamComponent } from './pages/online-exam/online-exam.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ManageStructureComponent } from './pages/manage-structure/manage-structure.component';
 
 export const routes: Routes = [
     {
@@ -45,5 +46,9 @@ export const routes: Routes = [
     {
         path: "login",
         component: LoginComponent
+    },
+    {
+        path: "manage_structure",
+        component: ManageStructureComponent
     }
 ];

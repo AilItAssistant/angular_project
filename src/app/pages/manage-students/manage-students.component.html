@@ -1,2 +1,86 @@
 <app-header></app-header>
+
+<div class="container">
+    <ul class="list-group">
+        <div class="row">
+            <li class="list-group-item">
+                <div class="col">
+                    Nombre
+                </div>
+                <div class="col">
+                    Apellidos
+                </div>
+                <div class="col">
+                    Documento de identificación
+                </div>
+                <div class="col">
+                    Fecha de nacimiento
+                </div>
+                <div class="col">
+                    Telefono
+                </div>
+                <div class="col">
+                    Email
+                </div>
+                <div class="col">
+                    Status
+                </div>
+                <div class="col">
+                    Ciudad
+                </div>
+                <div class="col">
+                    Género
+                </div>
+            </li>
+        </div>
+    </ul>
+</div>
+
+<div class="container">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                @for(student of students; track student.id){
+                    <div class="col">
+                        {{student.name}}
+                    </div>
+                    <div class="col">
+                        {{student.surname}}
+                    </div>
+                    <div class="col">
+                        {{student.document}}
+                    </div>
+                    <div class="col">
+                        {{student.birthday}}
+                    </div>
+                    <div class="col">
+                        {{student.mobile}}
+                    </div>
+                    <div class="col">
+                        {{student.email}}
+                    </div>
+                    <div class="col">
+                        {{student.city}}
+                    </div>
+                    <div class="col">
+                        {{student.genre}}
+                    </div>
+                    <div class="col">
+                        @if (student.status) {
+                            <p class="text-success">Activo</p>
+                        } @else {
+                            <p class="text-danger">Inactivo</p>
+                        }
+                    </div>
+                    <div class="col text-end">
+                        <button class="btn btn-primary">Modificar</button>
+                        <button class="btn btn-secondary">Desactivar</button>
+                        <button class="btn btn-danger">Eliminar</button>     
+                    </div>
+                }  
+            </div>       
+        </li>
+    </ul>
+</div>
+
 <app-footer></app-footer>

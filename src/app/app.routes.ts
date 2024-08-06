@@ -18,6 +18,7 @@ import { ManageStudentsComponent } from './pages/manage-students/manage-students
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { TeachersComponent } from './pages/teachers/teachers.component';
 import { ManageTeachersComponent } from './pages/manage-teachers/manage-teachers.component';
+import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
 
 export const routes: Routes = [
     {
@@ -95,5 +96,9 @@ export const routes: Routes = [
     {
         path: "manage_teachers",
         component: ManageTeachersComponent
+    },
+    {
+        path: "manage_users",
+        component: ManageUsersComponent
     }
 ];

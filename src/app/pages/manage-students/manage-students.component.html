@@ -81,10 +81,44 @@
                         <button class="btn btn-primary btn-sm">M</button>
                         <button class="btn btn-secondary btn-sm">D</button>
                         <button class="btn btn-danger btn-sm">E</button>     
+                        <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.id" aria-expanded="true" [attr.aria-controls]="student.id">
+                        </button>
                     </div>
+                    
                 </div>       
             </li>
         </ul>
+        <div [id]="student.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <ul class="list-group text-center">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-4">
+                                <h5>Número de estudiantes</h5>
+                            </div>
+                            <div class="col-4">
+                                <h5>Nivel de la clase</h5>
+                            </div>
+                            <div class="col-4">
+                                <h5>Tipo de clase</h5>
+                            </div>
+                            @for(class of student.classes; track class.id){
+                                <div class="col-4 my-1">
+                                    {{class.number_students}}
+                                </div>
+                                <div class="col-4 my-1">
+                                    {{class.level}}
+                                </div>
+                                <div class="col-4 my-1">
+                                    {{class.type}}
+                                </div>
+                            }
+                        </div>
+                    </li>
+                </ul>
+                            
+            </div>
+        </div>
     </div>
 }  
 <div class="mb-5"></div>

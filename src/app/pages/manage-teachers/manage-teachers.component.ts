@@ -25,21 +25,18 @@ export class ManageTeachersComponent {
           number_students:7,
           level: "A2",
           type: "full time",
-          //teacher: "María Fernanda",
         },
         {
           id: 5,
           number_students: 8,
           level: "Otro",
           type: "cocina",
-          //teacher: "María Fernanda",
         },
         {
           id: 6,
           number_students: 19,
           level: "Otro",
           type: "ocio",
-          //teacher: "María Fernanda",
         },
       ]
     },
@@ -56,24 +53,20 @@ export class ManageTeachersComponent {
           number_students: 4,
           level: "A2",
           type: "full time",
-          //teacher: "María Fernanda",
         },
         {
           id: 2,
           number_students: 10,
           level: "A2",
           type: "cocina",
-          //teacher: "María Fernanda",
         },
         {
           id: 3,
           number_students: 100,
           level: "A2",
           type: "personalizadas",
-          //teacher: "María Fernanda",
         },
       ]
     }
   ];
-
 }

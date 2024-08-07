@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-manage-classes',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent],
+  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
   templateUrl: './manage-classes.component.html',
   styleUrl: './manage-classes.component.scss'
 })
@@ -217,5 +219,12 @@ export class ManageClassesComponent {
       ]
     },
   ];
+
+  addClassesForm = new FormGroup({
+    teacher: new FormControl(""),
+    level: new FormControl(""),
+    type: new FormControl(""),
+    status: new FormControl("")
+  });
 
 }

@@ -131,4 +131,38 @@
     }  
 </div>
 
+<form [formGroup] = "addClassesForm">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-4">
+                <label for="teacher" class="form-label">Teacher</label>
+                <input type="text" class="form-control" id="teacher" formControlName="teacher" placeholder="Manolo">
+            </div>
+            <div class="col-2">
+                <label for="level" class="form-label">Level</label>
+                <select id="level" class="form-select" formControlName="level">
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="type" class="form-label">Tipo</label>
+                <input type="text" class="form-control" id="type" formControlName="type" placeholder="Full time">
+            </div>
+            <div class="col-3">
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
+        </div>
+        <div class=" text-center">
+            <button class="btn btn-primary my-5">Añadir clase</button>
+        </div>
+    </div>
+</form>
+
 <app-footer></app-footer>

@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<h3 class="text-center mt-4">Gestión de profesores</h3>
+<h3 class="text-center mt-4">Gestión de alumnos</h3>
 
 <div class="container text-center mt-4">
     <ul class="list-group">
@@ -88,5 +88,52 @@
     </div>
 }  
 <div class="mb-5"></div>
+
+<form [formGroup] = "addStudentsForm">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-4">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
+            </div>
+            <div class="col-5">
+                <label for="surname" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
+            </div>
+            <div class="col-3">
+                <label for="document" class="form-label">Documento de identificación</label>
+                <input type="text" class="form-control" id="document" formControlName="document" placeholder="x123456789x">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-2">
+                <label for="birthday">Cumpleaños</label>
+                <input id="birthday" class="form-control mt-2" type="date" formControlName="birthday" />
+            </div>
+            <div class="col-3">
+                <label for="mobil" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="mobil" formControlName="mobil" placeholder="+321321456987">
+            </div>
+            <div class="col-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+            </div>
+            <div class="col-2">
+                <label for="city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
+            </div>
+            <div class="col-2">
+                <label for="genre" class="form-label">Género</label>
+                <select id="genre" class="form-select" formControlName="genre">
+                    <option value="male">Hombre</option>
+                    <option value="female">Mujer</option>
+                </select>
+            </div>
+        </div>
+        <div class=" text-center">
+            <button class="btn btn-primary my-5">Añadir usuario</button>
+        </div>
+    </div>
+</form>
 
 <app-footer></app-footer>

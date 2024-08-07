@@ -3,7 +3,7 @@
 <form [formGroup] = "questionForm">
 
     <div class="container my-3">
-        <h3>Niveles</h3>
+        <h3 class="my-3">Niveles</h3>
         <ul class="list-group">
             @for(level of levels; track level.id){
                 <li class="list-group-item">
@@ -11,7 +11,7 @@
                         <div class="col ms-5 mt-2">
                             {{level.name}}
                         </div>
-                        <div class="col col-lg-1">
+                        <div class="col col-lg-1 mt-2">
                             @if (level.status) {
                                 <p class="text-success">Activo</p>
                             } @else {
@@ -33,7 +33,7 @@
             <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
         </div>
 
-        <h3>Destrezas</h3>
+        <h3 class="my-3">Destrezas</h3>
         <ul class="list-group">
             @for(skill of skills; track skill.id){
                 <li class="list-group-item">
@@ -41,7 +41,7 @@
                         <div class="col ms-5 mt-2">
                             {{skill.name}}
                         </div>
-                        <div class="col col-lg-1">
+                        <div class="col col-lg-1 mt-2">
                             @if (skill.status) {
                                 <p class="text-success">Activo</p>
                             } @else {
@@ -63,7 +63,7 @@
             <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
         </div>
 
-        <h3>Bloques</h3>
+        <h3 class="my-3">Bloques</h3>
         <ul class="list-group">
             @for(block of blocks; track block.id){
                 <li class="list-group-item">
@@ -71,7 +71,7 @@
                         <div class="col ms-5 mt-2">
                             {{block.name}}
                         </div>
-                        <div class="col col-lg-1">
+                        <div class="col col-lg-1 mt-2">
                             @if (block.status) {
                                 <p class="text-success">Activo</p>
                             } @else {

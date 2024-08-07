@@ -1,2 +1,143 @@
 <app-header></app-header>
+
+<h3 class="text-center mt-4">Gestión de usuarios</h3>
+
+<div class="container text-center mt-4">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-1">
+                    Nombre
+                </div>
+                <div class="col-1">
+                    Apellidos
+                </div>
+                <div class="col-2">
+                    Número de télefono
+                </div>
+                <div class="col-3">
+                    Email
+                </div>
+                <div class="col-1">
+                    Ciudad
+                </div>
+                <div class="col-1">
+                    Permisos
+                </div>
+                <div class="col-1">
+                    Cargo
+                </div>
+                <div class="col-1">
+                    Estado
+                </div>
+                <div class="col-1">
+                    Herramientas
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+@for(user of users; track user.id){
+    <div class="container text-center">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-1">
+                        {{user.name}}
+                    </div>
+                    <div class="col-1">
+                        {{user.surname}}
+                    </div>
+                    <div class="col-2">
+                        {{user.mobile}}
+                    </div>
+                    <div class="col-3">
+                        {{user.email}}
+                    </div>
+                    <div class="col-1">
+                        {{user.city}}
+                    </div>
+                    <div class="col-1">
+                        {{user.permissions}}
+                    </div>
+                    <div class="col-1">
+                        {{user.position}}
+                    </div>
+                    <div class="col-1">
+                        @if (user.status) {
+                            <p class="text-success">Activo</p>
+                        } @else {
+                            <p class="text-danger">Inactivo</p>
+                        }
+                    </div>
+                    <div class="col-1 text-end">
+                        <button class="btn btn-primary btn-sm">M</button>
+                        <button class="btn btn-secondary btn-sm">D</button>
+                        <button class="btn btn-danger btn-sm">E</button>     
+                    </div>
+                </div>       
+            </li>
+        </ul>
+    </div>
+}  
+<div class="mb-5"></div>
+
+<form [formGroup] = "addUserForm">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-6">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
+            </div>
+            <div class="col-6">
+                <label for="surname" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-4">
+                <label for="mobil" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="mobil" formControlName="mobil" placeholder="+321321456987">
+            </div>
+            <div class="col-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+            </div>
+            <div class="col-4">
+                <label for="city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Manolo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <label for="permissions" class="form-label">Permisos</label>
+                <select id="permissions" class="form-select" formControlName="permissions">
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label for="position" class="form-label">Cargo</label>
+                <select id="position" class="form-select" formControlName="position">
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="it">It</option>
+                </select>
+            </div>
+            <div class="col-4">
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="true" selected>Active</option>
+                    <option value="false">Disabled</option>
+                  </select>
+            </div>
+        </div>
+        <div class=" text-center">
+            <button class="btn btn-primary my-5">Añadir usuario</button>
+        </div>
+    </div>
+</form>
 <app-footer></app-footer>

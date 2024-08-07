@@ -1,2 +1,109 @@
 <app-header></app-header>
+
+<h3 class="text-center mt-4">Gestión de profesores</h3>
+
+<div class="container text-center mt-4">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-2 mt-2">
+                    <h5>Nombre</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Apellidos</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Número de télefono</h5>
+                </div>
+                <div class="col-3 mt-2">
+                    <h5>Email</h5>
+                </div>
+                <div class="col-1 mt-2">
+                    <h5>Status</h5>
+                </div>
+                <div class="col-1 mt-2">
+                    <h5>Herramientas</h5>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="accordion container" id="accordionExample">
+    @for(teacher of teachers; track teacher.id){
+        <div class="accordion-item">
+            
+                <ul class="list-group text-center accordion-header">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-2">
+                                {{teacher.name}}
+                            </div>
+                            <div class="col-2">
+                                {{teacher.surname}}
+                            </div>
+                            <div class="col-2">
+                                {{teacher.mobile}}
+                            </div>
+                            <div class="col-3">
+                                {{teacher.email}}
+                            </div>
+                            <div class="col-1">
+                                @if (teacher.status) {
+                                    <p class="text-success">Activo</p>
+                                } @else {
+                                    <p class="text-danger">Inactivo</p>
+                                }
+                            </div>
+                            <div class="col-1 text-end">
+                                <button class="btn btn-primary btn-sm">M</button>
+                                <button class="btn btn-secondary btn-sm">D</button>
+                                <button class="btn btn-danger btn-sm">E</button>     
+                            </div>
+                            <div class="col-1 text-end">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + teacher.id" aria-expanded="true" [attr.aria-controls]="teacher.id">
+                                </button>
+                            </div>
+                        </div>       
+                    </li>
+                </ul>
+
+                <div [id]="teacher.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul class="list-group text-center">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <h5>Número de estudiantes</h5>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5>Nivel de la clase</h5>
+                                    </div>
+                                    <div class="col-4">
+                                        <h5>Tipo de clase</h5>
+                                    </div>
+                                    @for(class of teacher.classes; track class.id){
+                                        <div class="col-4">
+                                            {{class.number_students}}
+                                        </div>
+                                        <div class="col-4">
+                                            {{class.level}}
+                                        </div>
+                                        <div class="col-4">
+                                            {{class.type}}
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                                    
+                    </div>
+                </div>
+            
+        </div>
+    }  
+</div>
+
+<div class="mb-5"></div>
+
 <app-footer></app-footer>

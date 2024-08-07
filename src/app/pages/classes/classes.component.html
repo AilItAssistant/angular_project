@@ -1,2 +1,119 @@
 <app-header></app-header>
+
+<h3 class="text-center my-5">Classes</h3>
+
+<div class="container text-center">
+    <ul class="list-group">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col-3 mt-3">
+                    <h5>Profesor</h5>
+                </div>
+                <div class="col-3 mt-3">
+                    <h5>Nivel</h5>
+                </div>
+                <div class="col-3 mt-3">
+                    <h5>Tipo de clase</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Número de estudiantes</h5>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="accordion container mb-5" id="accordionExample">
+    @for(class of classes; track class.id){
+        <div class="accordion-item">
+            
+                <ul class="list-group text-center accordion-header">
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-3">
+                                {{class.teacher}}
+                            </div>
+                            <div class="col-3">
+                                {{class.level}}
+                            </div>
+                            <div class="col-3">
+                                {{class.type}}
+                            </div>
+                            <div class="col-2">
+                                {{class.number_students}}
+                            </div>
+                            <div class="col-1 text-end">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.id" aria-expanded="true" [attr.aria-controls]="class.id">
+                                </button>
+                            </div>
+                        </div>       
+                    </li>
+                </ul>
+
+                <div [id]="class.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul class="list-group text-center">
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-1">
+                                        <h5>Nombre</h5>
+                                    </div>
+                                    <div class="col-1">
+                                        <h5>Apellidos</h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <h5>Número de identidicación</h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <h5>Número de telefono</h5>
+                                    </div>
+                                    <div class="col-1">
+                                        <h5>Cumpleaños</h5>
+                                    </div>
+                                    <div class="col-3">
+                                        <h5>Email</h5>
+                                    </div>
+                                    <div class="col-1">
+                                        <h5>Ciudad</h5>
+                                    </div>
+                                    <div class="col-1">
+                                        <h5>Género</h5>
+                                    </div>
+                                    @for(student of class.students; track student.id){
+                                        
+                                        <div class="col-1 my-3">
+                                            {{student.name}}
+                                        </div>
+                                        <div class="col-1 my-3">
+                                            {{student.surname}}
+                                        </div>
+                                        <div class="col-2 my-3">
+                                            {{student.document}}
+                                        </div>
+                                        <div class="col-2 my-3">
+                                            {{student.mobile}}
+                                        </div>
+                                        <div class="col-1 my-3">
+                                        <small>{{student.birthday}}</small>
+                                        </div>
+                                        <div class="col-3 my-3">
+                                            {{student.email}}
+                                        </div>
+                                        <div class="col-1 my-3">
+                                            {{student.city}}
+                                        </div>
+                                        <div class="col-1 my-3">
+                                            {{student.genre}}
+                                        </div>
+                                    }
+                                </div>
+                            </li>
+                        </ul>
+                                    
+                    </div>
+                </div>
+        </div>
+    }  
+</div>
+
 <app-footer></app-footer>

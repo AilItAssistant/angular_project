@@ -92,17 +92,21 @@
 <form [formGroup] = "addStudentsForm">
     <div class="container">
         <div class="row mb-4">
-            <div class="col-4">
+            <div class="col-3">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
             </div>
-            <div class="col-5">
+            <div class="col-4">
                 <label for="surname" class="form-label">Apellidos</label>
                 <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
             </div>
             <div class="col-3">
                 <label for="document" class="form-label">Documento de identificación</label>
                 <input type="text" class="form-control" id="document" formControlName="document" placeholder="x123456789x">
+            </div>
+            <div class="col-2">
+                <label for="city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
             </div>
         </div>
         <div class="row mb-4">
@@ -119,14 +123,17 @@
                 <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
             </div>
             <div class="col-2">
-                <label for="city" class="form-label">Ciudad</label>
-                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
-            </div>
-            <div class="col-2">
                 <label for="genre" class="form-label">Género</label>
                 <select id="genre" class="form-select" formControlName="genre">
                     <option value="male">Hombre</option>
                     <option value="female">Mujer</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
                 </select>
             </div>
         </div>

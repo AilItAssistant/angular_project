@@ -104,4 +104,40 @@
     }  
 </div>
 
+<form [formGroup] = "addTeachersForm">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-4">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
+            </div>
+            <div class="col-5">
+                <label for="surname" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
+            </div>
+            <div class="col-3">
+                <label for="mobil" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="mobil" formControlName="mobil" placeholder="+321321456987">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+            </div>
+            
+            <div class="col-3">
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </div>
+        </div>
+        <div class=" text-center">
+            <button class="btn btn-primary my-5">Añadir usuario</button>
+        </div>
+    </div>
+</form>
+
 <app-footer></app-footer>

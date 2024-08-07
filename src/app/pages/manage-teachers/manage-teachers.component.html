@@ -1,8 +1,8 @@
 <app-header></app-header>
 
-<h3 class="text-center mt-4">Gestión de profesores</h3>
+<h3 class="text-center my-5">Gestión de profesores</h3>
 
-<div class="container text-center mt-4">
+<div class="container text-center">
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">
@@ -29,7 +29,7 @@
     </ul>
 </div>
 
-<div class="accordion container" id="accordionExample">
+<div class="accordion container mb-5" id="accordionExample">
     @for(teacher of teachers; track teacher.id){
         <div class="accordion-item">
             
@@ -103,7 +103,5 @@
         </div>
     }  
 </div>
-
-<div class="mb-5"></div>
 
 <app-footer></app-footer>

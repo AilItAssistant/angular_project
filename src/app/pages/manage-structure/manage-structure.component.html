@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<form [formGroup] = "questionForm">
+<form [formGroup] = "structureForm" id="structureForm">
 
     <div class="container my-3">
         <h3 class="my-3">Niveles</h3>
@@ -19,18 +19,28 @@
                             }
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-primary ms-5">Modificar</button>
-                            <button class="btn btn-secondary ms-3">Desactivar</button>
-                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                            <button class="btn btn-primary ms-5" (click)="openEditLevelModal(level)">Modificar</button>
+                            <button class="btn btn-secondary ms-3" (click)="desactivateLevel(level)">Desactivar</button>
+                            <button class="btn btn-danger ms-3" (click)="deleteLevel(level)">Eliminar</button>     
                         </div>  
                     </div>       
                 </li>
             }
         </ul>
         <div class="row my-4">
-            <div class="col text-end mt-1"><p>Nivel:</p></div>
-            <div class="col"><input type="text" class="form-control" formControlName="level" id="level"></div>
-            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Nivel:</p></div>
+            <div class="col-3"><input type="text" class="form-control" formControlName="level" id="level"></div>
+            <div class="col-1 text-start"><button class="btn btn-success" (click)="addLevel()">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Estado</p></div>
+            <div class="col-2">
+                    <select id="statusLevel" class="form-select" formControlName="statusLevel">
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
+                </select>
+            </div>
+            <div class="col-2"></div>
         </div>
 
         <h3 class="my-3">Destrezas</h3>
@@ -49,18 +59,28 @@
                             }
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-primary ms-5">Modificar</button>
-                            <button class="btn btn-secondary ms-3">Desactivar</button>
-                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                            <button class="btn btn-primary ms-5" (click)="openEditSkillModal(skill)">Modificar</button>
+                            <button class="btn btn-secondary ms-3" (click)="desactivateSkill(skill)">Desactivar</button>
+                            <button class="btn btn-danger ms-3" (click)="deleteSkill(skill.id)">Eliminar</button>     
                         </div>  
                     </div>       
                 </li>
             }
         </ul>
         <div class="row my-4">
-            <div class="col text-end mt-1"><p>Skill:</p></div>
-            <div class="col"><input type="text" class="form-control" formControlName="skill" id="skill"></div>
-            <div class="col text-start"><button class="btn btn-success">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Destreza:</p></div>
+            <div class="col-3"><input type="text" class="form-control" formControlName="level" id="level"></div>
+            <div class="col-1 text-start"><button class="btn btn-success">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Estado</p></div>
+            <div class="col-2">
+                    <select id="statusSkill" class="form-select" formControlName="statusSkill">
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
+                </select>
+            </div>
+            <div class="col-2"></div>
         </div>
 
         <h3 class="my-3">Bloques</h3>
@@ -79,21 +99,121 @@
                             }
                         </div>
                         <div class="col text-end">
-                            <button class="btn btn-primary ms-5">Modificar</button>
-                            <button class="btn btn-secondary ms-3">Desactivar</button>
-                            <button class="btn btn-danger ms-3">Eliminar</button>     
+                            <button class="btn btn-primary ms-5" (click)="openEditBlockModal(block)">Modificar</button>
+                            <button class="btn btn-secondary ms-3" (click)="desactivateBlock(block)">Desactivar</button>
+                            <button class="btn btn-danger ms-3" (click)="deleteBlock(block.id)">Eliminar</button>     
                         </div>  
                     </div>       
                 </li>
             }
         </ul>
         <div class="row my-4">
-            <div class="col text-end mt-1"><p>Bloque:</p></div>
-            <div class="col"><input type="text" class="form-control" formControlName="block" id="block"></div>
-            <div class="col text-start mb-5"><button class="btn btn-success">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Bloque:</p></div>
+            <div class="col-3"><input type="text" class="form-control" formControlName="level" id="level"></div>
+            <div class="col-1 text-start"><button class="btn btn-success">Añadir</button></div>
+            <div class="col-1"></div>
+            <div class="col-1 text-end mt-1"><p>Estado</p></div>
+            <div class="col-2">
+                    <select id="statusBlock" class="form-select" formControlName="statusBlock">
+                        <option value="true">Activo</option>
+                        <option value="false">Inactivo</option>
+                </select>
+            </div>
+            <div class="col-2"></div>
         </div>
       
     </div>
 </form>
+<div class="mb-5"></div>
+
+<!-- Edit modal -->
+
+<div class="modal" id="editModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            @if ( editVariables.type === "level" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar nivel</h1>
+            } @else if ( editVariables.type === "skill" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar destreza</h1>
+            } @else if ( editVariables.type === "block" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar bloque</h1>
+            }
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary mx-auto" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body">
+          
+            <form [formGroup] = "editForm" id="editForm">
+                <p class="mt-1">Nombre</p>
+                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="ResponseA" aria-describedby="ResponseA">
+                <p class="mt-3">Elige un status</p>
+                <select class="form-select mb-3" formControlName="status" aria-label="Select-estatus">
+                    <option value="true" selected>Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </form>
+        
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete modal -->
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            @if ( deleteVariables.type === "level" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este nivel?</h1>
+            } @else if ( deleteVariables.type === "skill" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este destreza?</h1>
+            } @else if ( deleteVariables.type === "block" ) {  
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este bloque?</h1>
+            }
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary mx-auto" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body text-center">
+          
+            <p>Nombre: {{deleteVariables.name}}</p>
+            <p>Esatdo: {{deleteVariables.status}}</p>
+        
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
+      </div>
+    </div>
+  </div>
 
 <app-footer></app-footer>

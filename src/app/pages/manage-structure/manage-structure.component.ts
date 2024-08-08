@@ -370,7 +370,7 @@ export class ManageStructureComponent {
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
   };
-  
+
   deleteBlock(block: any){
     this.deleteVariables.name = block.name;
     this.deleteVariables.status = block.status;
@@ -385,7 +385,10 @@ export class ManageStructureComponent {
   delete(){
     this.http.delete<any>('http://localhost:4000/api/structure', this.deleteVariables).subscribe({
       next: (res) => {
-      console.log(res)
+      console.log(res);
+      let deleteModal: any;
+      deleteModal = document.getElementById('deleteModal');
+      deleteModal.style.display="block";
       },
       error: (err) => {
       //alert('Cargar fallo' + err);

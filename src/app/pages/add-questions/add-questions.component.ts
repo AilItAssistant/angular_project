@@ -4,6 +4,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import {FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { response } from 'express';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { text } from 'stream/consumers';
 
 @Component({
   selector: 'app-add-questions',
@@ -27,18 +28,13 @@ export class AddQuestionsComponent {
       this.numberResponses++;
     }
   };
-  addQuestion(){
-    if(this.numberQuestion < 20){
-      this.numberQuestion++;
-    }
-  };
   
   questionForm = new FormGroup({
     level: new FormControl(""),
     block: new FormControl(""),
     question: new FormControl(""),
     skills: new FormControl(""),
-    result: new FormControl(""),
+    puntuation: new FormControl(""),
     text: new FormControl(""),
     modalLevel: new FormControl(""),
     response: new FormControl(""),
@@ -52,26 +48,58 @@ export class AddQuestionsComponent {
   });
 
   sendQuestion(){
-    let add: object = {
-      level: this.questionForm.value.level,
-      block: this.questionForm.value.block,
-      question: this.questionForm.value.question,
-      responseA: this.questionForm.value.responseA,
-      responseB: this.questionForm.value.responseB,
-    };
-    if(this.numberResponses === 3){
-      add = Object.assign({responseC: this.questionForm.value.responseC}, add);
-    };
-    if(this.numberResponses === 4){
-      add = Object.assign({responseD: this.questionForm.value.responseD}, add);
+    let responses: any = [
+      {A: this.questionForm.value.responseA},
+      {B: this.questionForm.value.responseB},
+      {C: this.questionForm.value.responseC},
+    ]
+
+    if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
+      responses.push({D: this.questionForm.value.responseD})
+      console.log(this.questionForm.value.responseD)
     }
-    if(this.numberResponses === 5){
-      add = Object.assign({responseE: this.questionForm.value.responseE}, add);
+    if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
+      responses.push({E: this.questionForm.value.responseE})
+    }
+    if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
+      responses.push({F: this.questionForm.value.responseF})
     }
 
+    let add: any = {
+      question: this.questionForm.value.question,
+      block: this.questionForm.value.block,
+      response: this.questionForm.value.response,
+      responses: responses
+    };
+    console.log(add)
     this.http.post<any>('http://localhost:4000/api/exams', add).subscribe({
       next: (res) => {
         console.log(res)
+        let form: any = document.getElementById("questionForm");
+        form.reset();
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  sendStatement(){
+
+    let add: any = {
+      level: this.questionForm.value.level,
+      skills: this.questionForm.value.skills,
+      statement: this.questionForm.value.statement,
+      puntuation: this.questionForm.value.puntuation,
+      text: this.questionForm.value.text
+    };
+    console.log(add);
+
+    this.http.post<any>('http://localhost:4000/api/exams', add).subscribe({
+      next: (res) => {
+        console.log(res);
+        let form: any = document.getElementById("questionForm");
+        form.reset();
       },
       error: (err) => {
         alert('Cargar fallo' + err);

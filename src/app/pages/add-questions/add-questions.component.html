@@ -2,7 +2,7 @@
 <div class="m-5">
     <h3 class="mb-4 text-center">Añadir enunciado</h3>
 
-    <form [formGroup] = "questionForm">
+    <form [formGroup] = "questionForm" id="questionForm">
         <div class="container text-center">
             <div class="row">
                 <div class="col">
@@ -39,7 +39,7 @@
             
                 <div class="col col-sm-2 text-center">
                         <p>Puntuacion</p>
-                        <input type="text" class="form-control" formControlName="result" placeholder="Puntuacion" id="result" aria-label="" required>
+                        <input type="text" class="form-control" formControlName="puntuation" placeholder="Puntuacion" id="result" aria-label="" required>
                 </div>
             </div>
                 <p class="mt-2 text-center">Texto</p>
@@ -137,7 +137,7 @@
 
     <div class="row text-center my-4">
         <div class="col">
-            <button type="submit" class="btn btn-primary ms-5" (click)="sendQuestion()">Añadir enunciado</button>
+            <button type="submit" class="btn btn-primary ms-5" (click)="sendStatement()">Añadir enunciado</button>
         </div>
         <div class="col">
             <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>

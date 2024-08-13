@@ -185,4 +185,18 @@ export class ManageTeachersComponent {
     editModal.style.display="block";
   };
 
+  desactivate(teacher: any){
+    let des: any = {};
+    des.id = teacher.id;
+    des.action = "desactivate";
+    this.http.put<any>('http://localhost:4000/api/teachers', des).subscribe({
+      next: (res) => {
+        console.log(res)
+      },
+      error: (err) => {
+        //alert('Cargar fallo' + err);
+      },
+    });
+  };
+
 }

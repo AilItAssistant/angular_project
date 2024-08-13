@@ -15,4 +15,8 @@ export class LoginComponent {
     password: new FormControl(""),
   });
 
+  login(){
+    console.log(this.loginForm.value)
+  };
+
 }

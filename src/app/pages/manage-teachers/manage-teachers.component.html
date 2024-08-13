@@ -56,9 +56,9 @@
                                 }
                             </div>
                             <div class="col-1 text-end">
-                                <button class="btn btn-primary btn-sm">M</button>
+                                <button class="btn btn-primary btn-sm" (click)="openEditModal(teacher)">M</button>
                                 <button class="btn btn-secondary btn-sm">D</button>
-                                <button class="btn btn-danger btn-sm">E</button>     
+                                <button class="btn btn-danger btn-sm" (click)="openDeleteModal(teacher)">E</button>     
                             </div>
                             <div class="col-1 text-end">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + teacher.id" aria-expanded="true" [attr.aria-controls]="teacher.id">
@@ -96,7 +96,6 @@
                                 </div>
                             </li>
                         </ul>
-                                    
                     </div>
                 </div>
             
@@ -116,8 +115,8 @@
                 <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
             </div>
             <div class="col-3">
-                <label for="mobil" class="form-label">Número de telefono</label>
-                <input type="text" class="form-control" id="mobil" formControlName="mobil" placeholder="+321321456987">
+                <label for="mobile" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="+321321456987">
             </div>
         </div>
         <div class="row mb-4">
@@ -136,9 +135,99 @@
             <div class="col-3"></div>
         </div>
         <div class=" text-center">
-            <button class="btn btn-primary my-5">Añadir profesor</button>
+            <button class="btn btn-primary my-5" (click)="addTeacher()">Añadir profesor</button>
         </div>
     </div>
 </form>
+
+<!-- Edit modal -->
+
+<div class="modal" id="editModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"> 
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary mx-auto" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body">
+          
+            <form [formGroup] = "editTeachersForm" id="editForm">
+
+                <p class="mt-1">Nombre</p>
+                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del alumno">
+
+                <p class="mt-1">Apellidos</p>
+                <input type="text" class="form-control" formControlName="surname" placeholder="Apellidos del alumno">
+
+                <p class="mt-1">Número de teléfono</p>
+                <input type="text" class="form-control" formControlName="mobile" placeholder="Numero del alumno">
+
+                <p class="mt-1">Email</p>
+                <input type="email" class="form-control" formControlName="email" placeholder="Email del alumno">
+
+                <p class="mt-3">Elige un estado</p>
+                <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
+                    <option value="true">Activo</option>
+                    <option value="false">Inactivo</option>
+                </select>
+            </form>
+        
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete modal -->
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
+          @if(!charge){
+            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+          } @else {
+            <div class="spinner-border text-secondary mx-auto" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>            
+          }
+        </div>
+        <div class="modal-body text-center">
+          
+            <p>Nombre: {{deleteVariables.name}}</p>
+            <p>Apellido: {{deleteVariables.surname}}</p>
+            <p>Número de teléfono: {{deleteVariables.mobile}}</p>
+            <p>Email: {{deleteVariables.email}}</p>
+
+        </div>
+        @if (!charge){
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+          </div>
+        } @else {
+          <div class="spinner-border text-primary mx-auto mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>          
+        }
+      </div>
+    </div>
+  </div>
 
 <app-footer></app-footer>

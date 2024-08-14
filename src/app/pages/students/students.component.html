@@ -12,7 +12,7 @@
                 <div class="col-1">
                     Apellidos
                 </div>
-                <div class="col-1">
+                <div class="col-2">
                     Documento de identificación
                 </div>
                 <div class="col-1">
@@ -26,9 +26,6 @@
                 </div>
                 <div class="col-1">
                     Ciudad
-                </div>
-                <div class="col-1">
-                    Género
                 </div>
             </div>
         </li>
@@ -45,25 +42,22 @@
                             {{student.name}}
                         </div>
                         <div class="col-1">
-                            {{student.surname}}
-                        </div>
-                        <div class="col-1">
-                            {{student.document}}
-                        </div>
-                        <div class="col-1">
-                            {{student.birthday}}
+                            {{student.last_name}}
                         </div>
                         <div class="col-2">
-                            {{student.mobile}}
+                            {{student.identification_document}}
+                        </div>
+                        <div class="col-1">
+                            {{student.birth_date}}
+                        </div>
+                        <div class="col-2">
+                            {{student.phone}}
                         </div>
                         <div class="col-3">
                             {{student.email}}
                         </div>
                         <div class="col-1">
                             {{student.city}}
-                        </div>
-                        <div class="col-1">
-                            {{student.genre}}
                         </div>
                         <div class="col-1 text-end">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.id" aria-expanded="true" [attr.aria-controls]="student.id">

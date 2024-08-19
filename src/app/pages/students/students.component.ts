@@ -12,7 +12,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 })
 export class StudentsComponent {
 
-  students: any = {};
+  students: any;
 
   constructor(private http: HttpClient) {}
 
@@ -23,11 +23,8 @@ export class StudentsComponent {
   load(){
     this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
       next: (res) => {
-
-        res.forEach((element: any) => {
-          element.birth_date = new Date(element.birth_date).toLocaleDateString()
-        });
         this.students = res;
+        console.log(res);
       },
       error: (err) => {
         alert('Cargar fallo' + err);

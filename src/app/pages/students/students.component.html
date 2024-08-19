@@ -9,14 +9,11 @@
                 <div class="col-1">
                     Nombre
                 </div>
-                <div class="col-1">
+                <div class="col-2">
                     Apellidos
                 </div>
                 <div class="col-2">
                     Documento de identificación
-                </div>
-                <div class="col-1">
-                    Fecha de nacimiento
                 </div>
                 <div class="col-2">
                     Número de télefono
@@ -32,7 +29,7 @@
     </ul>
 </div>
 
-@for(student of students; track student.id){
+@for(student of students; track student.student_id){
     <div class="container text-center">
         <div class="accordion-item">
             <ul class="list-group accordion-header text-center">
@@ -41,17 +38,14 @@
                         <div class="col-1">
                             {{student.name}}
                         </div>
-                        <div class="col-1">
+                        <div class="col-2">
                             {{student.last_name}}
                         </div>
                         <div class="col-2">
-                            {{student.identification_document}}
-                        </div>
-                        <div class="col-1">
-                            {{student.birth_date}}
+                            {{student.id_document}}
                         </div>
                         <div class="col-2">
-                            {{student.phone}}
+                            {{student.phone_number}}
                         </div>
                         <div class="col-3">
                             {{student.email}}
@@ -60,36 +54,38 @@
                             {{student.city}}
                         </div>
                         <div class="col-1 text-end">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.id" aria-expanded="true" [attr.aria-controls]="student.id">
+                            @if(student.classes.length > 0){
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.student_id" aria-expanded="true" [attr.aria-controls]="student.student_id">
                             ^</button>
+                            }
                         </div>
                     </div>       
                 </li>
             </ul>
 
-            <div [id]="student.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <div [id]="student.student_id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
                     <ul class="list-group text-center ">
                         <li class="list-group-item">
                             <div class="row">
                                 <div class="col-4">
-                                    <h5>Número de estudiantes</h5>
+                                    <h5>Profesor</h5>
                                 </div>
                                 <div class="col-4">
                                     <h5>Nivel de la clase</h5>
                                 </div>
                                 <div class="col-4">
-                                    <h5>Tipo de clase</h5>
+                                    <h5>Nombe de la clase</h5>
                                 </div>
-                                @for(class of student.classes; track class.id){
+                                @for(class of student.classes; track class.class_id){
                                     <div class="col-4 my-1">
-                                        {{class.number_students}}
+                                        {{class.class_teacher}}
                                     </div>
                                     <div class="col-4 my-1">
-                                        {{class.level}}
+                                        {{class.class_level}}
                                     </div>
                                     <div class="col-4 my-1">
-                                        {{class.type}}
+                                        {{class.class_name}}
                                     </div>
                                 }
                             </div>

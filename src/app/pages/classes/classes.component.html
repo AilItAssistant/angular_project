@@ -6,17 +6,26 @@
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">
-                <div class="col-3 mt-3">
-                    <h5>Profesor</h5>
+                <div class="col-1 mt-3">
+                    <h5>Nombre del profesor</h5>
                 </div>
-                <div class="col-3 mt-3">
+                <div class="col-2 mt-3">
+                    <h5>Apellido del profesor</h5>
+                </div>
+                <div class="col-2 mt-3">
+                    <h5>Nombre de la clase</h5>
+                </div>
+                <div class="col-1 mt-3">
                     <h5>Nivel</h5>
                 </div>
                 <div class="col-3 mt-3">
-                    <h5>Tipo de clase</h5>
+                    <h5>Calendario</h5>
                 </div>
                 <div class="col-2 mt-2">
-                    <h5>Número de estudiantes</h5>
+                    <h5>Nombre del aula</h5>
+                </div>
+                <div class="col-1 mt-2">
+                    
                 </div>
             </div>
         </li>
@@ -24,51 +33,51 @@
 </div>
 
 <div class="accordion container mb-5" id="accordionExample">
-    @for(class of classes; track class.id){
+    @for(class of classes; track class.class_id){
         <div class="accordion-item">
             
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-3">
-                                {{class.teacher}}
-                            </div>
-                            <div class="col-3">
-                                {{class.level}}
-                            </div>
-                            <div class="col-3">
-                                {{class.type}}
+                            <div class="col-1">
+                                {{class.teacher_name}}
                             </div>
                             <div class="col-2">
-                                {{class.number_students}}
+                                {{class.teacher_last_name}}
+                            </div>
+                            <div class="col-2">
+                                {{class.class_name}}
+                            </div>
+                            <div class="col-1">
+                                {{class.class_level}}
+                            </div>
+                            <div class="col-3">
+                                {{class.schedule}}
+                            </div>
+                            <div class="col-2">
+                                {{class.room_number}}
                             </div>
                             <div class="col-1 text-end">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.id" aria-expanded="true" [attr.aria-controls]="class.id">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.class_id" aria-expanded="true" [attr.aria-controls]="class.class_id">
                                 </button>
                             </div>
                         </div>       
                     </li>
                 </ul>
 
-                <div [id]="class.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div [id]="class.class_id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul class="list-group text-center">
                             <li class="list-group-item">
                                 <div class="row">
-                                    <div class="col-1">
+                                    <div class="col-2">
                                         <h5>Nombre</h5>
                                     </div>
-                                    <div class="col-1">
+                                    <div class="col-3">
                                         <h5>Apellidos</h5>
                                     </div>
-                                    <div class="col-2">
-                                        <h5>Número de identidicación</h5>
-                                    </div>
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <h5>Número de telefono</h5>
-                                    </div>
-                                    <div class="col-1">
-                                        <h5>Cumpleaños</h5>
                                     </div>
                                     <div class="col-3">
                                         <h5>Email</h5>
@@ -76,34 +85,23 @@
                                     <div class="col-1">
                                         <h5>Ciudad</h5>
                                     </div>
-                                    <div class="col-1">
-                                        <h5>Género</h5>
-                                    </div>
-                                    @for(student of class.students; track student.id){
+                                    
+                                    @for(student of class.students; track student.student_id){
                                         
-                                        <div class="col-1 my-3">
-                                            {{student.name}}
-                                        </div>
-                                        <div class="col-1 my-3">
-                                            {{student.surname}}
-                                        </div>
                                         <div class="col-2 my-3">
-                                            {{student.document}}
-                                        </div>
-                                        <div class="col-2 my-3">
-                                            {{student.mobile}}
-                                        </div>
-                                        <div class="col-1 my-3">
-                                        <small>{{student.birthday}}</small>
+                                            {{student.student_name}}
                                         </div>
                                         <div class="col-3 my-3">
-                                            {{student.email}}
+                                            {{student.student_last_name}}
+                                        </div>
+                                        <div class="col-3 my-3">
+                                            {{student.student_phone}}
+                                        </div>
+                                        <div class="col-3 my-3">
+                                            {{student.student_email}}
                                         </div>
                                         <div class="col-1 my-3">
-                                            {{student.city}}
-                                        </div>
-                                        <div class="col-1 my-3">
-                                            {{student.genre}}
+                                            {{student.student_city}}
                                         </div>
                                     }
                                 </div>

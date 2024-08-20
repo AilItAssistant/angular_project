@@ -1,27 +1,27 @@
 <app-header></app-header>
 <div class="m-5">
-    <h3 class="mb-4 text-center">Añadir enunciado</h3>
 
+
+    
     <form [formGroup] = "questionForm" id="questionForm">
+        @if(!statement){
+            <h3 class="mb-4 text-center">Añadir enunciado</h3>
         <div class="container text-center">
             <div class="row">
                 <div class="col">
                     <p>Elige un nivel</p>
                     <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
-                        <option value="A1">A1</option>
-                        <option value="A2">A2</option>
-                        <option value="B1">B1</option>
-                        <option value="B2">B2</option>
+                        @for(level of levels; track level.id){
+                            <option [value]="level.id">{{level.name}}</option>
+                        }
                     </select>
                 </div>
                 <div class="col">
                     <p>Elige una destreza</p>
                 <select class="form-select" placeholder="Elige una destreza" formControlName="skills" aria-label="Elige una destreza" required>
-                    <option value="Vocabulario">Vocabulario</option>
-                    <option value="Desarrollar">Desarrollar</option>
-                    <option value="Comprensión">Comprensión lectora</option>
-                    <option value="Audio">Audio</option>
-                    <option value="Oral">Oral</option>
+                    @for(skill of skills; track skill.id){
+                        <option [value]="skill.id">{{skill.name}}</option>
+                    }
                 </select>
                 </div>
                 <div class="col mt-3">
@@ -30,7 +30,6 @@
             </div>
         </div>
 
-        @if(!statement){
             <div class="row my-3">
                 <div class="col text-center">
                         <p>Enunciado</p>
@@ -46,9 +45,12 @@
                 <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
         
         } @else {
-            <p>enunciado</p>
-            <p>Puntuacion</p>
-            <p>texto</p>
+            <h3 class="mb-4 text-center">Añadir a enunciado</h3>
+            <p>Enunciado: {{statementSelected.content}}</p>
+            <p>Texto:</p>
+            <p>{{statementSelected.text}}</p>
+            <p>Puntuacion: {{statementSelected.score}}</p>
+            <!-- <button class="btn btn-info mt-4" (click)="openStatementModal()">Seleccionar un enunciado existente</button> -->
         }
 
        <h3 class="text-center my-4">Añadir pregunta</h3>
@@ -160,20 +162,19 @@
           }
         </div>
         <div class="modal-body">
-            <form [formGroup] = "questionForm">
+            <form [formGroup] = "statementForm">
                 <p>Elige un enunciado</p>
-                <select class="form-select mb-3" placeholder="A1" formControlName="modalLevel" aria-label="A1" required>
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
+                <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
+                    @for(statement of statementSelected; track statement.id){
+                        <option [value]="statement.id">{{statement.content}}</option>
+                    }
                 </select>
         </form>
         </div>
         @if (!charge){
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="closeStatementModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary">Seleccionar</button>
+            <button type="button" class="btn btn-primary" (click)="selectStatement()">Seleccionar</button>
           </div>
         } @else {
           <div class="spinner-border text-primary mx-auto mb-3" role="status">

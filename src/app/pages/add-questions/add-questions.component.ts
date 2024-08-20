@@ -22,12 +22,44 @@ export class AddQuestionsComponent {
   statement: boolean = false;
   selectedStatement: any;
   charge: boolean = false;
+  statementSelected: any;
+  levels: any;
+  skills: any;
+
+  ngOnInit() {
+    this.load();
+  }
+  
+  load(){
+    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+      next: (res) => {
+        this.levels = res;
+        console.log(res);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
+      next: (res) => {
+        this.skills = res;
+        console.log(res);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
 
   addResponse(){
     if(this.numberResponses < 6){
       this.numberResponses++;
     }
   };
+
+  statementForm = new FormGroup({
+    statement: new FormControl(""),
+  });
   
   questionForm = new FormGroup({
     level: new FormControl(""),
@@ -95,7 +127,7 @@ export class AddQuestionsComponent {
     };
     console.log(add);
 
-    this.http.post<any>('http://localhost:4000/api/exams', add).subscribe({
+    this.http.post<any>('http://localhost:4000/api/statements', add).subscribe({
       next: (res) => {
         console.log(res);
         let form: any = document.getElementById("questionForm");
@@ -117,5 +149,24 @@ export class AddQuestionsComponent {
     let statementModal: any;
     statementModal = document.getElementById('statementModal');
     statementModal.style.display="block";
+    this.http.get<any>('http://localhost:4000/api/statements').subscribe({
+      next: (res) => {
+        this.statementSelected = res;
+        console.log(this.statementSelected)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  selectStatement(){
+    console.log(this.statementForm.value);
+    let statementModal: any;
+    statementModal = document.getElementById('statementModal');
+    statementModal.style.display="none";
+    if(this.statementForm.value.statement !== ""){
+      this.statement = true;
+    }
   };
 }

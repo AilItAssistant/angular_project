@@ -34,7 +34,6 @@ export class AddQuestionsComponent {
     this.http.get<any>('http://localhost:4000/api/levels').subscribe({
       next: (res) => {
         this.levels = res;
-        console.log(res);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -43,7 +42,6 @@ export class AddQuestionsComponent {
     this.http.get<any>('http://localhost:4000/api/skills').subscribe({
       next: (res) => {
         this.skills = res;
-        console.log(res);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -152,7 +150,6 @@ export class AddQuestionsComponent {
     this.http.get<any>('http://localhost:4000/api/statements').subscribe({
       next: (res) => {
         this.statementSelected = res;
-        console.log(this.statementSelected)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -161,12 +158,26 @@ export class AddQuestionsComponent {
   };
 
   selectStatement(){
-    console.log(this.statementForm.value);
+    
     let statementModal: any;
-    statementModal = document.getElementById('statementModal');
-    statementModal.style.display="none";
-    if(this.statementForm.value.statement !== ""){
-      this.statement = true;
-    }
+    
+    this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`).subscribe({
+      next: (res) => {
+        this.selectedStatement = res[0];
+        statementModal = document.getElementById('statementModal');
+        statementModal.style.display="none";
+        if(this.statementForm.value.statement !== ""){
+          this.statement = true;
+        };
+        console.log(this.selectedStatement);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
+
+  writeStatement(){
+    this.statement = false;
+  }
 }

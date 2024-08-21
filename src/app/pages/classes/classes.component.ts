@@ -24,7 +24,6 @@ export class ClassesComponent {
     this.http.get<any>('http://localhost:4000/api/classes').subscribe({
       next: (res) => {
         this.classes = res;
-        console.log(res);
       },
       error: (err) => {
         alert('Cargar fallo' + err);

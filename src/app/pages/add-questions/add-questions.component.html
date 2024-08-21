@@ -65,21 +65,9 @@
             <div class="col col-lg-2 text-center">
                 <p>Elige un bloque</p>
                     <select class="form-select" formControlName="block" aria-label="Select-block" required>
-                        <option value="Estar o hay">Estar o hay</option>
-                        <option value="Tener y haber">Tener y haber</option>
-                        <option value="Gustar y similares">Gustar y similares</option>
-                        <option value="Presente irregular">Presente irregular</option>
-                        <option value="Descripción física">Descripción física</option>
-                        <option value="Género y número">Género y número</option>
-                        <option value="Cantidad">Cantidad</option>
-                        <option value="Reflexivos">Reflexivos</option>
-                        <option value="Ropa">Ropa</option>
-                        <option value="Tiempo atmosférico">Tiempo atmosférico</option>
-                        <option value="Pretérito perfecto">Pretérito perfecto</option>
-                        <option value="Pronombres OD y OI gustar">Pronombres OD y OI gustar</option>
-                        <option value="Preposiciones">Preposiciones</option>
-                        <option value="Vocabulario">Vocabulario</option>
-                        <option value="Variadas de gramática">Variadas de gramática</option>
+                        @for(block of blocks; track block.id){
+                            <option [value]="block.id">{{block.name}}</option>
+                        }
                     </select>
                 
             </div>

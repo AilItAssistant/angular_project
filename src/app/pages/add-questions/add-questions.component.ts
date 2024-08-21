@@ -25,6 +25,7 @@ export class AddQuestionsComponent {
   statementSelected: any;
   levels: any;
   skills: any;
+  blocks: any;
 
   ngOnInit() {
     this.load();
@@ -42,6 +43,14 @@ export class AddQuestionsComponent {
     this.http.get<any>('http://localhost:4000/api/skills').subscribe({
       next: (res) => {
         this.skills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
+      next: (res) => {
+        this.blocks = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -79,30 +88,63 @@ export class AddQuestionsComponent {
 
   sendQuestion(){
     let responses: any = [
-      {A: this.questionForm.value.responseA},
-      {B: this.questionForm.value.responseB},
-      {C: this.questionForm.value.responseC},
+      {
+        content: this.questionForm.value.responseA,
+        letter: "A",
+        is_correct: false
+      },
+      {
+        content: this.questionForm.value.responseB,
+        letter: "B",
+        is_correct: false
+      },
+      {
+        content: this.questionForm.value.responseC,
+        letter: "C",
+        is_correct: false
+      },
     ]
 
     if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
-      responses.push({D: this.questionForm.value.responseD})
-      console.log(this.questionForm.value.responseD)
+      responses.push({
+        content: this.questionForm.value.responseD,
+        letter: "D",
+        is_correct: false
+
+      })
     }
     if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
-      responses.push({E: this.questionForm.value.responseE})
+      responses.push({
+        content: this.questionForm.value.responseE,
+        letter: "E",
+        is_correct: false
+      })
     }
     if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
-      responses.push({F: this.questionForm.value.responseF})
+      responses.push({
+        content: this.questionForm.value.responseF,
+        letter: "F",
+        is_correct: false
+      })
     }
+    console.log(this.questionForm.value.response)
+
+    responses.forEach((element: any) => {
+      if(this.questionForm.value.response === element.letter){
+        element.is_correct = true
+      }
+    });
 
     let add: any = {
       question: this.questionForm.value.question,
       block: this.questionForm.value.block,
-      response: this.questionForm.value.response,
-      responses: responses
+      responses: responses,
+      skill_id: this.selectedStatement.skill_id,
+      level_id: this.selectedStatement.level_id,
+      statement_id: this.selectedStatement.id
     };
     console.log(add)
-    this.http.post<any>('http://localhost:4000/api/exams', add).subscribe({
+    this.http.post<any>('http://localhost:4000/api/questions', add).subscribe({
       next: (res) => {
         console.log(res)
         let form: any = document.getElementById("questionForm");
@@ -169,7 +211,6 @@ export class AddQuestionsComponent {
         if(this.statementForm.value.statement !== ""){
           this.statement = true;
         };
-        console.log(this.selectedStatement);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -179,5 +220,5 @@ export class AddQuestionsComponent {
 
   writeStatement(){
     this.statement = false;
-  }
+  };
 }

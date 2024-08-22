@@ -1,11 +1,13 @@
 <app-header></app-header>
 
 <div class="text-center card-group mb-5 mt-3">
-    @for(exam of exams; track exam.id){
+    @for(exam of exams; track exam.statement_id){
       <div class="mx-auto">
         <div class="card m-2" style="width: 22rem;">
           <div class="card-header">
-            {{exam.name}}
+            {{exam.statement_content}}
+            {{exam.question_content}}
+            {{exam.answer_content}}
           </div>
           @for(question of exam.question; track question.id){
             <ul class="list-group list-group p-3">

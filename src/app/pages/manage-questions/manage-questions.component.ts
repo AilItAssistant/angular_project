@@ -15,7 +15,7 @@ import { response } from 'express';
 })
 export class ManageQuestionsComponent {
 
-  exams: any;
+  exams: any = [];
   charge: boolean = false;
   exam: any;
   question: any;
@@ -56,9 +56,23 @@ export class ManageQuestionsComponent {
   }
 
   loadQuestions(){
-    this.http.get<any>('http://localhost:4000/api/exams').subscribe({
+    this.http.get<any>('http://localhost:4000/api/statements/details').subscribe({
       next: (res) => {
-        this.exams = res;
+
+        for(let i: any = 0; res.length > i; i++){
+          console.log(res[i].statement_id + this.exams)
+          /*if(res[i].statement_id !== this.exams[i].statement_id || this.exams[i].statement_id){
+            this.exams.push({ 
+              questions: [],
+              statement_content: res[i].statement_content,
+              statement_id: res[i].statement_id
+            });
+          }*/
+        }
+
+
+        console.log(this.exams)
+        //this.exams = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);

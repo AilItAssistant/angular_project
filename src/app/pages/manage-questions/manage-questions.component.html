@@ -9,12 +9,12 @@
             {{exam.question_content}}
             {{exam.answer_content}}
           </div>
-          @for(question of exam.question; track question.id){
+          @for(question of exam.questions; track question.question_id){
             <ul class="list-group list-group p-3">
-              {{question.statement}}
-            @for(response of question.responses; track response.id){
+              {{question.question_content}}
+            @for(answer of question.answers; track answer.answer_id){
               <ul class="list-group list-group">
-                <li class="list-group">{{response.letter}}. {{response.response}}</li>
+                <li class="list-group">{{answer.letter}}. {{answer.answer_content}} => {{answer.is_correct}}</li>
               </ul>
             }
           </ul>
@@ -89,28 +89,15 @@
         
                 <p>Elige un nivel</p>
                 <select class="form-select" placeholder="A1" formControlName="level" aria-label="Select-level">
-                    <option value="A1" selected>A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
+                  @for(level of levels; track level.id){
+                    <option [value]="level.id">{{level.name}}</option>
+                  }
                 </select>
                 <p class="mt-1">Elige un bloque</p>
                 <select class="form-select" formControlName="block" aria-label="Select-block">
-                    <option value="Estar o hay" selected>Estar o hay</option>
-                    <option value="Tener o haber">Tener o haber</option>
-                    <option value="Gustar y similares">Gustar y similares</option>
-                    <option value="Presente irregular">Presente irregular</option>
-                    <option value="Descripción física">Descripción física</option>
-                    <option value="Género y número">Género y número</option>
-                    <option value="Cantidad">Cantidad</option>
-                    <option value="Reflexivos">Reflexivos</option>
-                    <option value="Ropa">Ropa</option>
-                    <option value="Tiempo atmosférico">Tiempo atmosférico</option>
-                    <option value="Pretérito perfecto">Pretérito perfecto</option>
-                    <option value="Pronombres OD y OI gustar">Pronombres OD y OI gustar</option>
-                    <option value="Preposiciones">Preposiciones</option>
-                    <option value="Vocabulario">Vocabulario</option>
-                    <option value="Variadas de gramática">Variadas de gramática</option>
+                  @for(block of blocks; track block.id){
+                    <option [value]="block.id">{{block.name}}</option>
+                  }
                 </select>
         
                 <div class="input-group my-3">

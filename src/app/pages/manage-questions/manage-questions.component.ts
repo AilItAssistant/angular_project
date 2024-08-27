@@ -134,21 +134,21 @@ export class ManageQuestionsComponent {
     this.question = question;
     this.modalStatement = this.question.statement;
 
-    for (let i: any = 0; this.question.responses.length > i; i++) {
-      if (this.question.responses[i].letter === 'A') {
-        this.modalResponseA = this.question.responses[i].response;
+    for (let i: any = 0; this.question.answers.length > i; i++) {
+      if (this.question.answers[i].letter === 'A') {
+        this.modalResponseA = this.question.answers[i].answer_content;
       }
-      if (this.question.responses[i].letter === 'B') {
-        this.modalResponseB = this.question.responses[i].response;
+      if (this.question.answers[i].letter === 'B') {
+        this.modalResponseB = this.question.answers[i].answer_content;
       }
-      if (this.question.responses[i].letter === 'C') {
-        this.modalResponseC = this.question.responses[i].response;
+      if (this.question.answers[i].letter === 'C') {
+        this.modalResponseC = this.question.answers[i].answer_content;
       }
-      if (this.question.responses[i].letter === 'D') {
-        this.modalResponseD = this.question.responses[i].response;
+      if (this.question.answers[i].letter === 'D') {
+        this.modalResponseD = this.question.answers[i].answer_content;
       }
-      if (this.question.responses[i].letter === 'E') {
-        this.modalResponseE = this.question.responses[i].response;
+      if (this.question.answers[i].letter === 'E') {
+        this.modalResponseE = this.question.answers[i].answer_content;
       }
     }
   }

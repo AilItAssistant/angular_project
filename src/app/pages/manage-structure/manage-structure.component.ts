@@ -18,131 +18,9 @@ export class ManageStructureComponent {
   editVariables: any = {};
   deleteVariables: any = {};
 
-  blocks: any = [
-    {
-      status: true,
-      id: 1,
-      name: "Estar o hay"
-    }, 
-    {
-      status: true,
-      id: 2,
-      name: "Tener y haber"
-    }, 
-    {
-      status: true,
-      id: 3,
-      name: "Gustar y similares"
-    }, 
-    {
-      status: true,
-      id: 4,
-      name: "Presente irregular"
-    },
-    {
-      status: true,
-      id: 5,
-      name: "Descripción física"
-    }, 
-    {
-      status: true,
-      id: 6,
-      name: "Género y número"
-    }, 
-    {
-      status: true,
-      id: 7,
-      name: "Cantidad"
-    }, 
-    {
-      status: true,
-      id: 8,
-      name: "Reflexivos"
-    }, 
-    {
-      status: true,
-      id: 9,
-      name: "Ropa"
-    }, 
-    {
-      status: true,
-      id: 10,
-      name: "Tiempo atmosférico"
-    }, 
-     {
-      status: true,
-      id: 11,
-      name: "Pretérito perfecto"
-    }, 
-    {
-      status: true,
-      id: 12,
-      name: "Pronombres OD y OI gustar"
-    }, 
-    {
-      status: true,
-      id: 13,
-      name: "Preposiciones"
-    }, 
-    {status: false,
-      id: 14,
-      name: "Vocabulario"
-    }, 
-    {
-      status: true,
-      id: 15,
-      name: "Variadas de gramática"
-    }
-  ];
-  skills: any = [
-    {
-      status: true,
-      id: 1,
-      name: "Vocabulario"
-    }, 
-    {
-      status: true,
-      id: 2,
-      name: "Desarrollar"
-    }, 
-    {
-      status: false,
-      id: 3,
-      name: "Comprensión"
-    }, 
-    {
-      status: true,
-      id: 4,
-      name: "Audio"
-    }, 
-    {
-      status: true,
-      id: 5,
-      name: "Oral"
-    }
-  ];
-  levels: any = [
-    {
-      status: true,
-      id: 1,
-      name: "A1"
-    }, 
-    {
-      status: true,
-      id: 2,
-      name: "A2"
-    }, 
-    {
-      status: false,
-      id: 3,
-      name: "B1"
-    }, 
-    {
-      status: true,
-      id: 4,
-      name: "B2"
-    }
-  ];
+  blocks: any = [];
+  skills: any = [];
+  levels: any = [];
 
   structureForm = new FormGroup({
     level: new FormControl(""),
@@ -159,6 +37,37 @@ export class ManageStructureComponent {
   });
 
   constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.load();
+  }
+
+  load(){
+    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+      next: (res) => {
+        this.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
+      next: (res) => {
+        this.skills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
+      next: (res) => {
+        this.blocks = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
 
   closeEditModal(){
     let editModal: any;

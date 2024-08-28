@@ -6,7 +6,7 @@
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">
-                <div class="col-2 mt-2">
+                <div class="col-1 mt-2">
                     <h5>Nombre</h5>
                 </div>
                 <div class="col-2 mt-2">
@@ -15,8 +15,11 @@
                 <div class="col-2 mt-2">
                     <h5>Número de télefono</h5>
                 </div>
-                <div class="col-3 mt-2">
+                <div class="col-2 mt-2">
                     <h5>Email</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Departamento</h5>
                 </div>
                 <div class="col-1 mt-2">
                     <h5>Status</h5>
@@ -30,23 +33,26 @@
 </div>
 
 <div class="accordion container mb-5" id="accordionExample">
-    @for(teacher of teachers; track teacher.id){
+    @for(teacher of teachers; track teacher.teacher_id){
         <div class="accordion-item">
             
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-2">
+                            <div class="col-1">
                                 {{teacher.name}}
                             </div>
                             <div class="col-2">
-                                {{teacher.surname}}
+                                {{teacher.last_name}}
                             </div>
                             <div class="col-2">
-                                {{teacher.mobile}}
+                                {{teacher.phone_number}}
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 {{teacher.email}}
+                            </div>
+                            <div class="col-2">
+                                {{teacher.departament}}
                             </div>
                             <div class="col-1">
                                 @if (teacher.status) {
@@ -74,23 +80,23 @@
                             <li class="list-group-item">
                                 <div class="row">
                                     <div class="col-4">
-                                        <h5>Número de estudiantes</h5>
+                                        <h5>Profesor</h5>
                                     </div>
                                     <div class="col-4">
                                         <h5>Nivel de la clase</h5>
                                     </div>
                                     <div class="col-4">
-                                        <h5>Tipo de clase</h5>
+                                        <h5>Nombre de la clase</h5>
                                     </div>
-                                    @for(class of teacher.classes; track class.id){
+                                    @for(class of teacher.classes; track class.class_id){
                                         <div class="col-4 my-1">
-                                            {{class.number_students}}
+                                            {{class.class_teacher}}
                                         </div>
                                         <div class="col-4 my-1">
-                                            {{class.level}}
+                                            {{class.class_level}}
                                         </div>
                                         <div class="col-4 my-1">
-                                            {{class.type}}
+                                            {{class.class_name}}
                                         </div>
                                     }
                                 </div>

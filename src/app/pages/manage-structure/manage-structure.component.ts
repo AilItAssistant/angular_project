@@ -86,11 +86,12 @@ export class ManageStructureComponent {
     this.editVariables.structure = level;
     this.editVariables.action = "modify";
 
+    console.log(level)
+
     this.editForm = new FormGroup({
       name: new FormControl(level.name),
-      status: new FormControl(level.status),
+      status: new FormControl(level.status)
     });
-
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display="block";
@@ -245,8 +246,9 @@ export class ManageStructureComponent {
       action: this.editVariables.action,
       type: this.editVariables.type
     };
+    console.log(changes)
 
-    this.http.put<any>('http://localhost:4000/api/structure', changes).subscribe({
+    this.http.put<any>('http://localhost:4000/api/levels/edit', changes).subscribe({
       next: (res) => {
         console.log(res)
         let form: any = document.getElementById("editForm");

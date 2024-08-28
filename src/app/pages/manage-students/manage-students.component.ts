@@ -15,85 +15,24 @@ export class ManageStudentsComponent {
 
   charge: boolean = false;
   deleteVariables: any = {};
+  students: any = [];
 
-  students: any = [
-    {
-      id: 1,
-      name: "José Carlos",
-      surname: "Fernández Giménez",
-      document: "x25143698x",
-      birthday: "2000-03-03",
-      mobile: "+657613852",
-      email: "marketing@ailmadrid.com",
-      status: true,
-      city: "Vallecas",
-      genre: "male",
-      classes: [
-        {
-          id: 4,
-          number_students:7,
-          level: "A2",
-          type: "full time",
-          teacher: "María Fernanda",
-          status: true,
-        },
-        {
-          id: 5,
-          number_students: 8,
-          level: "Otro",
-          type: "cocina",
-          teacher: "María Fernanda",
-          status: true,
-        },
-        {
-          id: 6,
-          number_students: 19,
-          level: "Otro",
-          type: "ocio",
-          teacher: "María Fernanda",
-          status: false,
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: "María Fernanda",
-      surname: "González Perez",
-      document: "x14785236x",
-      birthday: "2000-03-03",
-      mobile: "+654645132",
-      email: "marketing@ailmadrid.com",
-      status: false,
-      city: "Principado de Mónaco",
-      genre: "female",
-      classes: [
-        {
-          id: 1,
-          number_students: 4,
-          level: "A2",
-          type: "full time",
-          teacher: "María Fernanda",
-          status: true,
-        },
-        {
-          id: 2,
-          number_students: 10,
-          level: "A2",
-          type: "cocina",
-          teacher: "María Fernanda",
-          status: true,
-        },
-        {
-          id: 3,
-          number_students: 100,
-          level: "A2",
-          type: "personalizadas",
-          teacher: "María Fernanda",
-          status: true,
-        }
-      ]
-    }
-  ];
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.load();
+  }
+  
+  load(){
+    this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
+      next: (res) => {
+        this.students = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
 
   addStudentsForm = new FormGroup({
     name: new FormControl(""),
@@ -118,8 +57,6 @@ export class ManageStudentsComponent {
     genre: new FormControl(""),
     status: new FormControl(""),
   });
-
-  constructor(private http: HttpClient) {}
 
   delete(){
     console.log(this.deleteVariables)
@@ -189,7 +126,6 @@ export class ManageStudentsComponent {
   };
 
   modify(){
-  
     this.http.put<any>('http://localhost:4000/api/students', this.editForm.value).subscribe({
       next: (res) => {
         console.log(res)

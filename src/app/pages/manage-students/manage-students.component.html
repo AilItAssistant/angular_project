@@ -12,12 +12,10 @@
                 <div class="col-1">
                     Apellidos
                 </div>
-                <div class="col-1">
+                <div class="col-2">
                     Documento de identificación
                 </div>
-                <div class="col-1">
-                    Fecha de nacimiento
-                </div>
+                
                 <div class="col-1">
                     Número de télefono
                 </div>
@@ -28,12 +26,9 @@
                     Ciudad
                 </div>
                 <div class="col-1">
-                    Género
-                </div>
-                <div class="col-1">
                     Status
                 </div>
-                <div class="col-1">
+                <div class="col-2">
                     Herramientas
                 </div>
             </div>
@@ -41,7 +36,7 @@
     </ul>
 </div>
 
-@for(student of students; track student.id){
+@for(student of students; track student.student_id){
     <div class="container text-center">
         <ul class="list-group">
             <li class="list-group-item">
@@ -50,16 +45,14 @@
                         {{student.name}}
                     </div>
                     <div class="col-1">
-                        {{student.surname}}
+                        {{student.last_name}}
                     </div>
-                    <div class="col-1">
-                        {{student.document}}
+                    <div class="col-2">
+                        {{student.id_document}}
                     </div>
+                   
                     <div class="col-1">
-                        {{student.birthday}}
-                    </div>
-                    <div class="col-1">
-                        {{student.mobile}}
+                        {{student.phone_number}}
                     </div>
                     <div class="col-3">
                         {{student.email}}
@@ -68,49 +61,46 @@
                         {{student.city}}
                     </div>
                     <div class="col-1">
-                        {{student.genre}}
-                    </div>
-                    <div class="col-1">
-                        @if (student.status) {
+                        @if (student.student_status === "active") {
                             <p class="text-success">Activo</p>
                         } @else {
                             <p class="text-danger">Inactivo</p>
                         }
                     </div>
-                    <div class="col-1 text-end">
+                    <div class="col-2 text-end">
                         <button class="btn btn-primary btn-sm" (click)="openEditModal(student)">M</button>
                         <button class="btn btn-secondary btn-sm" (click)="desactivate(student)">D</button>
                         <button class="btn btn-danger btn-sm" (click)="openDeleteModal(student)">E</button>     
-                        <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.id" aria-expanded="true" [attr.aria-controls]="student.id">
+                        <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.student_id" aria-expanded="true" [attr.aria-controls]="student.student_id">
                         +</button>
                     </div>
                     
                 </div>       
             </li>
         </ul>
-        <div [id]="student.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+        <div [id]="student.student_id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <ul class="list-group text-center">
                     <li class="list-group-item">
                         <div class="row">
                             <div class="col-4">
-                                <h5>Número de estudiantes</h5>
+                                <h5>Profesor</h5>
                             </div>
                             <div class="col-4">
                                 <h5>Nivel de la clase</h5>
                             </div>
                             <div class="col-4">
-                                <h5>Tipo de clase</h5>
+                                <h5>Nombre de la clase</h5>
                             </div>
-                            @for(class of student.classes; track class.id){
+                            @for(class of student.classes; track class.class_id){
                                 <div class="col-4 my-1">
-                                    {{class.number_students}}
+                                    {{class.class_name}}
                                 </div>
                                 <div class="col-4 my-1">
-                                    {{class.level}}
+                                    {{class.class_level}}
                                 </div>
                                 <div class="col-4 my-1">
-                                    {{class.type}}
+                                    {{class.class_teacher}}
                                 </div>
                             }
                         </div>

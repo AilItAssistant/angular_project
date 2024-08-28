@@ -17,6 +17,10 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { TeachersComponent } from './pages/teachers/teachers.component';
 import { ManageTeachersComponent } from './pages/manage-teachers/manage-teachers.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
+import { AddExamsNotesComponent } from './pages/add-exams-notes/add-exams-notes.component';
+import { SearchExamsComponent } from './pages/search-exams/search-exams.component';
+import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { StudentsDetailsComponent } from './pages/students-details/students-details.component';
 
 export const routes: Routes = [
     {
@@ -90,5 +94,22 @@ export const routes: Routes = [
     {
         path: "manage_users",
         component: ManageUsersComponent
+    },
+    {
+        path: "add_exams_notes",
+        component: AddExamsNotesComponent
+    },
+    {
+        path: "search_exams",
+        component: SearchExamsComponent
+    },
+    {
+        path: "statistics",
+        component: StatisticsComponent
+    },
+    {
+        path: "student_details/:id",
+        component: StudentsDetailsComponent
     }
+
 ];

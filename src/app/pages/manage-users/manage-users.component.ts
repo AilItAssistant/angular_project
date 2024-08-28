@@ -15,31 +15,25 @@ export class ManageUsersComponent {
 
   deleteVariables: any = {};
   charge: boolean = false;
+  users: any = [];
 
-  users: any = [
-    {
-      id: 1,
-      name: "José Carlos",
-      surname: "Fernández Giménez",
-      mobile: "+659635214587",
-      email: "marketingassistant@ailmadr55id.com",
-      status: true,
-      city: "Malaga",
-      permissions: "",
-      position: "profesor"
-    },
-    {
-      id: 2,
-      name: "María Fernanda",
-      surname: "González Perez",
-      mobile: "+654985645132",
-      email: "marketingassistant@ailma55drid.com",
-      status: false,
-      city: "Madrid",
-      permissions: "",
-      position: "profesor"
-    }
-  ];
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.load();
+  }
+  
+  load(){
+    this.http.get<any>('http://localhost:4000/api/users').subscribe({
+      next: (res) => {
+        this.users = res;
+        console.log(res)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
 
   addUserForm = new FormGroup({
     name: new FormControl(""),
@@ -62,8 +56,6 @@ export class ManageUsersComponent {
     position: new FormControl(""),
     status: new FormControl(""),
   });
-
-  constructor(private http: HttpClient) {}
 
   addUser(){
     let user: any = {

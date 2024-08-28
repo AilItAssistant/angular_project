@@ -3,256 +3,342 @@
 <h3 class="text-center mt-4">Gestión de usuarios</h3>
 
 <div class="container text-center mt-4">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <div class="row">
-                <div class="col-1">
-                    Nombre
-                </div>
-                <div class="col-1">
-                    Apellidos
-                </div>
-                <div class="col-2">
-                    Número de télefono
-                </div>
-                <div class="col-3">
-                    Email
-                </div>
-                <div class="col-1">
-                    Ciudad
-                </div>
-                <div class="col-1">
-                    Permisos
-                </div>
-                <div class="col-1">
-                    Cargo
-                </div>
-                <div class="col-1">
-                    Estado
-                </div>
-                <div class="col-1">
-                    Herramientas
-                </div>
-            </div>
-        </li>
-    </ul>
+  <ul class="list-group">
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-1">Nombre</div>
+        <div class="col-1">Apellidos</div>
+        <div class="col-1">Username</div>
+        <div class="col-1">Número de télefono</div>
+        <div class="col-2">Email</div>
+        <div class="col-1">Ciudad</div>
+        <div class="col-1">Permisos</div>
+        <div class="col-1">Cargo</div>
+        <div class="col-1">Creado</div>
+        <div class="col-1">Estado</div>
+        <div class="col-1"></div>
+      </div>
+    </li>
+  </ul>
 </div>
 
 @for(user of users; track user.id){
-    <div class="container text-center">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-1">
-                        {{user.name}}
-                    </div>
-                    <div class="col-1">
-                        {{user.surname}}
-                    </div>
-                    <div class="col-2">
-                        {{user.mobile}}
-                    </div>
-                    <div class="col-3">
-                        {{user.email}}
-                    </div>
-                    <div class="col-1">
-                        {{user.city}}
-                    </div>
-                    <div class="col-1">
-                        {{user.permissions}}
-                    </div>
-                    <div class="col-1">
-                        {{user.position}}
-                    </div>
-                    <div class="col-1">
-                        @if (user.status) {
-                            <p class="text-success">Activo</p>
-                        } @else {
-                            <p class="text-danger">Inactivo</p>
-                        }
-                    </div>
-                    <div class="col-1 text-end">
-                        <button class="btn btn-primary btn-sm" (click)="openEditModal(user)">M</button>
-                        <button class="btn btn-secondary btn-sm" (click)="desactivate(user)">D</button>
-                        <button class="btn btn-danger btn-sm" (click)="openDeleteModal(user)">E</button>     
-                    </div>
-                </div>       
-            </li>
-        </ul>
-    </div>
-}  
+<div class="container text-center">
+  <ul class="list-group">
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-1">
+            {{ user.username }}
+          </div>
+        <div class="col-1">
+          {{ user.name }}
+        </div>
+        <div class="col-1">
+          {{ user.last_name}}
+        </div>
+        <div class="col-1">
+          {{ user.phone_number}}
+        </div>
+        <div class="col-2">
+          {{ user.email}}
+        </div>
+        <div class="col-1">
+          {{ user.city}}
+        </div>
+        <div class="col-1">
+          {{ user.permissions}}
+        </div>
+        <div class="col-1">
+          {{ user.role }}
+        </div>
+        <div class="col-1">
+            {{ user.created_at }}
+        </div>
+        <div class="col-1">
+          @if (user.status === "active") {
+          <p class="text-success">Activo</p>
+          } @else {
+          <p class="text-danger">Inactivo</p>
+          }
+        </div>
+        <div class="col-1 text-end">
+          <button class="btn btn-primary btn-sm" (click)="openEditModal(user)">
+            M
+          </button>
+          <button class="btn btn-secondary btn-sm" (click)="desactivate(user)">
+            D
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="openDeleteModal(user)">
+            E
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+}
 <div class="mb-5"></div>
 
-<form [formGroup] = "addUserForm">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col-6">
-                <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
-            </div>
-            <div class="col-6">
-                <label for="surname" class="form-label">Apellidos</label>
-                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
-            </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-4">
-                <label for="mobil" class="form-label">Número de telefono</label>
-                <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="+321321456987">
-            </div>
-            <div class="col-4">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
-            </div>
-            <div class="col-4">
-                <label for="city" class="form-label">Ciudad</label>
-                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label for="permissions" class="form-label">Permisos</label>
-                <select id="permissions" class="form-select" formControlName="permissions">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
-            <div class="col-4">
-                <label for="position" class="form-label">Cargo</label>
-                <select id="position" class="form-select" formControlName="position">
-                    <option value="teacher">Teacher</option>
-                    <option value="student">Student</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="it">It</option>
-                </select>
-            </div>
-            <div class="col-4">
-                <label for="status" class="form-label">Estado</label>
-                <select id="status" class="form-select" formControlName="status">
-                    <option value="true" selected>Active</option>
-                    <option value="false">Disabled</option>
-                  </select>
-            </div>
-        </div>
-        <div class=" text-center">
-            <button class="btn btn-primary my-5" (click)="addUser()">Añadir usuario</button>
-        </div>
+<form [formGroup]="addUserForm">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-6">
+        <label for="name" class="form-label">Nombre</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          formControlName="name"
+          placeholder="Manolo"
+        />
+      </div>
+      <div class="col-6">
+        <label for="surname" class="form-label">Apellidos</label>
+        <input
+          type="text"
+          class="form-control"
+          id="surname"
+          formControlName="surname"
+          placeholder="Fernández Lopez"
+        />
+      </div>
     </div>
+    <div class="row mb-4">
+      <div class="col-4">
+        <label for="mobil" class="form-label">Número de telefono</label>
+        <input
+          type="text"
+          class="form-control"
+          id="mobile"
+          formControlName="mobile"
+          placeholder="+321321456987"
+        />
+      </div>
+      <div class="col-4">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          placeholder="name@example.com"
+        />
+      </div>
+      <div class="col-4">
+        <label for="city" class="form-label">Ciudad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="city"
+          formControlName="city"
+          placeholder="Madrid"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4">
+        <label for="permissions" class="form-label">Permisos</label>
+        <select
+          id="permissions"
+          class="form-select"
+          formControlName="permissions"
+        >
+          <option value="1">One</option>
+          <option value="2">Two</option>
+          <option value="3">Three</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="position" class="form-label">Cargo</label>
+        <select id="position" class="form-select" formControlName="position">
+          <option value="teacher">Teacher</option>
+          <option value="student">Student</option>
+          <option value="marketing">Marketing</option>
+          <option value="it">It</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label for="status" class="form-label">Estado</label>
+        <select id="status" class="form-select" formControlName="status">
+          <option value="true" selected>Active</option>
+          <option value="false">Disabled</option>
+        </select>
+      </div>
+    </div>
+    <div class="text-center">
+      <button class="btn btn-primary my-5" (click)="addUser()">
+        Añadir usuario
+      </button>
+    </div>
+  </div>
 </form>
 
 <!-- Edit modal -->
 
 <div class="modal" id="editModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header"> 
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
-        </div>
-        <div class="modal-body">
-          
-            <form [formGroup] = "editUserForm" id="editForm">
-
-                <p class="mt-1">Nombre</p>
-                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del usuario">
-
-                <p class="mt-1">Apellidos</p>
-                <input type="text" class="form-control" formControlName="surname" placeholder="Apellidos del usuario">
-
-                <p class="mt-1">Número de teléfono</p>
-                <input type="text" class="form-control" formControlName="mobile" placeholder="Numero del usuario">
-
-                <p class="mt-1">Email</p>
-                <input type="email" class="form-control" formControlName="email" placeholder="Email del usuario">
-
-                <p class="mt-1">Ciudad</p>
-                <input type="text" class="form-control" formControlName="city" placeholder="Ciudad del usuario">
-
-                
-                <label for="permissions" class="form-label">Permisos</label>
-                <select id="permissions" class="form-select" formControlName="permissions">
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-               
-                <label for="position" class="form-label">Cargo</label>
-                <select id="position" class="form-select" formControlName="position">
-                    <option value="teacher">Teacher</option>
-                    <option value="student">Student</option>
-                    <option value="marketing">Marketing</option>
-                    <option value="it">It</option>
-                </select>
-               
-
-                <p class="mt-3">Elige un estado</p>
-                <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
-                </select>
-            </form>
-        
-        </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
-          </div>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          Editar usuario
+        </h1>
+        @if(!charge){
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeEditModal()"
+        ></button>
         } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
+        <div class="spinner-border text-secondary mx-auto" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         }
       </div>
+      <div class="modal-body">
+        <form [formGroup]="editUserForm" id="editForm">
+          <p class="mt-1">Nombre</p>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            placeholder="Nombre del usuario"
+          />
+
+          <p class="mt-1">Apellidos</p>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="surname"
+            placeholder="Apellidos del usuario"
+          />
+
+          <p class="mt-1">Número de teléfono</p>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="mobile"
+            placeholder="Numero del usuario"
+          />
+
+          <p class="mt-1">Email</p>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="Email del usuario"
+          />
+
+          <p class="mt-1">Ciudad</p>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="city"
+            placeholder="Ciudad del usuario"
+          />
+
+          <label for="permissions" class="form-label">Permisos</label>
+          <select
+            id="permissions"
+            class="form-select"
+            formControlName="permissions"
+          >
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+
+          <label for="position" class="form-label">Cargo</label>
+          <select id="position" class="form-select" formControlName="position">
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+            <option value="marketing">Marketing</option>
+            <option value="it">It</option>
+          </select>
+
+          <p class="mt-3">Elige un estado</p>
+          <select
+            class="form-select mb-3"
+            formControlName="status"
+            aria-label="Select-status"
+          >
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </form>
+      </div>
+      @if (!charge){
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeEditModal()"
+        >
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="modify()">
+          Editar
+        </button>
+      </div>
+      } @else {
+      <div class="spinner-border text-primary mx-auto mb-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      }
     </div>
   </div>
+</div>
 
-  <!-- Delete modal -->
+<!-- Delete modal -->
 
-  <div class="modal" id="deleteModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
-        </div>
-        <div class="modal-body text-center">
-          
-            <p>Nombre: {{deleteVariables.name}}</p>
-            <p>Apellido: {{deleteVariables.surname}}</p>
-            <p>Número de teléfono: {{deleteVariables.mobile}}</p>
-            <p>Email: {{deleteVariables.email}}</p>
-            <p>Ciudad: {{deleteVariables.city}}</p>
-            <p>Permisos: {{deleteVariables.permissions}}</p>
-            <p>Cargo: {{deleteVariables.position}}</p>
-            <p>Estado: {{deleteVariables.status}}</p>
-
-        </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
-          </div>
+<div class="modal" id="deleteModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          ¿Borrar este profesor?
+        </h1>
+        @if(!charge){
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeDeleteModal()"
+        ></button>
         } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
+        <div class="spinner-border text-secondary mx-auto" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         }
       </div>
+      <div class="modal-body text-center">
+        <p>Nombre: {{ deleteVariables.name }}</p>
+        <p>Apellido: {{ deleteVariables.surname }}</p>
+        <p>Número de teléfono: {{ deleteVariables.mobile }}</p>
+        <p>Email: {{ deleteVariables.email }}</p>
+        <p>Ciudad: {{ deleteVariables.city }}</p>
+        <p>Permisos: {{ deleteVariables.permissions }}</p>
+        <p>Cargo: {{ deleteVariables.position }}</p>
+        <p>Estado: {{ deleteVariables.status }}</p>
+      </div>
+      @if (!charge){
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="closeDeleteModal()"
+        >
+          Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="delete()">
+          Delete
+        </button>
+      </div>
+      } @else {
+      <div class="spinner-border text-primary mx-auto mb-3" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      }
     </div>
   </div>
+</div>
 
 <app-footer></app-footer>

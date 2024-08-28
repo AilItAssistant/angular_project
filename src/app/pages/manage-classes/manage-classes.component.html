@@ -6,17 +6,23 @@
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">
-                <div class="col-2 mt-2">
-                    <h5>Profesor</h5>
+                <div class="col-1 mt-2">
+                    <h5>Nombre del profesor</h5>
                 </div>
                 <div class="col-1 mt-2">
+                    <h5>Apellido del profesor</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Nombre de la clase</h5>
+                </div>
+                <div class="col-1 mt-3">
                     <h5>Nivel</h5>
                 </div>
-                <div class="col-3 mt-2">
-                    <h5>Tipo de clase</h5>
+                <div class="col-2 mt-3">
+                    <h5>Calendario</h5>
                 </div>
-                <div class="col-3 mt-2">
-                    <h5>Número de estudiantes</h5>
+                <div class="col-2 mt-2">
+                    <h5>Nombre del aula</h5>
                 </div>
                 <div class="col-1 mt-2">
                     <h5>Estado</h5>
@@ -27,26 +33,32 @@
 </div>
 
 <div class="accordion container mb-5" id="accordionExample">
-    @for(class of classes; track class.id){
+    @for(class of classes; track class.class_id){
         <div class="accordion-item">
             
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
+                            <div class="col-1">
+                                {{class.teacher_name}}
+                            </div>
+                            <div class="col-1">
+                                {{class.teacher_last_name}}
+                            </div>
                             <div class="col-2">
-                                {{class.teacher}}
+                                {{class.class_name}}
                             </div>
                             <div class="col-1">
-                                {{class.level}}
+                                {{class.class_level}}
                             </div>
                             <div class="col-3">
-                                {{class.type}}
-                            </div>
-                            <div class="col-3">
-                                {{class.number_students}}
+                                {{class.schedule}}
                             </div>
                             <div class="col-1">
-                                @if (class.status) {
+                                {{class.room_number}}
+                            </div>
+                            <div class="col-1">
+                                @if (class.class_status === "active") {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
@@ -58,14 +70,14 @@
                                 <button class="btn btn-danger btn-sm" (click)="openDeleteModal(class)">E</button>     
                             </div>
                             <div class="col-1 text-end">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.id" aria-expanded="true" [attr.aria-controls]="class.id">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.class_id" aria-expanded="true" [attr.aria-controls]="class.class_id">
                                 </button>
                             </div>
                         </div>       
                     </li>
                 </ul>
 
-                <div [id]="class.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div [id]="class.class_id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul class="list-group text-center">
                             <li class="list-group-item">

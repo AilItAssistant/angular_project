@@ -27,11 +27,14 @@ export class ManageStructureComponent {
     block: new FormControl(""),
     skill: new FormControl(""),
     statusLevel: new FormControl(""),
-    statusBlock: new FormControl(""),
     statusSkill: new FormControl(""),
+    levelSkill: new FormControl(""),
+    statusBlock: new FormControl(""),
+    skillBlock: new FormControl(""),
   });
   
   editForm = new FormGroup({
+    secondId: new FormControl(""),
     name: new FormControl(""),
     status: new FormControl(""),
   });
@@ -96,6 +99,7 @@ export class ManageStructureComponent {
     this.editVariables.id = level.id;
 
     this.editForm = new FormGroup({
+      secondId: new FormControl(level.id),
       name: new FormControl(level.name),
       status: new FormControl(level.status)
     });
@@ -109,8 +113,10 @@ export class ManageStructureComponent {
     this.editVariables.structure = skill;
     this.editVariables.action = "modify";
     this.editVariables.id = skill.id;
+    this.editVariables.secondId = skill.level_id;
 
     this.editForm = new FormGroup({
+      secondId: new FormControl(skill.level_id),
       name: new FormControl(skill.name),
       status: new FormControl(skill.status),
     });
@@ -125,8 +131,10 @@ export class ManageStructureComponent {
     this.editVariables.structure = block;
     this.editVariables.action = "modify";
     this.editVariables.id = block.id;
+    this.editVariables.secondId = block.skill_id;
 
     this.editForm = new FormGroup({
+      secondId: new FormControl(block.skill_id),
       name: new FormControl(block.name),
       status: new FormControl(block.status),
     });
@@ -137,62 +145,74 @@ export class ManageStructureComponent {
   };
 
   addLevel(){
+    let status: any;
+    if(this.structureForm.value.statusLevel !== "active" && this.structureForm.value.statusLevel !== "inactive") {
+      status = "active";
+    }else {
+      status = this.structureForm.value.statusLevel;
+    }
     let add: any = {
       name: this.structureForm.value.level,
-      status: this.structureForm.value.statusLevel,
-      action: "post",
-      type: "level"
+      status: status,
     }
-
-    this.http.post<any>('http://localhost:4000/api/structure', add).subscribe({
+    this.http.post<any>('http://localhost:4000/api/levels/add', add).subscribe({
       next: (res) => {
-        console.log(res)
+        this.loadLevels();
         let form: any = document.getElementById("structureForm");
         form.reset();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
-
   };
 
   addSkill(){
-    let add: any = {
-      name: this.structureForm.value.skill,
-      status: this.structureForm.value.statusSkill,
-      action: "post",
-      type: "skill"
+    let status: any;
+    if(this.structureForm.value.statusSkill !== "active" && this.structureForm.value.statusSkill !== "inactive") {
+      status = "active";
+    }else {
+      status = this.structureForm.value.statusSkill;
     }
-
-    this.http.post<any>('http://localhost:4000/api/structure', add).subscribe({
+    let add: any = {
+      levelId: this.structureForm.value.levelSkill,
+      name: this.structureForm.value.skill,
+      status: status,
+    }
+    console.log(add)
+    this.http.post<any>('http://localhost:4000/api/skills/add', add).subscribe({
       next: (res) => {
-        console.log(res)
+        this.loadSkills();
         let form: any = document.getElementById("structureForm");
         form.reset();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
 
   addBlock(){
-    let add: any = {
-      name: this.structureForm.value.level,
-      status: this.structureForm.value.statusLevel,
-      action: "post",
-      type: "block"
+    let status: any;
+    if(this.structureForm.value.statusBlock !== "active" && this.structureForm.value.statusBlock !== "inactive") {
+      status = "active";
+    }else {
+      status = this.structureForm.value.statusBlock;
     }
-
-    this.http.post<any>('http://localhost:4000/api/structure', add).subscribe({
+    let add: any = {
+      name: this.structureForm.value.block,
+      skillId: this.structureForm.value.skillBlock,
+      status: status,
+    }
+    this.http.post<any>('http://localhost:4000/api/blocks/add', add).subscribe({
       next: (res) => {
         console.log(res)
         let form: any = document.getElementById("structureForm");
         form.reset();
+        this.loadBlocks();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
@@ -266,9 +286,9 @@ export class ManageStructureComponent {
       name: this.editForm.value.name,
       status: this.editForm.value.status,
       action: this.editVariables.action,
-      id: this.editVariables.id
+      id: this.editVariables.id,
+      secondId: this.editForm.value.secondId
     };
-
     this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes).subscribe({
       next: (res) => {
         let form: any = document.getElementById("editForm");
@@ -290,50 +310,59 @@ export class ManageStructureComponent {
   };
 
   deleteLevel(level: any){
+    this.deleteVariables.id = level.id;
     this.deleteVariables.name = level.name;
     this.deleteVariables.status = level.status;
-    this.deleteVariables.action = "delete";
-    this.deleteVariables.type = "level";
-    console.log(this.deleteVariables)
+    this.deleteVariables.type = "levels";
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
   };
 
   deleteSkill(skill: any){
+    this.deleteVariables.id = skill.id;
     this.deleteVariables.name = skill.name;
     this.deleteVariables.status = skill.status;
-    this.deleteVariables.action = "delete";
-    this.deleteVariables.type = "skill";
-
+    this.deleteVariables.type = "skills";
+    this.deleteVariables.level = skill.level_name;
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
   };
 
   deleteBlock(block: any){
+    this.deleteVariables.id = block.id;
     this.deleteVariables.name = block.name;
     this.deleteVariables.status = block.status;
-    this.deleteVariables.action = "delete";
-    this.deleteVariables.type = "block";
-
+    this.deleteVariables.type = "blocks";
+    this.deleteVariables.skill = block.skill_name;
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
   };
 
   delete(){
-    this.http.delete<any>('http://localhost:4000/api/structure', this.deleteVariables).subscribe({
+    this.charge = true;
+    let del: any = {}; 
+    del.id = this.deleteVariables.id;
+    console.log(this.deleteVariables.id)
+    this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`,del).subscribe({
       next: (res) => {
-      console.log(res);
-      let deleteModal: any;
-      deleteModal = document.getElementById('deleteModal');
-      deleteModal.style.display="block";
+        this.charge = false;
+        if( this.deleteVariables.type === "levels" ){
+          this.loadLevels();
+        }else if( this.deleteVariables.type === "skills" ){
+          this.loadSkills();
+        }else if( this.deleteVariables.type === "blocks" ){
+          this.loadBlocks();
+        }
+        this.charge = false;
+        this.closeDeleteModal();
       },
       error: (err) => {
-      //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
-      });
+    });
   };
 
 }

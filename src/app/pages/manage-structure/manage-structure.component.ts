@@ -39,10 +39,12 @@ export class ManageStructureComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.load();
+    this.loadLevels();
+    this.loadSkills();
+    this.loadBlocks();
   }
 
-  load(){
+  loadLevels(){
     this.http.get<any>('http://localhost:4000/api/levels').subscribe({
       next: (res) => {
         this.levels = res;
@@ -51,6 +53,9 @@ export class ManageStructureComponent {
         alert('Cargar fallo' + err);
       },
     });
+  };
+
+  loadSkills(){
     this.http.get<any>('http://localhost:4000/api/skills').subscribe({
       next: (res) => {
         this.skills = res;
@@ -59,6 +64,9 @@ export class ManageStructureComponent {
         alert('Cargar fallo' + err);
       },
     });
+  };
+
+  loadBlocks(){
     this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
       next: (res) => {
         this.blocks = res;
@@ -82,11 +90,10 @@ export class ManageStructureComponent {
   };
 
   openEditLevelModal(level: any){
-    this.editVariables.type = "level";
+    this.editVariables.type = "levels";
     this.editVariables.structure = level;
     this.editVariables.action = "modify";
-
-    console.log(level)
+    this.editVariables.id = level.id;
 
     this.editForm = new FormGroup({
       name: new FormControl(level.name),
@@ -98,9 +105,10 @@ export class ManageStructureComponent {
   };
 
   openEditSkillModal(skill: any){
-    this.editVariables.type = "skill";
+    this.editVariables.type = "skills";
     this.editVariables.structure = skill;
     this.editVariables.action = "modify";
+    this.editVariables.id = skill.id;
 
     this.editForm = new FormGroup({
       name: new FormControl(skill.name),
@@ -113,9 +121,10 @@ export class ManageStructureComponent {
   };
 
   openEditBlockModal(block: any){
-    this.editVariables.type = "block";
+    this.editVariables.type = "blocks";
     this.editVariables.structure = block;
     this.editVariables.action = "modify";
+    this.editVariables.id = block.id;
 
     this.editForm = new FormGroup({
       name: new FormControl(block.name),
@@ -189,73 +198,93 @@ export class ManageStructureComponent {
   };
 
   desactivateLevel(level: any){
-
-    level.type = "level"; 
-    level.action = "desactivate";
-    console.log(level);
-
-    this.http.put<any>('http://localhost:4000/api/structure', level).subscribe({
+    let change: any;
+    if ( level.status === "active" ) {
+      change = "inactive"
+    } else if ( level.status === "inactive" ) {
+      change = "active"
+    }
+    let status: any = {
+      id: level.id,
+      status: change
+    }
+    this.http.put<any>('http://localhost:4000/api/levels/status', status).subscribe({
       next: (res) => {
-        console.log(res)
-        //let form: any = document.getElementById("questionForm");
-        //form.reset();
+        this.loadLevels();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
 
   desactivateBlock(block: any){
-
-    block.type = "block"; 
-    block.action = "desactivate";
-    console.log(block);
-
-    this.http.put<any>('http://localhost:4000/api/structure', block).subscribe({
+    let change: any;
+    if ( block.status === "active" ) {
+      change = "inactive"
+    } else if ( block.status === "inactive" ) {
+      change = "active"
+    }
+    let status: any = {
+      id: block.id,
+      status: change
+    }
+    this.http.put<any>('http://localhost:4000/api/blocks/status', status).subscribe({
       next: (res) => {
-        console.log(res)
+        this.loadBlocks();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
-    
   };
 
   desactivateSkill(skill: any){
-    skill.type = "skill"; 
-    skill.action = "desactivate";
-    console.log(skill);
-
-    this.http.put<any>('http://localhost:4000/api/structure', skill).subscribe({
+    let change: any;
+    if ( skill.status === "active" ) {
+      change = "inactive"
+    } else if ( skill.status === "inactive" ) {
+      change = "active"
+    }
+    let status: any = {
+      id: skill.id,
+      status: change
+    }
+    this.http.put<any>('http://localhost:4000/api/skills/status', status).subscribe({
       next: (res) => {
-        console.log(res)
+        this.loadSkills();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
 
   modify(){
-
+    this.charge = true;
     let changes: any = {
       name: this.editForm.value.name,
       status: this.editForm.value.status,
       action: this.editVariables.action,
-      type: this.editVariables.type
+      id: this.editVariables.id
     };
-    console.log(changes)
 
-    this.http.put<any>('http://localhost:4000/api/levels/edit', changes).subscribe({
+    this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes).subscribe({
       next: (res) => {
-        console.log(res)
         let form: any = document.getElementById("editForm");
+        if( this.editVariables.type === "levels" ){
+          this.loadLevels();
+        }else if( this.editVariables.type === "skills" ){
+          this.loadSkills();
+        }else if( this.editVariables.type === "blocks" ){
+          this.loadBlocks();
+        }
+        this.charge = false;
+        this.closeEditModal();
         form.reset();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };

@@ -50,7 +50,7 @@ export class ManageStructureComponent {
 
   validation ( data: any, type: any ) {
     let id: any;
-    this.val = false; //cambiar a true
+    this.val = true;
 
     switch ( type ) {
       case "add_level":
@@ -95,7 +95,7 @@ export class ManageStructureComponent {
           this.val = false;
         }
         break;
-    }
+    };
   };
 
   loadLevels(){

@@ -32,6 +32,11 @@ export class ManageStructureComponent {
     levelSkill: new FormControl(""),
     statusBlock: new FormControl(""),
     skillBlock: new FormControl(""),
+    searchLevel: new FormControl(""),
+    searchSkill: new FormControl(""),
+    searchLevelSkill: new FormControl(""),
+    searchBlock: new FormControl(""),
+    searchSkillBlock: new FormControl("")
   });
   
   editForm = new FormGroup({
@@ -450,4 +455,85 @@ export class ManageStructureComponent {
     });
   };
 
+  search(type: any){
+    switch(type){
+      case "levels":
+        let level: any = {
+          name: this.structureForm.value.searchLevel
+        }
+        if ( level.name !== "" ) {
+          this.http.put<any>('http://localhost:4000/api/levels/search', level).subscribe({
+            next: (res) => {
+              this.levels = res;
+            },
+            error: (err) => {
+              alert('Cargar fallo' + err);
+            },
+          });
+        }
+        break;
+      case "skills":
+        let skill: any = {
+          name: this.structureForm.value.searchSkill,
+          level: this.structureForm.value.searchLevelSkill
+        };
+        if ( skill.level === "all_skills" ) {
+          this.loadSkills();
+        }else if ( skill.name !== "" || skill.level !== "" ){
+          this.http.put<any>('http://localhost:4000/api/skills/search', skill).subscribe({
+            next: (res) => {
+              this.skills = res;
+            },
+            error: (err) => {
+              alert('Cargar fallo' + err);
+            },
+          });
+        };
+        break;
+      case "blocks":
+        let block: any = {
+          name: this.structureForm.value.searchBlock,
+          skill: this.structureForm.value.searchSkillBlock
+        }
+        if ( block.skill === "all_blocks") {
+          this.loadBlocks();
+        }else if ( block.name !== "" || block.skill !== "" ){
+          this.http.put<any>('http://localhost:4000/api/blocks/search', block).subscribe({
+            next: (res) => {
+              this.blocks = res;
+            },
+            error: (err) => {
+              alert('Cargar fallo' + err);
+            },
+          });
+          
+        };
+        break;
+    };
+  };
+
+  cleanSearch(type: string){
+    switch(type){
+      case "levels":
+        this.loadLevels();
+        this.structureForm.reset({
+          searchLevel: ""
+        });
+        break;
+        case "skills":
+          this.loadSkills();
+          this.structureForm.reset({
+            searchSkill: "",
+            searchLevelSkill: ""
+          });
+          break;
+        case "blocks":
+          this.loadBlocks();
+        this.structureForm.reset({
+          searchBlock: "",
+          searchSkillBlock: ""
+        });
+        break;
+    }
+  }
 }

@@ -3,7 +3,18 @@
 <form [formGroup] = "structureForm" id="structureForm">
 
     <div class="container my-3">
-        <h3 class="my-3">Niveles</h3>
+        <div class="row">
+            <h3 class=" col-6 my-3">Niveles</h3>
+            <div class="col-3"><input type="text" formControlName="searchLevel" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
+            <div class="col-1">
+                <button class="btn btn-primary mt-3" (click)="search('levels')">Buscar</button>
+            </div>
+            <div class="col-2">
+                @if ( structureForm.value.searchLevel !== "" ){
+                <button class="btn btn-danger mt-3" (click)="cleanSearch('levels')">Deshacer búsqueda</button>
+                }
+            </div>
+        </div>
         <ul class="list-group">
             @for(level of levels; track level.id){
                 <li class="list-group-item">
@@ -43,7 +54,26 @@
             <div class="col-2"></div>
         </div>
 
-        <h3 class="my-3">Destrezas</h3>
+        <div class="row">
+            <h3 class=" col-4 my-3">Destrezas</h3>
+            <div class="col-2">
+                <select id="levelSkill" class="form-select mt-3" formControlName="searchLevelSkill">
+                    <option value="all_skills">Todas las destrezas</option>
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-3"><input type="text" formControlName="searchSkill" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
+            <div class="col-1">
+                <button class="btn btn-primary mt-3" (click)="search('skills')">Buscar</button>
+            </div>
+            <div class="col-2">
+                @if ( structureForm.value.searchSkill !== "" ||  structureForm.value.searchLevelSkill !== "" ){
+                <button class="btn btn-danger mt-3" (click)="cleanSearch('skills')">Deshacer búsqueda</button>
+                }
+            </div>
+        </div>
         <ul class="list-group">
             @for(skill of skills; track skill.id){
                 <li class="list-group-item">
@@ -72,10 +102,10 @@
         </ul>
         <div class="row my-4">
             <div class="col-1 text-end mt-1"><p>Destreza:</p></div>
-            <div class="col-3"><input type="text" class="form-control" formControlName="skill" id="skill"></div>
+            <div class="col-3"><input type="text" class="form-control" formControlName="searchBlock" id="skill"></div>
             <div class="col-1 text-end mt-1"><p>Nivel</p></div>
             <div class="col-2">
-                <select id="levelSkill" class="form-select" formControlName="levelSkill">
+                <select id="levelSkill" class="form-select" formControlName="searchSkillBlock">
                     @for(level of levels; track level.id){
                         <option [value]="level.id">{{level.name}}</option>
                     }
@@ -91,7 +121,26 @@
             <div class="col-2 text-start"><button class="btn btn-success" (click)="addSkill()">Añadir</button></div>
         </div>
 
-        <h3 class="my-3">Bloques</h3>
+        <div class="row">
+            <h3 class=" col-4 my-3">Bloques</h3>
+            <div class="col-2">
+                <select id="skillBlock" class="form-select mt-3" formControlName="searchSkillBlock">
+                    <option value="all_blocks">Todos los bloques</option>
+                    @for(skill of skills; track skill.id){
+                        <option [value]="skill.id">{{skill.name}}</option>
+                    }
+                </select>
+            </div>
+            <div class="col-3"><input type="text" formControlName="searchBlock" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
+            <div class="col-1">
+                <button class="btn btn-primary mt-3" (click)="search('blocks')">Buscar</button>
+            </div>
+            <div class="col-2">
+                @if ( structureForm.value.searchBlock !== "" || structureForm.value.searchSkillBlock !== "" ){
+                <button class="btn btn-danger mt-3" (click)="cleanSearch('blocks')">Deshacer búsqueda</button>
+                }
+            </div>
+        </div>
         <ul class="list-group">
             @for(block of blocks; track block.id){
                 <li class="list-group-item">

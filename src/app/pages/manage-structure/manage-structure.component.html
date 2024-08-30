@@ -168,17 +168,17 @@
           
             <form [formGroup] = "editForm" id="editForm">
                 <p class="mt-1">Nombre</p>
-                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="ResponseA" aria-describedby="ResponseA">
+                <input type="text" id="mName" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="mName" aria-describedby="mName">
                 @if(editVariables.type === "skills"){
                     <p class="mt-3">Elige un nivel</p>
-                    <select class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
+                    <select id="mSkillLevel" class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
                         @for(level of levels; track level.id){
                             <option [value]="level.id">{{level.name}}</option>
                         }
                     </select>
                 } @else if (editVariables.type === "blocks"){
                     <p class="mt-3">Elige una destreza</p>
-                    <select class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
+                    <select id="mBlockSkill" class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
                         @for(skill of skills; track skill.id){
                             <option [value]="skill.id">{{skill.name}}</option>
                         }

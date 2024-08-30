@@ -17,6 +17,7 @@ export class ManageStructureComponent {
   charge: boolean = false;
   editVariables: any = {};
   deleteVariables: any = {};
+  val: boolean = true;
 
   blocks: any = [];
   skills: any = [];
@@ -45,7 +46,57 @@ export class ManageStructureComponent {
     this.loadLevels();
     this.loadSkills();
     this.loadBlocks();
-  }
+  };
+
+  validation ( data: any, type: any ) {
+    let id: any;
+    this.val = false; //cambiar a true
+
+    switch ( type ) {
+      case "add_level":
+        id = document.getElementById('level');
+        if ( data.name === "" || data.name === null || data.name === undefined ){
+          this.val = false;
+          id.style.display="is-invalid";
+        } else {
+          id.style.display="is-valid";
+        };
+        break;
+      case "add_skill":
+        id = document.getElementById('skill');
+        if ( data.name === "" || data.name === null || data.name === undefined || data.levelId === "" || data.levelId === null || data.levelId === undefined ){
+          this.val = false;
+          id.style.display="is-invalid";
+        } else {
+          id.style.display="is-valid";
+        };
+        break;
+      case "add_block:":
+        id = document.getElementById('block');
+        if ( data.name === "" || data.name === null || data.name === undefined || data.skillId === "" || data.skillId === null || data.skillId === undefined ){
+          this.val = false;
+          id.style.display="is-invalid";
+        } else {
+          id.style.display="is-valid";
+        };
+        break;
+      case "levels":
+        if ( data.name === "" || data.name === null || data.name === undefined ) {
+          this.val = false;
+        }
+        break;
+      case "skills":
+        if ( data.name === "" || data.name === null || data.name === undefined ) {
+          this.val = false;
+        }
+        break;
+      case "blocks":
+        if ( data.name === "" || data.name === null || data.name === undefined ) {
+          this.val = false;
+        }
+        break;
+    }
+  };
 
   loadLevels(){
     this.http.get<any>('http://localhost:4000/api/levels').subscribe({
@@ -155,16 +206,26 @@ export class ManageStructureComponent {
       name: this.structureForm.value.level,
       status: status,
     }
-    this.http.post<any>('http://localhost:4000/api/levels/add', add).subscribe({
-      next: (res) => {
-        this.loadLevels();
-        let form: any = document.getElementById("structureForm");
-        form.reset();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+    let type: any = "add_level"
+    this.validation(add, type);
+    if ( this.val ) {
+      this.http.post<any>('http://localhost:4000/api/levels/add', add).subscribe({
+        next: (res) => {
+          this.loadLevels();
+          let form: any = document.getElementById("structureForm");
+          form.reset();
+          this.structureForm.reset({
+            level: "",
+            statusLevel: ""
+          });
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    } else {
+      alert("Nombre requerido");
+    };
   };
 
   addSkill(){
@@ -179,17 +240,27 @@ export class ManageStructureComponent {
       name: this.structureForm.value.skill,
       status: status,
     }
-    console.log(add)
-    this.http.post<any>('http://localhost:4000/api/skills/add', add).subscribe({
-      next: (res) => {
-        this.loadSkills();
-        let form: any = document.getElementById("structureForm");
-        form.reset();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+    let type: any = "add_skill";
+    this.validation(add, type);
+    if ( this.val ) {
+      this.http.post<any>('http://localhost:4000/api/skills/add', add).subscribe({
+        next: (res) => {
+          this.loadSkills();
+          let form: any = document.getElementById("structureForm");
+          form.reset();
+          this.structureForm.reset({
+            skill: "",
+            statusSkill: "",
+            levelSkill: ""
+          });
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    } else {
+      alert("Nombre y nivel requerido");
+    };
   };
 
   addBlock(){
@@ -204,17 +275,27 @@ export class ManageStructureComponent {
       skillId: this.structureForm.value.skillBlock,
       status: status,
     }
-    this.http.post<any>('http://localhost:4000/api/blocks/add', add).subscribe({
-      next: (res) => {
-        console.log(res)
-        let form: any = document.getElementById("structureForm");
-        form.reset();
-        this.loadBlocks();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+    let type: any = "add_block"
+    this.validation(add, type);
+    if ( this.val ) {
+      this.http.post<any>('http://localhost:4000/api/blocks/add', add).subscribe({
+        next: (res) => {
+          let form: any = document.getElementById("structureForm");
+          form.reset();
+          this.loadBlocks();
+          this.structureForm.reset({
+            block: "",
+            statusBlock: "",
+            skillBlock: ""
+          });
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    } else {
+      alert("Nombre y destreza requerido");
+    };
   };
 
   desactivateLevel(level: any){
@@ -281,7 +362,6 @@ export class ManageStructureComponent {
   };
 
   modify(){
-    this.charge = true;
     let changes: any = {
       name: this.editForm.value.name,
       status: this.editForm.value.status,
@@ -289,24 +369,30 @@ export class ManageStructureComponent {
       id: this.editVariables.id,
       secondId: this.editForm.value.secondId
     };
-    this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes).subscribe({
-      next: (res) => {
-        let form: any = document.getElementById("editForm");
-        if( this.editVariables.type === "levels" ){
-          this.loadLevels();
-        }else if( this.editVariables.type === "skills" ){
-          this.loadSkills();
-        }else if( this.editVariables.type === "blocks" ){
-          this.loadBlocks();
-        }
-        this.charge = false;
-        this.closeEditModal();
-        form.reset();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+    this.validation(changes, this.editVariables.type);
+    if ( this.val ) {
+      this.charge = true;
+      this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes).subscribe({
+        next: (res) => {
+          let form: any = document.getElementById("editForm");
+          if( this.editVariables.type === "levels" ){
+            this.loadLevels();
+          }else if( this.editVariables.type === "skills" ){
+            this.loadSkills();
+          }else if( this.editVariables.type === "blocks" ){
+            this.loadBlocks();
+          }
+          this.charge = false;
+          this.closeEditModal();
+          form.reset();
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    } else {
+      alert("Nombre requerido");
+    };
   };
 
   deleteLevel(level: any){
@@ -345,7 +431,6 @@ export class ManageStructureComponent {
     this.charge = true;
     let del: any = {}; 
     del.id = this.deleteVariables.id;
-    console.log(this.deleteVariables.id)
     this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`,del).subscribe({
       next: (res) => {
         this.charge = false;

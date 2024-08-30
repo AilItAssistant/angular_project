@@ -2,7 +2,7 @@
 
 <form [formGroup] = "structureForm" id="structureForm">
 
-    <div class="container my-3">
+    <div class="container my-5">
         <div class="row">
             <h3 class=" col-6 my-3">Niveles</h3>
             <div class="col-3"><input type="text" formControlName="searchLevel" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
@@ -54,7 +54,7 @@
             <div class="col-2"></div>
         </div>
 
-        <div class="row">
+        <div class="row mt-5">
             <h3 class=" col-4 my-3">Destrezas</h3>
             <div class="col-2">
                 <select id="levelSkill" class="form-select mt-3" formControlName="searchLevelSkill">
@@ -121,7 +121,7 @@
             <div class="col-2 text-start"><button class="btn btn-success" (click)="addSkill()">Añadir</button></div>
         </div>
 
-        <div class="row">
+        <div class="row mt-5">
             <h3 class=" col-4 my-3">Bloques</h3>
             <div class="col-2">
                 <select id="skillBlock" class="form-select mt-3" formControlName="searchSkillBlock">

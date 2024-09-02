@@ -21,6 +21,13 @@ export class ManageUsersComponent {
 
   orderForm = new FormGroup({
     select: new FormControl(""),
+    last_name: new FormControl(""),
+    username: new FormControl(""),
+    phone_number: new FormControl(""),
+    email: new FormControl(""),
+    city: new FormControl(""),
+    permissions: new FormControl(""),
+    status: new FormControl(""),
   });
 
   ngOnInit() {
@@ -283,5 +290,49 @@ export class ManageUsersComponent {
         break;
     };
   };
+
+  filter(){
+    console.log( this.orderForm.value);
+    let filters: any = {
+      email: this.orderForm.value.email,
+      last_name: this.orderForm.value.last_name,
+      username: this.orderForm.value.username,
+      phone_number: this.orderForm.value.phone_number,
+      city: this.orderForm.value.city,
+      permissions: this.orderForm.value.permissions,
+      status: this.orderForm.value.status,
+      
+    };
+    if(filters.city === ""){filters.city = null};
+    if(filters.last_name === ""){filters.last_name = null};
+    if(filters.phone_number === ""){filters.phone_number = null};
+    if(filters.username === ""){filters.username = null};
+    if(filters.email === ""){filters.email = null};
+    if(filters.permissions === ""){filters.permissions = null};
+    if(filters.status === ""){filters.status = null};
+    
+      this.http.put<any>('http://localhost:4000/api/users/filter', filters).subscribe({
+        next: (res) => {
+          this.users = res;
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+  };
+
+  deleteFilter(){
+    this.load();
+    this.orderForm.reset({
+      last_name:"",
+      username:"",
+      phone_number:"",
+      email:"",
+      city:"",
+      permissions:"",
+      status:"",
+    });
+  };
+
 
 }

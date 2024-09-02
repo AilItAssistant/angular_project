@@ -3,6 +3,21 @@
 <h3 class="text-center mt-4">Gestión de alumnos</h3>
 
 <div class="container text-center mt-4">
+    <form [formGroup] = "orderForm" id="order">
+        <div class="row my-5">
+            <h3 class="col-4">Gestión de alumnos</h3>
+            <div class="col-5"></div>
+            <div class="col-1 mt-2">Ordenar:</div>
+            <div class="col-2">
+                <select id="order" class="form-select mt-2 sm" formControlName="select" (click)="order()">
+                    <option value="lastName_asc">Apellido ascendente</option>
+                    <option value="lastName_desc">Apellido descendente</option>
+                    <option value="city_asc">Ciudad ascendente</option>
+                    <option value="city_desc">Ciudad descendente</option>
+                </select> 
+            </div>
+        </div>
+    </form>
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">

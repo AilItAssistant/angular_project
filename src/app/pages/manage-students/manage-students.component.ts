@@ -22,6 +22,10 @@ export class ManageStudentsComponent {
   ngOnInit() {
     this.load();
   }
+
+  orderForm = new FormGroup({
+    select: new FormControl(""),
+  });
   
   load(){
     this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
@@ -151,6 +155,53 @@ export class ManageStudentsComponent {
         //alert('Cargar fallo' + err);
       },
     });
+  };
+
+  order(){
+    switch(this.orderForm.value.select){
+      case "":
+        break;
+      case "lastName_asc":
+        this.students.sort( (a:any, b:any) => {
+          if (a.last_name > b.last_name) {
+            return 1;
+          }
+          if (a.last_name < b.last_name) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "lastName_desc":
+        this.students.sort( (a:any, b:any) => {
+          if (a.last_name < b.last_name) {
+            return 1;
+          }
+          if (a.last_name > b.last_name) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "city_asc":
+          this.students.sort( (a:any, b:any) => {
+          if (a.city > b.city) {
+            return 1;
+          }
+          if (a.city < b.city) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "city_desc":
+        this.students.sort( (a:any, b:any) => {
+          if (a.city < b.city) {
+            return 1;
+          }
+          if (a.city > b.city) {
+            return -1;
+          }
+          return 0});
+        break;
+    };
   };
 
 }

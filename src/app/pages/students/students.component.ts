@@ -104,7 +104,7 @@ export class StudentsComponent {
     if(filters.city === ""){filters.city = null};
     if(filters.email === ""){filters.email = null};
     
-      this.http.put<any>('http://localhost:4000/api/students/filter', filters).subscribe({
+      this.http.put<any>('http://localhost:4000/api/alumnos/filter', filters).subscribe({
         next: (res) => {
           this.students = res;
         },

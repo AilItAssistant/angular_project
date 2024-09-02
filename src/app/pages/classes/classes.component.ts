@@ -108,7 +108,6 @@ export class ClassesComponent {
   };
 
   filter(){
-    console.log( this.orderForm.value);
     let filters: any = {
       last_name: this.orderForm.value.last_name,
       class: this.orderForm.value.class,
@@ -116,7 +115,7 @@ export class ClassesComponent {
       class_name: this.orderForm.value.class_name,
     };
     if(filters.last_name === ""){filters.last_name = null};
-    if(filters.class === ""){filters.last_name = null};
+    if(filters.class === ""){filters.class = null};
     if(filters.class_name === ""){filters.class_name = null};
     if(filters.level === ""){filters.level = null};
 

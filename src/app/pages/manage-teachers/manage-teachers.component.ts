@@ -21,6 +21,10 @@ export class ManageTeachersComponent {
 
   orderForm = new FormGroup({
     select: new FormControl(""),
+    department: new FormControl(""),
+    last_name: new FormControl(""),
+    phone_number: new FormControl(""),
+    email: new FormControl("")
   });
 
   ngOnInit() {
@@ -206,6 +210,39 @@ export class ManageTeachersComponent {
           return 0});
         break;
     };
+  };
+
+  filter(){
+    console.log( this.orderForm.value);
+    let filters: any = {
+      department: this.orderForm.value.department,
+      last_name: this.orderForm.value.last_name,
+      phone_number: this.orderForm.value.phone_number,
+      email: this.orderForm.value.email,
+    };
+    if(filters.department === ""){filters.department = null};
+    if(filters.last_name === ""){filters.last_name = null};
+    if(filters.phone_number === ""){filters.phone_number = null};
+    if(filters.email === ""){filters.email = null};
+    
+      this.http.put<any>('http://localhost:4000/api/teachers/filter', filters).subscribe({
+        next: (res) => {
+          this.teachers = res;
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+  };
+
+  deleteFilter(){
+    this.load();
+    this.orderForm.reset({
+      department: "",
+      last_name: "",
+      phone_number: "",
+      email: ""
+    });
   };
 
 }

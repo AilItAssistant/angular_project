@@ -22,6 +22,10 @@ export class ManageClassesComponent {
 
   orderForm = new FormGroup({
     select: new FormControl(""),
+    class: new FormControl(""),
+    last_name: new FormControl(""),
+    level: new FormControl(""),
+    class_name: new FormControl(""),
   });
 
   ngOnInit() {
@@ -222,6 +226,38 @@ export class ManageClassesComponent {
           return 0});
         break;
     };
+  };
+
+  filter(){
+    let filters: any = {
+      last_name: this.orderForm.value.last_name,
+      class: this.orderForm.value.class,
+      level: this.orderForm.value.level,
+      class_name: this.orderForm.value.class_name,
+    };
+    if(filters.last_name === ""){filters.last_name = null};
+    if(filters.class === ""){filters.class = null};
+    if(filters.class_name === ""){filters.class_name = null};
+    if(filters.level === ""){filters.level = null};
+
+      this.http.put<any>('http://localhost:4000/api/classes/filter', filters).subscribe({
+        next: (res) => {
+          this.classes = res;
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+  };
+
+  deleteFilter(){
+    this.load();
+    this.orderForm.reset({
+      last_name: "",
+      class: "",
+      level: "",
+      class_name: "",
+    });
   };
 
 }

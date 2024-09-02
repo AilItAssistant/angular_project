@@ -19,6 +19,10 @@ export class ManageUsersComponent {
 
   constructor(private http: HttpClient) {}
 
+  orderForm = new FormGroup({
+    select: new FormControl(""),
+  });
+
   ngOnInit() {
     this.load();
   }
@@ -171,6 +175,113 @@ export class ManageUsersComponent {
         //alert('Cargar fallo' + err);
       },
     });
+  };
+
+  order(){
+    switch(this.orderForm.value.select){
+      case "":
+        break;
+      case "lastName_asc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.last_name > b.last_name) {
+            return 1;
+          }
+          if (a.last_name < b.last_name) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "lastName_desc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.last_name < b.last_name) {
+            return 1;
+          }
+          if (a.last_name > b.last_name) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "city_asc":
+          this.users.sort( (a:any, b:any) => {
+          if (a.city > b.city) {
+            return 1;
+          }
+          if (a.city < b.city) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "city_desc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.city < b.city) {
+            return 1;
+          }
+          if (a.city > b.city) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "permissions_asc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.permissions > b.permissions) {
+            return 1;
+          }
+          if (a.permissions < b.permissions) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "permissions_desc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.permissions < b.permissions) {
+            return 1;
+          }
+          if (a.permissions > b.permissions) {
+            return -1;
+          }
+          return 0});
+        break;
+        case "role_asc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.role > b.role) {
+            return 1;
+          }
+          if (a.role < b.role) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "role_desc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.role < b.role) {
+            return 1;
+          }
+          if (a.role > b.role) {
+            return -1;
+          }
+          return 0});
+        break;
+        case "created_asc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.created_at > b.created_at) {
+            return 1;
+          }
+          if (a.created_at < b.created_at) {
+            return -1;
+          }
+          return 0});
+        break;
+      case "created_desc":
+        this.users.sort( (a:any, b:any) => {
+          if (a.created_at < b.created_at) {
+            return 1;
+          }
+          if (a.created_at > b.created_at) {
+            return -1;
+          }
+          return 0});
+        break;
+    };
   };
 
 }

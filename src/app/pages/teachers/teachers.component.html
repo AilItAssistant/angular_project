@@ -1,8 +1,21 @@
 <app-header></app-header>
 
-<h3 class="text-center my-5">Profesores</h3>
-
 <div class="container text-center">
+    <form [formGroup] = "orderForm" id="order">
+        <div class="row my-5">
+            <h3 class="col-2">Profesores</h3>
+            <div class="col-7"></div>
+            <div class="col-1 mt-2">Ordenar:</div>
+            <div class="col-2">
+                <select id="order" class="form-select mt-2 sm" formControlName="select" (click)="order()">
+                    <option value="lastName_asc">Apellido ascendente</option>
+                    <option value="lastName_desc">Apellido descendente</option>
+                    <option value="department_asc">Departamento ascendente</option>
+                    <option value="department_desc">Departamento descendente</option>
+                </select> 
+            </div>
+        </div>
+    </form>
     <ul class="list-group">
         <li class="list-group-item">
             <div class="row">

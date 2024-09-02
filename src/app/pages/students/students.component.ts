@@ -37,7 +37,6 @@ export class StudentsComponent {
   };
 
   order(){
-    console.log(this.students)
     switch(this.orderForm.value.select){
       case "":
         break;

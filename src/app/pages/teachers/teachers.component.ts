@@ -33,6 +33,7 @@ export class TeachersComponent {
     this.http.get<any>('http://localhost:4000/api/teachers').subscribe({
       next: (res) => {
         this.teachers = res;
+        console.log(this.teachers)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

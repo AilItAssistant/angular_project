@@ -40,7 +40,7 @@
                 <div class="col-1 mt-2">
                     <h5>Nombre</h5>
                 </div>
-                <div class="col-2 mt-2">
+                <div class="col-1 mt-2">
                     <h5>Apellidos</h5>
                 </div>
                 <div class="col-2 mt-2">
@@ -49,8 +49,11 @@
                 <div class="col-2 mt-2">
                     <h5>Número de télefono</h5>
                 </div>
-                <div class="col-4 mt-2">
+                <div class="col-3 mt-2">
                     <h5>Email</h5>
+                </div>
+                <div class="col-2 mt-2">
+                    <h5>Dirección</h5>
                 </div>
             </div>
         </li>
@@ -67,7 +70,7 @@
                             <div class="col-1">
                                 {{teacher.name}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 {{teacher.last_name}}
                             </div>
                             <div class="col-2">
@@ -76,8 +79,11 @@
                             <div class="col-2">
                                 {{teacher.phone_number}}
                             </div>
-                            <div class="col-4">
+                            <div class="col-3">
                                 {{teacher.email}}
+                            </div>
+                            <div class="col-2">
+                                {{teacher.address}}
                             </div>
                             <div class="col-1 text-end">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + teacher.teacher_id" aria-expanded="true" [attr.aria-controls]="teacher.teacher_id">

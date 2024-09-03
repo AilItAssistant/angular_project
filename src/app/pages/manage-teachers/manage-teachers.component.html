@@ -2,7 +2,7 @@
 
 <div class="container text-center">
     <form [formGroup] = "orderForm" id="order">
-        <div class="row my-5">
+        <div class="row mt-5 mb-3">
             <h3 class="col-3">Gestión de profesores</h3>
             <div class="col-6 mt-2">
                 <p class="d-inline-flex">
@@ -34,29 +34,32 @@
             </div>
         </div>
     </form>
-    <ul class="list-group">
+    <ul class="list-group text-center">
         <li class="list-group-item">
             <div class="row">
                 <div class="col-1 mt-2">
                     <h5>Nombre</h5>
                 </div>
-                <div class="col-2 mt-2">
+                <div class="col-1 mt-2">
                     <h5>Apellidos</h5>
                 </div>
-                <div class="col-2 mt-2">
+                <div class="col-1 mt-2">
                     <h5>Número de télefono</h5>
                 </div>
-                <div class="col-2 mt-2">
+                <div class="col-3 mt-2">
                     <h5>Email</h5>
                 </div>
-                <div class="col-2 mt-2">
+                <div class="col-1 mt-2">
                     <h5>Departamento</h5>
                 </div>
                 <div class="col-1 mt-2">
-                    <h5>Status</h5>
+                    <h5>Dirección</h5>
                 </div>
                 <div class="col-1 mt-2">
-                    <h5>Herramientas</h5>
+                    <h5>Fecha de contratación</h5>
+                </div>
+                <div class="col-1 mt-2">
+                    <h5>Status</h5>
                 </div>
             </div>
         </li>
@@ -73,20 +76,26 @@
                             <div class="col-1">
                                 {{teacher.name}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 {{teacher.last_name}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 {{teacher.phone_number}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 {{teacher.email}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-1">
                                 {{teacher.department}}
                             </div>
                             <div class="col-1">
-                                @if (teacher.status) {
+                                {{teacher.address}}
+                            </div>
+                            <div class="col-1">
+                                {{teacher.hire_date}}
+                            </div>
+                            <div class="col-1">
+                                @if (teacher.teacher_status === "active") {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
@@ -94,7 +103,7 @@
                             </div>
                             <div class="col-1 text-end">
                                 <button class="btn btn-primary btn-sm" (click)="openEditModal(teacher)">M</button>
-                                <button class="btn btn-secondary btn-sm">D</button>
+                                <button class="btn btn-secondary btn-sm" (click)="desactivate(teacher)">D</button>
                                 <button class="btn btn-danger btn-sm" (click)="openDeleteModal(teacher)">E</button>     
                             </div>
                             <div class="col-1 text-end">
@@ -143,33 +152,43 @@
 <form [formGroup] = "addTeachersForm">
     <div class="container">
         <div class="row mb-4">
-            <div class="col-4">
+            <div class="col-3">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
             </div>
-            <div class="col-5">
-                <label for="surname" class="form-label">Apellidos</label>
-                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
+            <div class="col-4">
+                <label for="last_name" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Fernández Lopez">
             </div>
-            <div class="col-3">
-                <label for="mobile" class="form-label">Número de telefono</label>
-                <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="+321321456987">
+            <div class="col-2">
+                <label for="phone_number" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="phone_number" formControlName="phone_number" placeholder="+32132145698768">
             </div>
-        </div>
-        <div class="row mb-4">
-            <div class="col-3"></div>
             <div class="col-3">
                 <label for="email" class="form-label">Email</label>
                 <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
             </div>
+        </div>
+        <div class="row mb-4">
             <div class="col-3">
+                <label for="department" class="form-label">Departamento</label>
+                <input type="text" class="form-control" id="department" formControlName="department" placeholder="Departamento">
+            </div>
+            <div class="col-2">
+                <label for="hire_date">Fecha de contratación</label>
+                <input id="hire_date" class="form-control mt-2" type="date" formControlName="hire_date" />
+            </div>
+            <div class="col-5">
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="address" formControlName="address" placeholder="Dirección">
+            </div>
+            <div class="col-2">
                 <label for="status" class="form-label">Estado</label>
                 <select id="status" class="form-select" formControlName="status">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
                 </select>
             </div>
-            <div class="col-3"></div>
         </div>
         <div class=" text-center">
             <button class="btn btn-primary my-5" (click)="addTeacher()">Añadir profesor</button>
@@ -197,21 +216,30 @@
             <form [formGroup] = "editTeachersForm" id="editForm">
 
                 <p class="mt-1">Nombre</p>
-                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del alumno">
+                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del profesor">
 
                 <p class="mt-1">Apellidos</p>
-                <input type="text" class="form-control" formControlName="surname" placeholder="Apellidos del alumno">
+                <input type="text" class="form-control" formControlName="last_name" placeholder="Apellidos del profesor">
 
                 <p class="mt-1">Número de teléfono</p>
-                <input type="text" class="form-control" formControlName="mobile" placeholder="Numero del alumno">
+                <input type="text" class="form-control" formControlName="phone_number" placeholder="Numero del profesor">
 
                 <p class="mt-1">Email</p>
-                <input type="email" class="form-control" formControlName="email" placeholder="Email del alumno">
+                <input type="email" class="form-control" formControlName="email" placeholder="Email del profesor">
+
+                <p class="mt-1">Departamento</p>
+                <input type="text" class="form-control" formControlName="department" placeholder="Departamento">
+
+                <p class="mt-1">Dirección</p>
+                <input type="text" class="form-control" formControlName="address" placeholder="Calle Falsa 123">
+
+                <label for="hire_date">Fecha de contratación</label>
+                <input id="hire_date" class="form-control mt-2" type="date" formControlName="hire_date" />
 
                 <p class="mt-3">Elige un estado</p>
                 <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
                 </select>
             </form>
         
@@ -248,9 +276,12 @@
         <div class="modal-body text-center">
           
             <p>Nombre: {{deleteVariables.name}}</p>
-            <p>Apellido: {{deleteVariables.surname}}</p>
-            <p>Número de teléfono: {{deleteVariables.mobile}}</p>
+            <p>Apellido: {{deleteVariables.last_name}}</p>
+            <p>Número de teléfono: {{deleteVariables.phone_number}}</p>
             <p>Email: {{deleteVariables.email}}</p>
+            <p>Departamento: {{deleteVariables.department}}</p>
+            <p>Dirección: {{deleteVariables.address}}</p>
+            <p>Estado: {{deleteVariables.teacher_status}}</p>
 
         </div>
         @if (!charge){

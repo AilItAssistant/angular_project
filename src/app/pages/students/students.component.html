@@ -41,20 +41,29 @@
                 <div class="col-1">
                     Nombre
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     Apellidos
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     Documento de identificación
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     Número de télefono
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     Email
                 </div>
                 <div class="col-1">
+                    Fecha de nacimiento
+                </div>
+                <div class="col-1">
                     Ciudad
+                </div>
+                <div class="col-2">
+                    Dirección
+                </div>
+                <div class="col-1">
+                    Nivel
                 </div>
             </div>
         </li>
@@ -70,20 +79,29 @@
                         <div class="col-1">
                             {{student.name}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
                             {{student.last_name}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
                             {{student.id_document}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-1">
                             {{student.phone_number}}
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             {{student.email}}
                         </div>
                         <div class="col-1">
+                            {{student.birthday}}
+                        </div>
+                        <div class="col-1">
                             {{student.city}}
+                        </div>
+                        <div class="col-2">
+                            {{student.address}}
+                        </div>
+                        <div class="col-1">
+                            {{student.student_level}}
                         </div>
                         <div class="col-1 text-end">
                             @if(student.classes.length > 0){

@@ -35,6 +35,7 @@ export class StudentsComponent {
     this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
       next: (res) => {
         this.students = res;
+        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

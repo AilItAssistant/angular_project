@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div class="container text-center mt-4">
+<div class="container-fluid text-center">
     <form [formGroup] = "orderForm" id="order">
         <div class="row my-5">
             <h3 class="col-3">Gestión de alumnos</h3>
@@ -44,24 +44,32 @@
                 <div class="col-1">
                     Apellidos
                 </div>
-                <div class="col-2">
+                <div class="col-1">
                     Documento de identificación
                 </div>
-                
+                <div class="col-1">
+                    Nivel
+                </div>
                 <div class="col-1">
                     Número de télefono
                 </div>
-                <div class="col-3">
+                <div class="col-1">
                     Email
                 </div>
                 <div class="col-1">
                     Ciudad
                 </div>
                 <div class="col-1">
-                    Status
+                    Dirección
                 </div>
-                <div class="col-2">
-                    Herramientas
+                <div class="col-1">
+                    Fecha de registro
+                </div>
+                <div class="col-1">
+                    Fecha de cumpleaños
+                </div>
+                <div class="col-1">
+                    Status
                 </div>
             </div>
         </li>
@@ -69,7 +77,7 @@
 </div>
 
 @for(student of students; track student.student_id){
-    <div class="container text-center">
+    <div class="container-fluid text-center">
         <ul class="list-group">
             <li class="list-group-item">
                 <div class="row">
@@ -79,18 +87,29 @@
                     <div class="col-1">
                         {{student.last_name}}
                     </div>
-                    <div class="col-2">
+                    <div class="col-1">
                         {{student.id_document}}
                     </div>
-                   
+                    <div class="col-1">
+                        {{student.student_level}}
+                    </div>
                     <div class="col-1">
                         {{student.phone_number}}
                     </div>
-                    <div class="col-3">
+                    <div class="col-1">
                         {{student.email}}
                     </div>
                     <div class="col-1">
                         {{student.city}}
+                    </div>
+                    <div class="col-1">
+                        {{student.address}}
+                    </div>
+                    <div class="col-1">
+                        {{student.enrollment_date}}
+                    </div>
+                    <div class="col-1">
+                        {{student.birthday}}
                     </div>
                     <div class="col-1">
                         @if (student.student_status === "active") {
@@ -99,7 +118,7 @@
                             <p class="text-danger">Inactivo</p>
                         }
                     </div>
-                    <div class="col-2 text-end">
+                    <div class="col-1 text-end">
                         <button class="btn btn-primary btn-sm" (click)="openEditModal(student)">M</button>
                         <button class="btn btn-secondary btn-sm" (click)="desactivate(student)">D</button>
                         <button class="btn btn-danger btn-sm" (click)="openDeleteModal(student)">E</button>     
@@ -148,42 +167,35 @@
 <form [formGroup] = "addStudentsForm">
     <div class="container">
         <div class="row mb-4">
-            <div class="col-3">
+            <div class="col-4">
                 <label for="name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name" placeholder="Manolo">
             </div>
             <div class="col-4">
-                <label for="surname" class="form-label">Apellidos</label>
-                <input type="text" class="form-control" id="surname" formControlName="surname" placeholder="Fernández Lopez">
+                <label for="last_name" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="last_name" formControlName="last_name" placeholder="Fernández Lopez">
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <label for="document" class="form-label">Documento de identificación</label>
                 <input type="text" class="form-control" id="document" formControlName="document" placeholder="x123456789x">
             </div>
-            <div class="col-2">
-                <label for="city" class="form-label">Ciudad</label>
-                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
-            </div>
         </div>
         <div class="row mb-4">
+            <div class="col-2">
+                <label for="level" class="form-label">Nivel</label>
+                <select id="level" class="form-select" formControlName="level">
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
+                </select>
+            </div>
             <div class="col-2">
                 <label for="birthday">Cumpleaños</label>
                 <input id="birthday" class="form-control mt-2" type="date" formControlName="birthday" />
             </div>
             <div class="col-3">
-                <label for="mobil" class="form-label">Número de telefono</label>
-                <input type="text" class="form-control" id="mobile" formControlName="mobile" placeholder="+321321456987">
-            </div>
-            <div class="col-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
-            </div>
-            <div class="col-2">
-                <label for="genre" class="form-label">Género</label>
-                <select id="genre" class="form-select" formControlName="genre">
-                    <option value="male">Hombre</option>
-                    <option value="female">Mujer</option>
-                </select>
+                <label for="phone_number" class="form-label">Número de telefono</label>
+                <input type="text" class="form-control" id="phone_number" formControlName="phone_number" placeholder="+321321456987">
             </div>
             <div class="col-2">
                 <label for="status" class="form-label">Estado</label>
@@ -192,10 +204,29 @@
                     <option value="false">Inactivo</option>
                 </select>
             </div>
+            <div class="col-3">
+                <label for="city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="city" formControlName="city" placeholder="Madrid">
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-2">
+                <label for="enrollment_date">Fecha de registro</label>
+                <input id="enrollment_date" class="form-control mt-2" type="date" formControlName="enrollment_date" />
+            </div>
+            <div class="col-6">
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="address" formControlName="address" placeholder="Madrid">
+            </div>
+            <div class="col-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+            </div>
         </div>
         <div class=" text-center">
             <button class="btn btn-primary my-5" (click)="addStudent()">Añadir alumno</button>
         </div>
+        
     </div>
 </form>
 
@@ -222,7 +253,7 @@
                 <input type="text" class="form-control" formControlName="name" placeholder="Nombre del alumno">
 
                 <p class="mt-1">Apellidos</p>
-                <input type="text" class="form-control" formControlName="surname" placeholder="Apellidos del alumno">
+                <input type="text" class="form-control" formControlName="last_name" placeholder="Apellidos del alumno">
 
                 <p class="mt-1">Documento de identificación</p>
                 <input type="text" class="form-control" formControlName="document" placeholder="Documento del alumno">
@@ -231,7 +262,7 @@
                 <input id="birthday" class="form-control mt-2" type="date" formControlName="birthday" />
 
                 <p class="mt-1">Número de teléfono</p>
-                <input type="text" class="form-control" formControlName="mobile" placeholder="Numero del alumno">
+                <input type="text" class="form-control" formControlName="phone_number" placeholder="Numero del alumno">
 
                 <p class="mt-1">Email</p>
                 <input type="email" class="form-control" formControlName="email" placeholder="Email del alumno">
@@ -239,16 +270,24 @@
                 <p class="mt-1">Ciudad</p>
                 <input type="text" class="form-control" formControlName="city" placeholder="Ciudad del alumno">
 
+                <label for="level" class="form-label">Nivel</label>
+                <select id="level" class="form-select" formControlName="level">
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
+                </select>
+                
+                <label for="enrollment_date">Fecha de registro</label>
+                <input id="enrollment_date" class="form-control mt-2" type="date" formControlName="enrollment_date" />
+                
+               
+                <label for="address" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="address" formControlName="address" placeholder="Madrid">
+            
                 <p class="mt-3">Elige un estado</p>
                 <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
                     <option value="true">Activo</option>
                     <option value="false">Inactivo</option>
-                </select>
-
-                <p class="mt-3">Elige un género</p>
-                <select class="form-select mb-3" formControlName="genre" aria-label="Select-genre">
-                    <option value="male">Hombre</option>
-                    <option value="female">Mujer</option>
                 </select>
             </form>
         
@@ -285,13 +324,12 @@
         <div class="modal-body text-center">
           
             <p>Nombre: {{deleteVariables.name}}</p>
-            <p>Apellido: {{deleteVariables.surname}}</p>
+            <p>Apellido: {{deleteVariables.last_name}}</p>
             <p>Documento: {{deleteVariables.document}}</p>
             <p>Cumpleaños: {{deleteVariables.birthday}}</p>
-            <p>Número de teléfono: {{deleteVariables.mobile}}</p>
+            <p>Número de teléfono: {{deleteVariables.phone_number}}</p>
             <p>Email: {{deleteVariables.email}}</p>
             <p>Ciudad: {{deleteVariables.city}}</p>
-            <p>Género: {{deleteVariables.genre}}</p>
             <p>Estado: {{deleteVariables.status}}</p>
         
         </div>
@@ -308,6 +346,5 @@
       </div>
     </div>
   </div>
-
 
 <app-footer></app-footer>

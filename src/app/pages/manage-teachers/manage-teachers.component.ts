@@ -102,7 +102,7 @@ export class ManageTeachersComponent {
   delete(){
     let del: any = { id: this.deleteVariables.teacher_id };
     console.log(del);
-    //this.charge = true;
+    this.charge = true;
     this.http.put<any>('http://localhost:4000/api/teachers/delete', del).subscribe({
       next: (res) => {
         console.log(res)

@@ -15,12 +15,15 @@ export class ManageStudentsComponent {
 
   charge: boolean = false;
   deleteVariables: any = {};
+  editVariables: any = {};
   students: any = [];
+  levels: any;
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.load();
+    this.loadLevels();
   }
 
   orderForm = new FormGroup({
@@ -45,36 +48,41 @@ export class ManageStudentsComponent {
 
   addStudentsForm = new FormGroup({
     name: new FormControl(""),
-    surname: new FormControl(""),
+    last_name: new FormControl(""),
     document: new FormControl(""),
     birthday: new FormControl(""),
-    mobile: new FormControl(""),
+    phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    genre: new FormControl(""),
     status: new FormControl(""),
+    level: new FormControl(""),
+    enrollment_date: new FormControl(""),
+    address: new FormControl("")
   });
 
   editForm = new FormGroup({
     name: new FormControl(""),
-    surname: new FormControl(""),
+    last_name: new FormControl(""),
     document: new FormControl(""),
     birthday: new FormControl(""),
-    mobile: new FormControl(""),
+    phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    genre: new FormControl(""),
     status: new FormControl(""),
+    level: new FormControl(""),
+    enrollment_date: new FormControl(""),
+    address: new FormControl("")
   });
 
   delete(){
-    console.log(this.deleteVariables)
-    this.http.delete<any>('http://localhost:4000/api/students', this.deleteVariables).subscribe({
+    let del;
+    del = {id: this.deleteVariables.student_id};
+    this.http.put<any>('http://localhost:4000/api/alumnos/delete', del).subscribe({
       next: (res) => {
-        console.log(res)
         let deleteModal: any;
         deleteModal = document.getElementById('deleteModal');
         deleteModal.style.display="none";
+        this.load();
       },
       error: (err) => {
         //alert('Cargar fallo' + err);
@@ -87,6 +95,7 @@ export class ManageStudentsComponent {
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
     this.deleteVariables = student;
+    console.log(student)
   };
 
   closeDeleteModal(){
@@ -98,19 +107,21 @@ export class ManageStudentsComponent {
   openEditModal(student: any){
     this.editForm = new FormGroup({
       name: new FormControl(student.name),
-      surname: new FormControl(student.surname),
-      document: new FormControl(student.document),
+      last_name: new FormControl(student.last_name),
+      document: new FormControl(student.id_document),
       birthday: new FormControl(student.birthday),
-      mobile: new FormControl(student.mobile),
+      phone_number: new FormControl(student.phone_number),
       email: new FormControl(student.email),
       city: new FormControl(student.city),
-      genre: new FormControl(student.genre),
       status: new FormControl(student.status),
+      level: new FormControl(student.level),
+      enrollment_date: new FormControl(student.enrollment_date),
+      address: new FormControl(student.address)
     });
-
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display="block";
+    this.editVariables = student;
   };
 
   closeEditModal(){
@@ -121,43 +132,129 @@ export class ManageStudentsComponent {
 
   desactivate(student: any){
     let des: any = {};
-    des.id = student.id;
-    des.action = "desactivate";
-    this.http.put<any>('http://localhost:4000/api/students', des).subscribe({
+    des.id = student.student_id;
+    des.status = student.student_status;
+    this.http.put<any>('http://localhost:4000/api/alumnos/status', des).subscribe({
       next: (res) => {
-      console.log(res)
+      this.load();
       },
       error: (err) => {
-      //alert('Cargar fallo' + err);
+      alert('Cargar fallo' + err);
       },
       });
 
   };
 
   modify(){
-    this.http.put<any>('http://localhost:4000/api/students', this.editForm.value).subscribe({
-      next: (res) => {
-        console.log(res)
-        let editModal: any;
-        editModal = document.getElementById('editModal');
-        editModal.style.display="none";
-      },
-      error: (err) => {
-        //alert('Cargar fallo' + err);
-      },
-    });
+    console.log(this.editVariables)
+    let mod: any = {}
+      mod.id = this.editVariables.student_id;
+    
+    if( this.editForm.value.name !== this.editVariables.name && this.editForm.value.name !== undefined && this.editForm.value.name !== null ){
+      mod.name = this.editForm.value.name;
+    } else mod.name = "";
+    if( this.editForm.value.last_name !== this.editVariables.last_name && this.editForm.value.last_name !== undefined && this.editForm.value.last_name !== null ){
+      mod.last_name = this.editForm.value.last_name;
+    } else mod.last_name = "";
+    if( this.editForm.value.document !== this.editVariables.document && this.editForm.value.document !== undefined && this.editForm.value.document !== null ){
+      mod.document = this.editForm.value.document;
+    } else mod.document = "";
+    if( this.editForm.value.birthday !== this.editVariables.birthday && this.editForm.value.birthday !== undefined && this.editForm.value.birthday !== null ){
+      mod.birthday = this.editForm.value.birthday;
+    } else mod.birthday = "";
+    if( this.editForm.value.phone_number !== this.editVariables.phone_number && this.editForm.value.phone_number !== undefined && this.editForm.value.phone_number !== null ){
+      mod.phone_number = this.editForm.value.phone_number;
+    } else mod.phone_number = "";
+    if( this.editForm.value.email !== this.editVariables.email && this.editForm.value.email !== undefined && this.editForm.value.email !== null ){
+      mod.email = this.editForm.value.email;
+    } else mod.email = "";
+    if( this.editForm.value.city !== this.editVariables.city && this.editForm.value.city !== undefined && this.editForm.value.city !== null ){
+      mod.city = this.editForm.value.city;
+    } else mod.city = "";
+    if( this.editForm.value.status !== this.editVariables.status && this.editForm.value.status !== undefined && this.editForm.value.status !== null ){
+      mod.status = this.editForm.value.status;
+    };
+    if( this.editForm.value.level !== this.editVariables.level && this.editForm.value.level !== undefined && this.editForm.value.level !== null ){
+      mod.level = this.editForm.value.level;
+    } else mod.level = "";
+    if( this.editForm.value.document !== this.editVariables.id_document && this.editForm.value.document !== undefined && this.editForm.value.document !== null ){
+      mod.document = this.editForm.value.document;
+    } else mod.document = "";
+    if( this.editForm.value.enrollment_date !== this.editVariables.enrollment_date && this.editForm.value.enrollment_date !== undefined && this.editForm.value.enrollment_date !== null ){
+      mod.enrollment_date = this.editForm.value.enrollment_date;
+    } else mod.enrollment_date = "";
+    if( this.editForm.value.address !== this.editVariables.address && this.editForm.value.address !== undefined && this.editForm.value.address !== null ){
+      mod.address = this.editForm.value.address;
+    } else mod.address = "";
+    console.log(mod)
+    if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
+      this.charge = true;
+      this.http.put<any>('http://localhost:4000/api/alumnos/edit', mod).subscribe({
+        next: (res) => {
+          console.log(res)
+          let editModal: any;
+          editModal = document.getElementById('editModal');
+          editModal.style.display="none";
+          this.charge = false;
+          this.editForm.reset({
+            name: "",
+            last_name: "",
+            document: "",
+            birthday: "",
+            phone_number: "",
+            email: "",
+            city: "",
+            status: "",
+            level: "",
+            enrollment_date: "",
+            address: ""
+          });
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    }
   };
 
   addStudent(){
-    this.http.post<any>('http://localhost:4000/api/students', this.addStudentsForm.value).subscribe({
+    let add: any = {
+      name: this.addStudentsForm.value.name,
+      last_name: this.addStudentsForm.value.last_name,
+      document: this.addStudentsForm.value.document,
+      birthday: this.addStudentsForm.value.birthday,
+      phone_number: this.addStudentsForm.value.phone_number,
+      email: this.addStudentsForm.value.email,
+      city: this.addStudentsForm.value.city,
+      status: this.addStudentsForm.value.status,
+      level: this.addStudentsForm.value.level,
+      enrollment_date: this.addStudentsForm.value.enrollment_date,
+      address: this.addStudentsForm.value.address
+    }
+    this.charge = true;
+    this.http.post<any>('http://localhost:4000/api/alumnos/add',add).subscribe({
       next: (res) => {
         console.log(res)
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
+        this.addStudentsForm.reset({
+          name: "",
+          last_name: "",
+          document: "",
+          birthday: "",
+          phone_number: "",
+          email: "",
+          city: "",
+          status: "",
+          level: "",
+          enrollment_date: "",
+          address: ""
+        });
+        this.charge = false;
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
@@ -242,6 +339,17 @@ export class ManageStudentsComponent {
       phone_number: "",
       email: "",
       city: ""
+    });
+  };
+
+  loadLevels(){
+    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+      next: (res) => {
+        this.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
     });
   };
 

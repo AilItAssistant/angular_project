@@ -85,13 +85,15 @@ export class ManageClassesComponent {
   };
 
   delete(){
-    console.log(this.deleteVariables.id)
-    this.http.delete<any>('http://localhost:4000/api/classes', this.deleteVariables.id).subscribe({
+    this.charge = true;
+    let del: any = {id: this.deleteVariables.class_id};
+    this.http.put<any>('http://localhost:4000/api/classes/delete', del).subscribe({
       next: (res) => {
-        console.log(res)
         let deleteModal: any;
         deleteModal = document.getElementById('deleteModal');
         deleteModal.style.display="none";
+        this.charge = false;
+        this.load();
       },
       error: (err) => {
         //alert('Cargar fallo' + err);
@@ -149,11 +151,10 @@ export class ManageClassesComponent {
 
   desactivate(classes: any){
     let des: any = {};
-    des.id = classes.id;
-    des.action = "desactivate";
-    this.http.put<any>('http://localhost:4000/api/classes', des).subscribe({
+    des = {id: classes.class_id, status: classes.class_status}
+    this.http.put<any>('http://localhost:4000/api/classes/status', des).subscribe({
       next: (res) => {
-        console.log(res)
+        this.load();
       },
       error: (err) => {
         //alert('Cargar fallo' + err);

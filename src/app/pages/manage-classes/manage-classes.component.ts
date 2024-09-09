@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { scheduled } from 'rxjs';
 
 @Component({
   selector: 'app-manage-classes',
@@ -14,9 +15,12 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 export class ManageClassesComponent {
 
   deleteVariables: any = {};
+  editVaribles: any;
   charge: boolean = false;
 
   classes: any = [];
+  levels: any;
+  teachers: any;
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +34,8 @@ export class ManageClassesComponent {
 
   ngOnInit() {
     this.load();
+    this.loadTeachers();
+    this.loadlevels();
   }
   
   load(){
@@ -42,34 +48,63 @@ export class ManageClassesComponent {
       },
     });
   };
+
+  loadTeachers(){
+    this.http.get<any>('http://localhost:4000/api/teachers').subscribe({
+      next: (res) => {
+        this.teachers = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadlevels(){
+    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+      next: (res) => {
+        this.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
   
   addClassesForm = new FormGroup({
     teacher: new FormControl(""),
     level: new FormControl(""),
-    type: new FormControl(""),
-    status: new FormControl("")
+    status: new FormControl(""),
+    schedule: new FormControl(""),
+    name: new FormControl(""),
+    class: new FormControl("")
   });
 
   editClassesForm = new FormGroup({
     teacher: new FormControl(""),
     level: new FormControl(""),
-    type: new FormControl(""),
-    status: new FormControl("")
+    status: new FormControl(""),
+    schedule: new FormControl(""),
+    name: new FormControl(""),
+    class: new FormControl("")
   });
 
   addClass(){
     let classes: any = {
-      name: this.addClassesForm.value.teacher,
-      surname: this.addClassesForm.value.level,
-      mobil: this.addClassesForm.value.type,
+      name: this.addClassesForm.value.name,
+      teacher_id: this.addClassesForm.value.teacher,
+      schedule: this.addClassesForm.value.schedule,
+      level: this.addClassesForm.value.level,
+      class: this.addClassesForm.value.class,
       status: this.addClassesForm.value.status,
     };
     
-    console.log(this.addClassesForm.value);
+    console.log(classes);
 
-    this.http.post<any>('http://localhost:4000/api/classes', classes).subscribe({
+    this.http.post<any>('http://localhost:4000/api/classes/add', classes).subscribe({
       next: (res) => {
         console.log(res);
+        this.load();
       },
       error: (err) => {
         //alert('Cargar fallo' + err);
@@ -114,34 +149,43 @@ export class ManageClassesComponent {
   };
 
   modify(){
-
+    this.charge = true;
     let mod: any = {
-      name: this.editClassesForm.value.teacher,
-      surname: this.editClassesForm.value.level,
-      mobile: this.editClassesForm.value.type,
+      name: this.editClassesForm.value.name,
+      level: this.editClassesForm.value.level,
+      teacher: this.editClassesForm.value.teacher,
+      schedule: this.editClassesForm.value.schedule,
+      class: this.editClassesForm.value.class,
       status: this.editClassesForm.value.status,
-      action: "modify"
+      id:this.editVaribles.class_id
     };
-  
-    this.http.put<any>('http://localhost:4000/api/classes', mod).subscribe({
+    console.log(mod)
+    this.http.put<any>('http://localhost:4000/api/classes/edit', mod).subscribe({
       next: (res) => {
-        console.log(res)
+        console.log(res);
+        this.load();
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
+        this.charge = false;
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
+        this.charge = false;
       },
     });
   };
 
   openEditModal(classes: any){
+    console.log(classes)
+    this.editVaribles = classes;
     this.editClassesForm = new FormGroup({
-      teacher: new FormControl(classes.teacher),
-      level: new FormControl(classes.level),
-      type: new FormControl(classes.type),
-      status: new FormControl(classes.status),
+      teacher: new FormControl(classes.teacher_id),
+      level: new FormControl(classes.level_id),
+      status: new FormControl(classes.class_status),
+      schedule: new FormControl(classes.schedule),
+      name: new FormControl(classes.class_name),
+      class: new FormControl(classes.room_number)
     });
 
     let editModal: any;

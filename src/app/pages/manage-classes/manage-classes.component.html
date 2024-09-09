@@ -136,16 +136,13 @@
                                     <div class="col-1">
                                         <h5>Ciudad</h5>
                                     </div>
-                                    <div class="col-1">
-                                        <h5>Género</h5>
-                                    </div>
                                     @for(student of class.students; track student.id){
                                         
                                         <div class="col-1 my-3">
                                             {{student.name}}
                                         </div>
                                         <div class="col-1 my-3">
-                                            {{student.surname}}
+                                            {{student.last_name}}
                                         </div>
                                         <div class="col-2 my-3">
                                             {{student.document}}
@@ -162,9 +159,6 @@
                                         <div class="col-1 my-3">
                                             {{student.city}}
                                         </div>
-                                        <div class="col-1 my-3">
-                                            {{student.genre}}
-                                        </div>
                                     }
                                 </div>
                             </li>
@@ -178,34 +172,47 @@
 
 <form [formGroup] = "addClassesForm">
     <div class="container">
-        <div class="row mb-4">
+        <div class="row mb-3">
             <div class="col-4">
+                <label for="namme" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
+            </div>
+            <div class="col-3">
                 <label for="teacher" class="form-label">Teacher</label>
-                <input type="text" class="form-control" id="teacher" formControlName="teacher" placeholder="Manolo">
+                <select class="form-select" id="teacher" formControlName="teacher">
+                    @for(teacher of teachers; track teacher.teacher_id){
+                        <option [value]="teacher.teacher_id">{{teacher.name}} {{teacher.last_name}}</option>
+                    }
+                </select>
             </div>
             <div class="col-2">
                 <label for="level" class="form-label">Level</label>
                 <select id="level" class="form-select" formControlName="level">
-                    <option value="A1">A1</option>
-                    <option value="A2">A2</option>
-                    <option value="B1">B1</option>
-                    <option value="B2">B2</option>
-                </select>
-            </div>
-            <div class="col-3">
-                <label for="type" class="form-label">Tipo</label>
-                <input type="text" class="form-control" id="type" formControlName="type" placeholder="Full time">
-            </div>
-            <div class="col-3">
-                <label for="status" class="form-label">Estado</label>
-                <select id="status" class="form-select" formControlName="status">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
                 </select>
             </div>
         </div>
-        <div class=" text-center">
-            <button class="btn btn-primary my-5">Añadir clase</button>
+        <div class="row text-center">
+            <div class="col-4">
+                <label for="schedule" class="form-label">Calendario</label>
+                <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
+            </div>
+            <div class="col-3">
+                <label for="class" class="form-label">Clase</label>
+                <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
+            </div>
+            <div class="col-2">
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
+                </select>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary my-5" (click)="addClass()">Añadir clase</button>
         </div>
     </div>
 </form>
@@ -227,21 +234,34 @@
         </div>
         <div class="modal-body">
           
-            <form [formGroup] = "editClassesForm" id="editForm">
+            <form [formGroup] = "editClassesForm" id="editForm">                   
+                <label for="namme" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
 
-                <p class="mt-1">Profesor</p>
-                <input type="text" class="form-control" formControlName="teacher" placeholder="Nombre del profesor">
-
-                <p class="mt-1">Nivel</p>
-                <input type="text" class="form-control" formControlName="level" placeholder="Nivel">
-
-                <p class="mt-1">Typo de clase</p>
-                <input type="text" class="form-control" formControlName="type" placeholder="Typo de clase">
-
-                <p class="mt-3">Elige un estado</p>
-                <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
-                    <option value="true">Activo</option>
-                    <option value="false">Inactivo</option>
+                <label for="teacher" class="form-label">Teacher</label>
+                <select class="form-select" id="teacher" formControlName="teacher">
+                    @for(teacher of teachers; track teacher.teacher_id){
+                        <option [value]="teacher.teacher_id">{{teacher.name}} {{teacher.last_name}}</option>
+                    }
+                </select>
+                    
+                <label for="level" class="form-label">Level</label>
+                <select id="level" class="form-select" formControlName="level">
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
+                </select>
+                    
+                <label for="schedule" class="form-label">Calendario</label>
+                <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
+                   
+                <label for="class" class="form-label">Clase</label>
+                <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
+                   
+                <label for="status" class="form-label">Estado</label>
+                <select id="status" class="form-select" formControlName="status">
+                    <option value="active">Activo</option>
+                    <option value="inactive">Inactivo</option>
                 </select>
             </form>
         

@@ -18,6 +18,7 @@ export class ManageStudentsComponent {
   editVariables: any = {};
   students: any = [];
   levels: any;
+  classes: any;
 
   constructor(private http: HttpClient) {}
 
@@ -95,7 +96,6 @@ export class ManageStudentsComponent {
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
     this.deleteVariables = student;
-    console.log(student)
   };
 
   closeDeleteModal(){
@@ -351,6 +351,41 @@ export class ManageStudentsComponent {
         alert('Cargar fallo' + err);
       },
     });
+  };
+
+  loadClasses(){
+    this.http.get<any>('http://localhost:4000/api/classes').subscribe({
+      next: (res) => {
+        this.classes = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  }
+
+  openClassModal(student: any){
+    console.log(student.student_id);
+    let id: any = {id: student.student_id}
+    this.loadClasses();
+    this.http.put<any>('http://localhost:4000/api/classes/studentId', id).subscribe({
+      next: (res) => {
+        this.classes = res;
+        console.log(res)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+    let classModal: any;
+    classModal = document.getElementById('classModal');
+    classModal.style.display="block";
+  };
+
+  closeClassModal(){
+    let classModal: any;
+    classModal = document.getElementById('classModal');
+    classModal.style.display="none";
   };
 
 }

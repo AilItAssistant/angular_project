@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div class="container text-center mt-4">
+<div class="container-fluid text-center mt-4">
   <form [formGroup] = "orderForm" id="order">
     <div class="row my-5">
         <h3 class="col-3">Gestión de usuarios</h3>
@@ -66,7 +66,7 @@
 </div>
 
 @for(user of users; track user.id){
-<div class="container text-center">
+<div class="container-fluid text-center">
   <ul class="list-group">
     <li class="list-group-item">
       <div class="row">
@@ -125,7 +125,7 @@
 <form [formGroup]="addUserForm">
   <div class="container">
     <div class="row mb-4">
-      <div class="col-6">
+      <div class="col-3">
         <label for="name" class="form-label">Nombre</label>
         <input
           type="text"
@@ -135,13 +135,23 @@
           placeholder="Manolo"
         />
       </div>
-      <div class="col-6">
-        <label for="surname" class="form-label">Apellidos</label>
+      <div class="col-5">
+        <label for="last_name" class="form-label">Apellidos</label>
         <input
           type="text"
           class="form-control"
-          id="surname"
-          formControlName="surname"
+          id="last_name"
+          formControlName="last_name"
+          placeholder="Fernández Lopez"
+        />
+      </div>
+      <div class="col-4">
+        <label for="username" class="form-label">Nombre de usuario</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
           placeholder="Fernández Lopez"
         />
       </div>
@@ -152,8 +162,8 @@
         <input
           type="text"
           class="form-control"
-          id="mobile"
-          formControlName="mobile"
+          id="phone_number"
+          formControlName="phone_number"
           placeholder="+321321456987"
         />
       </div>
@@ -179,7 +189,7 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-4">
+      <div class="col-3">
         <label for="permissions" class="form-label">Permisos</label>
         <select
           id="permissions"
@@ -191,7 +201,11 @@
           <option value="3">Three</option>
         </select>
       </div>
-      <div class="col-4">
+      <div class="col-3">
+        <label for="created">Fecha de creación</label>
+        <input id="created" class="form-control mt-2" type="date" formControlName="created" />
+    </div>
+      <div class="col-3">
         <label for="position" class="form-label">Cargo</label>
         <select id="position" class="form-select" formControlName="position">
           <option value="teacher">Teacher</option>
@@ -200,11 +214,11 @@
           <option value="it">It</option>
         </select>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <label for="status" class="form-label">Estado</label>
         <select id="status" class="form-select" formControlName="status">
-          <option value="true" selected>Active</option>
-          <option value="false">Disabled</option>
+          <option value="active">Active</option>
+          <option value="inactive">Disabled</option>
         </select>
       </div>
     </div>
@@ -251,7 +265,7 @@
           <input
             type="text"
             class="form-control"
-            formControlName="surname"
+            formControlName="last_name"
             placeholder="Apellidos del usuario"
           />
 
@@ -259,7 +273,7 @@
           <input
             type="text"
             class="form-control"
-            formControlName="mobile"
+            formControlName="phone_number"
             placeholder="Numero del usuario"
           />
 
@@ -354,8 +368,8 @@
       </div>
       <div class="modal-body text-center">
         <p>Nombre: {{ deleteVariables.name }}</p>
-        <p>Apellido: {{ deleteVariables.surname }}</p>
-        <p>Número de teléfono: {{ deleteVariables.mobile }}</p>
+        <p>Apellido: {{ deleteVariables.last_name }}</p>
+        <p>Número de teléfono: {{ deleteVariables.phone_number }}</p>
         <p>Email: {{ deleteVariables.email }}</p>
         <p>Ciudad: {{ deleteVariables.city }}</p>
         <p>Permisos: {{ deleteVariables.permissions }}</p>

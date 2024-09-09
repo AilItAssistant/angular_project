@@ -14,6 +14,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 export class ManageUsersComponent {
 
   deleteVariables: any = {};
+  editVariables: any;
   charge: boolean = false;
   users: any = [];
 
@@ -48,46 +49,55 @@ export class ManageUsersComponent {
 
   addUserForm = new FormGroup({
     name: new FormControl(""),
-    surname: new FormControl(""),
-    mobile: new FormControl(""),
+    last_name: new FormControl(""),
+    phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
     position: new FormControl(""),
     status: new FormControl(""),
+    created: new FormControl(""),
+    username: new FormControl("")
   });
 
   editUserForm = new FormGroup({
     name: new FormControl(""),
-    surname: new FormControl(""),
-    mobile: new FormControl(""),
+    last_name: new FormControl(""),
+    phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
     position: new FormControl(""),
     status: new FormControl(""),
+    created: new FormControl(""),
+    username: new FormControl("")
   });
 
   addUser(){
+    if(this.addUserForm.value.status === ""){this.addUserForm.value.status = "active"}
+    console.log(this.addUserForm)
     let user: any = {
       name: this.addUserForm.value.name,
-      surname: this.addUserForm.value.surname,
-      mobile: this.addUserForm.value.mobile,
+      last_name: this.addUserForm.value.last_name,
+      phone_number: this.addUserForm.value.phone_number,
       email: this.addUserForm.value.email,
       city: this.addUserForm.value.city,
       permissions: this.addUserForm.value.permissions,
       position: this.addUserForm.value.position,
       status: this.addUserForm.value.status,
+      created: this.addUserForm.value.created,
+      username: this.addUserForm.value.username
     };
     
     console.log(this.addUserForm.value);
 
-    this.http.post<any>('http://localhost:4000/api/user', user).subscribe({
+    this.http.post<any>('http://localhost:4000/api/users/add', user).subscribe({
       next: (res) => {
         console.log(res);
+        this.load();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
       });
   };
@@ -100,16 +110,20 @@ export class ManageUsersComponent {
   };
 
   delete(){
-    console.log(this.deleteVariables.id)
-    this.http.delete<any>('http://localhost:4000/api/user', this.deleteVariables.id).subscribe({
+    let del: any = {id: this.deleteVariables.id}
+    this.charge = true;
+    this.http.put<any>('http://localhost:4000/api/users/delete', del).subscribe({
       next: (res) => {
         console.log(res)
         let deleteModal: any;
+        this.load();
         deleteModal = document.getElementById('deleteModal');
         deleteModal.style.display="none";
+        this.charge = false
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
+        this.charge = false;
       },
     });
   };
@@ -127,28 +141,34 @@ export class ManageUsersComponent {
   };
 
   modify(){
-
+    this.charge = true;
+    if(this.editUserForm.value.position === null){this.editUserForm.value.position = ""}
+    if(this.editUserForm.value.created === null){this.editUserForm.value.created = ""}
+    if(this.editUserForm.value.last_name === null){this.editUserForm.value.last_name = ""}
     let mod: any = {
       name: this.editUserForm.value.name,
-      surname: this.editUserForm.value.surname,
-      mobile: this.editUserForm.value.mobile,
+      last_name: this.editUserForm.value.last_name,
+      phone_number: this.editUserForm.value.phone_number,
       status: this.editUserForm.value.status,
       email: this.editUserForm.value.email,
       city: this.editUserForm.value.city,
-      permissions: this.editUserForm.value.permissions,
+      role: this.editUserForm.value.permissions,
       position: this.editUserForm.value.position,
-      action: "modify"
+      created: this.editUserForm.value.created,
+      id: this.editVariables.id
     };
-  
-    this.http.put<any>('http://localhost:4000/api/user', mod).subscribe({
+    console.log(mod)
+    this.http.put<any>('http://localhost:4000/api/users/edit', mod).subscribe({
       next: (res) => {
-        console.log(res)
+        console.log(res);
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
+        this.load();
+        this.charge = false;
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
@@ -156,14 +176,17 @@ export class ManageUsersComponent {
   openEditModal(user: any){
     this.editUserForm = new FormGroup({
       name: new FormControl(user.name),
-      surname: new FormControl(user.surname),
-      mobile: new FormControl(user.mobile),
+      last_name: new FormControl(user.last_name),
+      phone_number: new FormControl(user.phone_number),
       email: new FormControl(user.email),
       city: new  FormControl(user.city),
       permissions: new FormControl(user.permissions),
       position: new FormControl(user.position),
       status: new FormControl(user.status),
+      created: new FormControl(user.created),
+      username: new FormControl(user.username)
     });
+    this.editVariables = user;
 
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -171,15 +194,14 @@ export class ManageUsersComponent {
   };
 
   desactivate(user: any){
-    let des: any = {};
-    des.id = user.id;
-    des.action = "desactivate";
-    this.http.put<any>('http://localhost:4000/api/user', des).subscribe({
+    let des: any = {id: user.id, status: user.status};
+    this.http.put<any>('http://localhost:4000/api/users/status', des).subscribe({
       next: (res) => {
-        console.log(res)
+        console.log(res);
+        this.load();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };

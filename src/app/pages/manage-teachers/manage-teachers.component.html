@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<div class="container text-center">
+<div class="container-fluid text-center">
     <form [formGroup] = "orderForm" id="order">
         <div class="row mt-5 mb-3">
             <h3 class="col-3">Gestión de profesores</h3>
@@ -66,7 +66,7 @@
     </ul>
 </div>
 
-<div class="accordion container mb-5" id="accordionExample">
+<div class="accordion container-fluid mb-5" id="accordionExample">
     @for(teacher of teachers; track teacher.teacher_id){
         <div class="accordion-item">
             
@@ -102,6 +102,7 @@
                                 }
                             </div>
                             <div class="col-1 text-end">
+                                <button class="btn btn-success btn-sm" (click)="openClassModal(teacher)">C</button>
                                 <button class="btn btn-primary btn-sm" (click)="openEditModal(teacher)">M</button>
                                 <button class="btn btn-secondary btn-sm" (click)="desactivate(teacher)">D</button>
                                 <button class="btn btn-danger btn-sm" (click)="openDeleteModal(teacher)">E</button>     
@@ -297,5 +298,102 @@
       </div>
     </div>
   </div>
+
+    <!-- Classes modal -->
+
+<div class="modal" id="classModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir o eliminar clases a {{teacher.name}} {{teacher.last_name}}</h1>
+            @if(!charge){
+                <button type="button" class="btn-close" (click)="closeClassModal()"></button>
+            } @else {
+                <div class="spinner-border text-secondary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>            
+            }
+            </div>
+            <div class="modal-body text-center">
+                <div class="row">
+                    <div class="col-6 border-end">
+                        <h4 class="border-bottom">Clases que tiene el profesor</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre de la clase
+                            </div>
+                            <div class="col-2">
+                                Nivel de la clase
+                            </div>
+                            <div class="col-2">
+                                Nombre profesor
+                            </div>
+                            <div class="col-3">
+                                Apellidos profesor
+                            </div>
+                            
+                        </div>
+                        @for(classId of classesId; track classId.class_id){
+                            <div class="row mb-3 me-1">
+                                <div class="col-3">
+                                    {{classId.class_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{classId.level_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{classId.teacher_name}}
+                                </div>
+                                <div class="col-3">
+                                    {{classId.teacher_last_name}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-danger" (click)="deleteClass(classId)">Eliminar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-6 border-start">
+                        <h4 class="border-bottom">Clases disponibles</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre de la clase
+                            </div>
+                            <div class="col-2">
+                                Nivel de la clase
+                            </div>
+                            <div class="col-2">
+                                Nombre profesor
+                            </div>
+                            <div class="col-3">
+                                Apellidos profesor
+                            </div>
+                            
+                        </div>
+                        @for(class of classes; track class.class_id){
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    {{class.class_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{class.class_level}}
+                                </div>
+                                <div class="col-2">
+                                    {{class.teacher_name}}
+                                </div>
+                                <div class="col-3">
+                                    {{class.teacher_last_name}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-primary" (click)="addClass(class)">Añadir</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <app-footer></app-footer>

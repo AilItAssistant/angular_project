@@ -119,11 +119,11 @@
                         }
                     </div>
                     <div class="col-1 text-end">
-                        <button class="btn btn-primary btn-sm" (click)="openClassModal(student)">Editar clases del alumno</button> 
-                        <button class="btn btn-primary btn-sm" (click)="openEditModal(student)">Mod</button>
-                        <button class="btn btn-secondary btn-sm" (click)="desactivate(student)">Des</button>
+                        <button class="btn btn-success btn-sm" (click)="openClassModal(student)">C</button>
+                        <button class="btn btn-primary btn-sm" (click)="openEditModal(student)">M</button>
+                        <button class="btn btn-secondary btn-sm" (click)="desactivate(student)">D</button>
                         <button class="btn btn-danger btn-sm" (click)="openDeleteModal(student)">E</button>
-                        <button class="btn btn-danger btn-sm" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.student_id" aria-expanded="true" [attr.aria-controls]="student.student_id">
+                        <button class="btn btn-warning btn-sm" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + student.student_id" aria-expanded="true" [attr.aria-controls]="student.student_id">
                         +</button>
                     </div>
                     
@@ -354,7 +354,9 @@
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este alumno?</h1>
+                @if(student.name){
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir o eliminar clases a {{student.name}} {{student.last_name}}</h1>
+                }
             @if(!charge){
                 <button type="button" class="btn-close" (click)="closeClassModal()"></button>
             } @else {

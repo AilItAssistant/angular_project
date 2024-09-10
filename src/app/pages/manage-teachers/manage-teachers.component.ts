@@ -17,6 +17,9 @@ export class ManageTeachersComponent {
   editVariables: any = {};
   charge: boolean = false;
   teachers: any = [];
+  classes: any;
+  classesId: any;
+  teacher: any = {};
 
   constructor(private http: HttpClient) {}
 
@@ -36,7 +39,6 @@ export class ManageTeachersComponent {
     this.http.get<any>('http://localhost:4000/api/teachers').subscribe({
       next: (res) => {
         this.teachers = res;
-        console.log(this.teachers)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -289,6 +291,85 @@ export class ManageTeachersComponent {
       phone_number: "",
       email: ""
     });
+  };
+
+  loadClasses(){
+    this.http.get<any>('http://localhost:4000/api/classes').subscribe({
+      next: (res) => {
+        this.classes = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  getClassesById(id: any){
+    this.http.put<any>('http://localhost:4000/api/classes/teacherId', id).subscribe({
+      next: (res) => {
+        this.classesId = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  openClassModal(teacher: any){
+    console.log(teacher)
+    let id: any = {id: teacher.teacher_id}
+    this.loadClasses();
+    this.getClassesById(id);
+    this.teacher = teacher;
+    
+    let classModal: any;
+    classModal = document.getElementById('classModal');
+    classModal.style.display="block";
+  };
+
+  addClass(classId: any){
+    console.log(classId.class_id);
+    console.log(this.teacher.teacher_id);
+    let add: any = {
+      class_id: classId.class_id,
+      teacher_id: this.teacher.teacher_id
+    };
+    let id: any = { id: this.teacher.teacher_id };
+
+    this.http.put<any>('http://localhost:4000/api/teachers/addClass', add).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getClassesById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteClass(classes: any){
+    console.log(classes.class_id);
+    console.log(this.teacher.teacher_id);
+    let del: any = {
+      class_id: classes.class_id,
+      teacher_id: this.teacher.teacher_id
+    };
+    let id: any = { id: this.teacher.teacher_id };
+    this.http.put<any>('http://localhost:4000/api/teachers/deleteClass', del).subscribe({
+      next: (res) => {
+        this.getClassesById(id);
+        console.log(res)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  closeClassModal(){
+    let classModal: any;
+    classModal = document.getElementById('classModal');
+    classModal.style.display="none";
   };
 
 }

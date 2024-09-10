@@ -20,7 +20,7 @@ export class ManageStudentsComponent {
   levels: any;
   classes: any;
   classesId: any;
-  student: any;
+  student: any = {};
 
   constructor(private http: HttpClient) {}
 
@@ -42,6 +42,7 @@ export class ManageStudentsComponent {
     this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
       next: (res) => {
         this.students = res;
+        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

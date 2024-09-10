@@ -19,6 +19,8 @@ export class ManageStudentsComponent {
   students: any = [];
   levels: any;
   classes: any;
+  classesId: any;
+  student: any;
 
   constructor(private http: HttpClient) {}
 
@@ -196,6 +198,7 @@ export class ManageStudentsComponent {
           editModal = document.getElementById('editModal');
           editModal.style.display="none";
           this.charge = false;
+          this.load();
           this.editForm.reset({
             name: "",
             last_name: "",
@@ -238,6 +241,7 @@ export class ManageStudentsComponent {
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
+        this.load();
         this.addStudentsForm.reset({
           name: "",
           last_name: "",
@@ -362,24 +366,67 @@ export class ManageStudentsComponent {
         alert('Cargar fallo' + err);
       },
     });
-  }
+  };
 
-  openClassModal(student: any){
-    console.log(student.student_id);
-    let id: any = {id: student.student_id}
-    this.loadClasses();
+  getClassesById(id: any){
     this.http.put<any>('http://localhost:4000/api/classes/studentId', id).subscribe({
       next: (res) => {
-        this.classes = res;
+        this.classesId = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  openClassModal(student: any){
+    let id: any = {id: student.student_id}
+    this.loadClasses();
+    this.getClassesById(id);
+    this.student = student;
+    
+    let classModal: any;
+    classModal = document.getElementById('classModal');
+    classModal.style.display="block";
+  };
+
+  addClass(classId: any){
+    console.log(classId.class_id);
+    console.log(this.student.student_id);
+    let add: any = {
+      class_id: classId.class_id,
+      student_id: this.student.student_id
+    };
+    let id: any = { id: this.student.student_id };
+
+    this.http.put<any>('http://localhost:4000/api/alumnos/addClass', add).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getClassesById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteClass(classes: any){
+    console.log(classes.class_id);
+    console.log(this.student.student_id);
+    let del: any = {
+      class_id: classes.class_id,
+      student_id: this.student.student_id
+    };
+    let id: any = { id: this.student.student_id };
+    this.http.put<any>('http://localhost:4000/api/alumnos/deleteClass', del).subscribe({
+      next: (res) => {
+        this.getClassesById(id);
         console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
       },
     });
-    let classModal: any;
-    classModal = document.getElementById('classModal');
-    classModal.style.display="block";
   };
 
   closeClassModal(){

@@ -237,13 +237,6 @@
             <form [formGroup] = "editClassesForm" id="editForm">                   
                 <label for="namme" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
-
-                <label for="teacher" class="form-label">Teacher</label>
-                <select class="form-select" id="teacher" formControlName="teacher">
-                    @for(teacher of teachers; track teacher.teacher_id){
-                        <option [value]="teacher.teacher_id">{{teacher.name}} {{teacher.last_name}}</option>
-                    }
-                </select>
                     
                 <label for="level" class="form-label">Level</label>
                 <select id="level" class="form-select" formControlName="level">

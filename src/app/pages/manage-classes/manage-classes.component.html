@@ -98,6 +98,8 @@
                                 }
                             </div>
                             <div class="col-1 text-end">
+                                <button class="btn btn-success btn-sm" (click)="openStudentsModal(class)">AES</button>
+                                <button class="btn btn-success btn-sm" (click)="openTeachersModal(class)">APR</button>
                                 <button class="btn btn-primary btn-sm" (click)="openEditModal(class)">M</button>
                                 <button class="btn btn-secondary btn-sm" (click)="desactivate(class)">D</button>
                                 <button class="btn btn-danger btn-sm" (click)="openDeleteModal(class)">E</button>     
@@ -309,5 +311,188 @@
       </div>
     </div>
   </div>
+
+  <!-- Teachers modal -->
+
+  <div class="modal" id="classTeachersModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if(teachers.name){
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir o eliminar profesores a {{relationsVariables.name}}</h1>
+                }
+            @if(!charge){
+                <button type="button" class="btn-close" (click)="closeTeachersModal()"></button>
+            } @else {
+                <div class="spinner-border text-secondary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>            
+            }
+            </div>
+            <div class="modal-body text-center">
+                <div class="row">
+                    <div class="col-6 border-end">
+                        <h4 class="border-bottom">Profesores que tiene la clase</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre del profesor
+                            </div>
+                            <div class="col-4">
+                                Apellidos profesor
+                            </div>
+                            <div class="col-3">
+                                Departamento
+                            </div>
+                        </div>
+                        @for(teacherId of teachersId; track teacherId.teacher_id){
+                            <div class="row mb-3 me-1">
+                                <div class="col-3">
+                                    {{teacherId.teacher_name}}
+                                </div>
+                                <div class="col-4">
+                                    {{teacherId.teacher_last_name}}
+                                </div>
+                                <div class="col-3">
+                                    {{teacherId.teacher_department}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-danger" (click)="deleteTeacher(teacherId)">Eliminar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-6 border-start">
+                        <h4 class="border-bottom">Profesores</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre del profesor
+                            </div>
+                            <div class="col-4">
+                                Apellidos profesor
+                            </div>
+                            <div class="col-3">
+                                Departamento
+                            </div>
+                        </div>
+                        @for(teacher of teachers; track teachers.teachers_id){
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    {{teacher.name}}
+                                </div>
+                                <div class="col-4">
+                                    {{teacher.last_name}}
+                                </div>
+                                <div class="col-3">
+                                    {{teacher.department}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-primary" (click)="addTeacher(teacher)">Añadir</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <!-- Students modal -->
+
+  <div class="modal" id="classStudentsModal">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if(students.name){
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Añadir o eliminar estudiantes a {{relationsVariables.name}}</h1>
+                }
+            @if(!charge){
+                <button type="button" class="btn-close" (click)="closeStudentsModal()"></button>
+            } @else {
+                <div class="spinner-border text-secondary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>            
+            }
+            </div>
+            <div class="modal-body text-center">
+                <div class="row">
+                    <div class="col-6 border-end">
+                        <h4 class="border-bottom">Alumnos que tiene la clase</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre del alumno
+                            </div>
+                            <div class="col-2">
+                                Apellidos del alumno
+                            </div>
+                            <div class="col-2">
+                                Nivel del alumno
+                            </div>
+                            <div class="col-3">
+                                Ciudad del alumno
+                            </div>
+                        </div>
+                        @for(studentId of studentsId; track studentId.student_id){
+                            <div class="row mb-3 me-1">
+                                <div class="col-3">
+                                    {{studentId.student_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{studentId.student_last_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{studentId.student_level}}
+                                </div>
+                                <div class="col-3">
+                                    {{studentId.student_city}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-danger" (click)="deleteStudent(studentId)">Eliminar</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-6 border-start">
+                        <h4 class="border-bottom">Alumnos</h4>
+                        <div class="row my-4">
+                            <div class="col-3">
+                                Nombre de la clase
+                            </div>
+                            <div class="col-2">
+                                Nivel de la clase
+                            </div>
+                            <div class="col-2">
+                                Nombre profesor
+                            </div>
+                            <div class="col-3">
+                                Apellidos profesor
+                            </div>
+                            
+                        </div>
+                        @for(student of students; track student.student_id){
+                            <div class="row mb-3">
+                                <div class="col-3">
+                                    {{student.name}}
+                                </div>
+                                <div class="col-2">
+                                    {{student.last_name}}
+                                </div>
+                                <div class="col-2">
+                                    {{student.student_level}}
+                                </div>
+                                <div class="col-3">
+                                    {{student.city}}
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-primary" (click)="addStudent(student)">Añadir</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <app-footer></app-footer>

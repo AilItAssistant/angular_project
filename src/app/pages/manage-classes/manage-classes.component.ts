@@ -14,13 +14,17 @@ import { scheduled } from 'rxjs';
 })
 export class ManageClassesComponent {
 
+  relationsVariables: any;
   deleteVariables: any = {};
   editVaribles: any;
   charge: boolean = false;
 
   classes: any = [];
-  levels: any;
-  teachers: any;
+  levels: any = [];
+  teachers: any = [];
+  students: any = [];
+  teachersId: any = [];
+  studentsId: any = [];
 
   constructor(private http: HttpClient) {}
 
@@ -302,6 +306,139 @@ export class ManageClassesComponent {
       class: "",
       level: "",
       class_name: "",
+    });
+  };
+
+  loadStudents(){
+    this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
+      next: (res) => {
+        this.students = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadStudentsById(id: any){
+    this.http.put<any>('http://localhost:4000/api/alumnos/alumnosByClassId', id).subscribe({
+      next: (res) => {
+        this.studentsId = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadTeachersById(id: any){
+    this.http.put<any>('http://localhost:4000/api/teachers/teachersByClassId', id).subscribe({
+      next: (res) => {
+        this.teachersId = res;
+        console.log(res)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  openStudentsModal(classes: any){
+    let id: any = { id: classes.class_id };
+    this.loadStudents();
+    console.log(this.students);
+    this.loadStudentsById(id);
+    console.log(this.studentsId);
+    this.relationsVariables = classes;
+    let classStudentsModal: any;
+    classStudentsModal = document.getElementById('classStudentsModal');
+    classStudentsModal.style.display="block";
+  };
+
+  closeStudentsModal(){
+    let classStudentsModal: any;
+    classStudentsModal = document.getElementById('classStudentsModal');
+    classStudentsModal.style.display="none";
+  };
+
+  openTeachersModal(classes: any){
+    let id: any = { id: classes.class_id };
+    this.loadTeachers();
+    console.log(this.teachers);
+    this.loadTeachersById(id)
+    this.relationsVariables = classes;
+    let classTeachersModal: any;
+    classTeachersModal = document.getElementById('classTeachersModal');
+    classTeachersModal.style.display="block";
+  };
+
+  closeTeachersModal(){
+    let classTeachersModal: any;
+    classTeachersModal = document.getElementById('classTeachersModal');
+    classTeachersModal.style.display="none";
+  };
+
+  addTeacher(teacher: any){
+    let add: any = {
+      class_id: this.relationsVariables.class_id,
+      teacher_id: teacher.teacher_id
+    };
+    let id: any = { id: this.relationsVariables.class_id };
+    this.http.put<any>('http://localhost:4000/api/teachers/addTeacherToClass', add).subscribe({
+      next: (res) => {
+        this.loadTeachersById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteTeacher(teacher_id: any){
+    let add: any = {
+      class_id: this.relationsVariables.class_id,
+      teacher_id: teacher_id.teacher_id
+    };
+    let id: any = { id: this.relationsVariables.class_id };
+    this.http.put<any>('http://localhost:4000/api/teachers/deleteTeacherToClass', add).subscribe({
+      next: (res) => {
+        this.loadTeachersById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addStudent(student: any){
+    let add: any = {
+      class_id: this.relationsVariables.class_id,
+      student_id: student.student_id
+    };0
+    let id: any = { id: this.relationsVariables.class_id };
+    this.http.put<any>('http://localhost:4000/api/alumnos/addStudentToClass', add).subscribe({
+      next: (res) => {
+        this.loadStudentsById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteStudent(student: any){
+    let add: any = {
+      class_id: this.relationsVariables.class_id,
+      student_id: student.student_id
+    };
+    let id: any = { id: this.relationsVariables.class_id };
+    this.http.put<any>('http://localhost:4000/api/alumnos/deleteStudentToClass', add).subscribe({
+      next: (res) => {
+        this.loadStudentsById(id);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
     });
   };
 

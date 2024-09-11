@@ -335,7 +335,6 @@ export class ManageClassesComponent {
     this.http.put<any>('http://localhost:4000/api/teachers/teachersByClassId', id).subscribe({
       next: (res) => {
         this.teachersId = res;
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

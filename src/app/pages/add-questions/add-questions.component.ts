@@ -202,7 +202,6 @@ export class AddQuestionsComponent {
   selectStatement(){
     
     let statementModal: any;
-    
     this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];

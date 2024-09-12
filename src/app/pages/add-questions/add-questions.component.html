@@ -6,29 +6,29 @@
     <form [formGroup] = "questionForm" id="questionForm">
         @if(!statement){
             <h3 class="mb-4 text-center">Añadir enunciado</h3>
-        <div class="container text-center">
-            <div class="row">
-                <div class="col">
-                    <p>Elige un nivel</p>
-                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
-                        @for(level of levels; track level.id){
-                            <option [value]="level.id">{{level.name}}</option>
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col">
+                        <p>Elige un nivel</p>
+                        <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
+                            @for(level of levels; track level.id){
+                                <option [value]="level.id">{{level.name}}</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col">
+                        <p>Elige una destreza</p>
+                    <select class="form-select" placeholder="Elige una destreza" formControlName="skills" aria-label="Elige una destreza" required>
+                        @for(skill of skills; track skill.id){
+                            <option [value]="skill.id">{{skill.name}}</option>
                         }
                     </select>
-                </div>
-                <div class="col">
-                    <p>Elige una destreza</p>
-                <select class="form-select" placeholder="Elige una destreza" formControlName="skills" aria-label="Elige una destreza" required>
-                    @for(skill of skills; track skill.id){
-                        <option [value]="skill.id">{{skill.name}}</option>
-                    }
-                </select>
-                </div>
-                <div class="col mt-3">
-                    <button class="btn btn-info mt-4" (click)="openStatementModal()">Seleccionar un enunciado existente</button>
+                    </div>
+                    <div class="col mt-3">
+                        <button class="btn btn-info mt-4" (click)="openStatementModal()">Seleccionar un enunciado existente</button>
+                    </div>
                 </div>
             </div>
-        </div>
 
             <div class="row my-3">
                 <div class="col text-center">
@@ -45,14 +45,16 @@
                 <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
         
         } @else {
-            <h3 class="mb-4 text-center">Añadir a enunciado</h3>
-            <h5>Enunciado</h5>
-            <p>{{selectedStatement.content}}</p>
-            <h5>Texto</h5>
-            <p>{{selectedStatement.text}}</p>
-            <h5>Puntuacion</h5>
-            <p>{{selectedStatement.score}}</p>
-            <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>
+            <div class="row">
+                <h3 class="mb-4 text-center">Añadir a enunciado</h3>
+                <h5 class="col-4">Enunciado</h5>
+                <h5 class="col-7">Texto</h5>
+                <h5 class="col-1">Puntuacion</h5>
+                <p class="col-4">{{selectedStatement.content}}</p>
+                <p class="col-7">{{selectedStatement.text}}</p>
+                <p class="col-1">{{selectedStatement.score}}</p>
+                <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>
+            </div>
         }
 
        <h3 class="text-center my-4">Añadir pregunta</h3>

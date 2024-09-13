@@ -26,44 +26,7 @@ export class AddQuestionsComponent {
   levels: any;
   skills: any;
   blocks: any;
-
-  ngOnInit() {
-    this.load();
-  }
   
-  load(){
-    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
-      next: (res) => {
-        this.levels = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
-      next: (res) => {
-        this.skills = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
-      next: (res) => {
-        this.blocks = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-  };
-
-  addResponse(){
-    if(this.numberResponses < 6){
-      this.numberResponses++;
-    }
-  };
-
   statementForm = new FormGroup({
     statement: new FormControl(""),
   });
@@ -85,6 +48,51 @@ export class AddQuestionsComponent {
     responseE: new FormControl(""),
     responseF: new FormControl(""),
   });
+
+  ngOnInit() {
+    this.loadLevels();
+    this.loadSkills();
+    this.loadBLocks();
+  };
+
+  loadLevels(){
+    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+      next: (res) => {
+        this.levels = res;
+      },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadSkills(){
+    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
+      next: (res) => {
+        this.skills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadBLocks(){
+    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
+      next: (res) => {
+        this.blocks = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addResponse(){
+    if(this.numberResponses < 6){
+      this.numberResponses++;
+    }
+  };
 
   sendQuestion(){
     let responses: any = [
@@ -144,7 +152,7 @@ export class AddQuestionsComponent {
       statement_id: this.selectedStatement.id
     };
     console.log(add)
-    this.http.post<any>('http://localhost:4000/api/questions', add).subscribe({
+    this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
       next: (res) => {
         console.log(res)
         let form: any = document.getElementById("questionForm");
@@ -200,11 +208,12 @@ export class AddQuestionsComponent {
   };
 
   selectStatement(){
-    
     let statementModal: any;
     this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];
+        let ids: any = res[0].question_ids.split(",");
+        this.addQuestionToStatement(ids);
         statementModal = document.getElementById('statementModal');
         statementModal.style.display="none";
         if(this.statementForm.value.statement !== ""){
@@ -217,7 +226,53 @@ export class AddQuestionsComponent {
     });
   };
 
+  addQuestionToStatement(ids: any){
+    let questions :any = [];
+    
+    if( ids !== undefined ){
+      this.selectedStatement = Object.assign({questions: []}, this.selectedStatement);
+      for( let i: any = 0; ids.length > i; i++ ){
+        let id: any = {id: ids[i]};
+        this.http.put<any>(`http://localhost:4000/api/questions/getById`, id).subscribe({
+          next: (res) => {
+            console.log(res[0])
+            questions.push(res[0]);
+            //this.selectedStatement.questions.push(res[0]);
+            let answers_ids: any = res[0].answers_ids.split(",");
+            console.log(this.selectedStatement)
+            //this.addAnswerToQuestion(answers_ids, i);
+          },
+          error: (err) => {
+            alert('Cargar fallo' + err);
+          },
+        });
+        this.addAnswerToQuestion(questions);
+      }
+    }
+  };
+  // rehacer con con un bucle questions para sacar las ids y añadir el objeto al final
+  addAnswerToQuestion(ids: any, position: any){
+    if( ids !== undefined ){
+      this.selectedStatement.questions[position] = Object.assign({answers: []}, this.selectedStatement.questions);
+      for( let i: any = 0; ids.length > i; i++ ){
+        let id: any = {id: ids[i]};
+        this.http.put<any>(`http://localhost:4000/api/answers/getById`, id).subscribe({
+          next: (res) => {
+            //console.log(res[0])
+            //console.log(position)
+            this.selectedStatement.questions[position].answers.push(res[0]);
+          },
+          error: (err) => {
+            alert('Cargar fallo' + err);
+          },
+        });
+      }
+    }
+  };
+
   writeStatement(){
     this.statement = false;
+    console.log(this.selectedStatement)
+    this.selectedStatement = [];
   };
 }

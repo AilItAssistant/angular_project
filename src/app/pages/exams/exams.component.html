@@ -1,62 +1,22 @@
 <app-header></app-header>
 
+<h1 class="col text-center mt-4">Seleccionar exámen</h1>
 
-
-<!-- Exam online modal -->
-
-<div class="modal" id="sendExamModal">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel">Envio de examen online</h1>
-        @if(!charge){
-          <button type="button" class="btn-close" (click)="closeSendExamModal()"></button>
-        } @else {
-          <div class="spinner-border text-secondary mx-auto" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>            
+<div class="container">
+  <div class="row">
+    <form [formGroup]= "selectExam" id="selectExam">
+      <p>Elige un nivel</p>
+      <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
+        @for(level of levels; track level.id){
+          <option [value]="level.id">{{level.name}}</option>
         }
-      </div>
-      <div class="modal-body">
-        
-        <form [formGroup] = "sendExamForm">
-          <p class="d-inline-flex gap-1">
-            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                Link with href
-            </a>
-          </p>
-          <div class="collapse" id="collapseExample">
-            <div class="card card-body">
-              @for(alumno of alumnos; track alumno.idalumnos){
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="student" id="student" formControlName="student" (click)="addStudent(alumno)">
-                <label class="form-check-label" for="idalumno">
-                  {{alumno.nombre_alumno + " " + alumno.apellido_alumno}}
-                </label>
-              </div>
-            }
-            </div>
-          </div>
-          <div class="my-3">
-            <label for="studentEmail" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="studentEmail" placeholder="name@example.com" formControlName="studentEmail">
-          </div>
-        </form> 
-      
-      </div>
-      @if (!charge){
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="closeSendExamModal()">Cerrar</button>
-          <button type="button" class="btn btn-primary" (click)="sendExam()">Editar</button>
-        </div>
-      } @else {
-        <div class="spinner-border text-primary mx-auto mb-3" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>          
-      }
-    </div>
+      </select>
+    </form>
   </div>
 </div>
 
+<div class="text-center my-5">
+  <button class="btn btn-success">Descargar exámen</button>
+</div>
 
 <app-footer></app-footer>

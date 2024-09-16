@@ -53,9 +53,23 @@
                 <p class="col-4">{{selectedStatement.content}}</p>
                 <p class="col-7">{{selectedStatement.text}}</p>
                 <p class="col-1">{{selectedStatement.score}}</p>
+                @for(question of selectedStatement.questions[0]; track question.id){
+                    <div class="row text-center">
+                        <p class="col">{{question.content}}</p>
+                    </div>
+                    @for(answer of question.answers; track answer.id){
+                            <p class="col">{{answer.content}}</p>
+                    }
+                }
                 <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>
             </div>
         }
+
+        <div class="row text-center my-4">
+            <div class="col">
+                <button type="submit" class="btn btn-primary ms-5" (click)="sendStatement()">Añadir enunciado</button>
+            </div>
+        </div>
 
        <h3 class="text-center my-4">Añadir pregunta</h3>
             
@@ -130,9 +144,6 @@
     </form>
 
     <div class="row text-center my-4">
-        <div class="col">
-            <button type="submit" class="btn btn-primary ms-5" (click)="sendStatement()">Añadir enunciado</button>
-        </div>
         <div class="col">
             <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>
         </div>

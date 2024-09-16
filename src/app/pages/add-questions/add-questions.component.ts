@@ -135,7 +135,6 @@ export class AddQuestionsComponent {
         is_correct: false
       })
     }
-    console.log(this.questionForm.value.response)
 
     responses.forEach((element: any) => {
       if(this.questionForm.value.response === element.letter){
@@ -154,7 +153,7 @@ export class AddQuestionsComponent {
     console.log(add)
     this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
       next: (res) => {
-        console.log(res)
+        this.selectStatement();
         let form: any = document.getElementById("questionForm");
         form.reset();
       },
@@ -212,8 +211,11 @@ export class AddQuestionsComponent {
     this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];
-        let ids: any = res[0].question_ids.split(",");
-        this.addQuestionToStatement(ids);
+        if(res[0].question_ids !== null){
+          let ids: any = res[0].question_ids.split(",");
+          this.addQuestionToStatement(ids);
+        };
+        
         statementModal = document.getElementById('statementModal');
         statementModal.style.display="none";
         if(this.statementForm.value.statement !== ""){
@@ -235,32 +237,24 @@ export class AddQuestionsComponent {
         let id: any = {id: ids[i]};
         this.http.put<any>(`http://localhost:4000/api/questions/getById`, id).subscribe({
           next: (res) => {
-            console.log(res[0])
             questions.push(res[0]);
-            //this.selectedStatement.questions.push(res[0]);
-            let answers_ids: any = res[0].answers_ids.split(",");
-            console.log(this.selectedStatement)
-            //this.addAnswerToQuestion(answers_ids, i);
-          },
-          error: (err) => {
-            alert('Cargar fallo' + err);
-          },
-        });
-        this.addAnswerToQuestion(questions);
-      }
-    }
-  };
-  // rehacer con con un bucle questions para sacar las ids y añadir el objeto al final
-  addAnswerToQuestion(ids: any, position: any){
-    if( ids !== undefined ){
-      this.selectedStatement.questions[position] = Object.assign({answers: []}, this.selectedStatement.questions);
-      for( let i: any = 0; ids.length > i; i++ ){
-        let id: any = {id: ids[i]};
-        this.http.put<any>(`http://localhost:4000/api/answers/getById`, id).subscribe({
-          next: (res) => {
-            //console.log(res[0])
-            //console.log(position)
-            this.selectedStatement.questions[position].answers.push(res[0]);
+            for(let x: any = 0; questions.length > x; x++){
+              let answers_ids: any = questions[x].answers_ids.split(",");
+              for(let y: any = 0; answers_ids.length > y; y++){
+                let id = {id: answers_ids[y]};
+                this.http.put<any>(`http://localhost:4000/api/answers/getById`, id).subscribe({
+                  next: (res) => {
+                    questions[x] = Object.assign({answers: []}, questions[x]);
+                    if(!questions[x].answers.find((e: any) => e.id === res[0].id)){
+                      questions[x].answers.push(res[0]);
+                    }
+                  },
+                  error: (err) => {
+                    alert('Cargar fallo' + err);
+                  },
+                });
+              }
+            }
           },
           error: (err) => {
             alert('Cargar fallo' + err);
@@ -268,6 +262,11 @@ export class AddQuestionsComponent {
         });
       }
     }
+    setTimeout(() => {
+      console.log(questions)
+      this.selectedStatement.questions.push(questions)
+      console.log(this.selectedStatement)
+    }, 100);
   };
 
   writeStatement(){

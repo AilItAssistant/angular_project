@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-exams',
@@ -13,7 +14,7 @@ import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 })
 export class ExamsComponent {
 
-  levels: any = {};
+  levels: any = [];
   
   constructor(private http: HttpClient) {}
 
@@ -34,6 +35,20 @@ export class ExamsComponent {
           alert('Cargar fallo' + err);
       },
     });
+  };
+
+  generateExam(){
+    let level: any = this.selectExam.value.level;
+    //console.log(level);
+  };
+
+  downloadExam(){
+   
+  };
+
+
+  downloadResponses(){
+
   };
 
 }

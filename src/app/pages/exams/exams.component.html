@@ -15,8 +15,37 @@
   </div>
 </div>
 
-<div class="text-center my-5">
-  <button class="btn btn-success">Descargar exámen</button>
+<div id = pdfTest>
+  <div class="container">
+    <ul class="list-group">
+      @for(level of levels; track level.id){
+          <li class="list-group-item">
+              <div class="row">
+                  <div class="col ms-5 mt-2">
+                      {{level.name}}
+                  </div>
+                  <div class="col col-lg-1 mt-2">
+                      @if (level.status === "active") {
+                          <p class="text-success">Activo</p>
+                      } @else {
+                          <p class="text-danger">Inactivo</p>
+                      }
+                  </div>
+              </div>       
+          </li>
+      }
+    </ul>
+  </div>
+</div>
+
+<div class="text-center my-5 row" >
+  <div class="col"></div>
+  <button class="col-2 btn btn-success" (click)="generateExam()">Generar exámen</button>
+  <div class="col-1"></div>
+  <button class="col-2 btn btn-success" (click)="downloadExam()">Descargar exámen</button>
+  <div class="col-1"></div>
+  <button class="col-2 btn btn-success" (click)="downloadResponses()">Descargar respuestas</button>
+  <div class="col"></div>
 </div>
 
 <app-footer></app-footer>

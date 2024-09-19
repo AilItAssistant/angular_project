@@ -1,8 +1,6 @@
 <app-header></app-header>
 <div class="m-5">
 
-
-    
     <form [formGroup] = "questionForm" id="questionForm">
         @if(!statement){
             <h3 class="mb-4 text-center">Añadir enunciado</h3>
@@ -43,6 +41,11 @@
             </div>
                 <p class="mt-2 text-center">Texto</p>
                 <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
+
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Foto del enunciado</label>
+                <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
+            </div>
         
         } @else {
             <div class="row">
@@ -78,6 +81,12 @@
                     <p class="text-center">Pregunta</p>
                     <textarea class="form-control" formControlName="question" id="question" placeholder="Pregunta" aria-label="With textarea" required></textarea>
             </div>
+
+            <div class="mb-3 col">
+                <label for="formFile" class="form-label">Foto de la pregunta</label>
+                <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+              </div>
+            
             <div class="col col-lg-2 text-center">
                 <p>Elige un bloque</p>
                     <select class="form-select" formControlName="block" aria-label="Select-block" required>

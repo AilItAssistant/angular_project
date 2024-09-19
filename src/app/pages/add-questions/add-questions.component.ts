@@ -26,6 +26,8 @@ export class AddQuestionsComponent {
   levels: any;
   skills: any;
   blocks: any;
+  questionPhoto: any;
+  statementPhoto: any;
   
   statementForm = new FormGroup({
     statement: new FormControl(""),
@@ -47,6 +49,8 @@ export class AddQuestionsComponent {
     responseD: new FormControl(""),
     responseE: new FormControl(""),
     responseF: new FormControl(""),
+    questionPhoto: new FormControl(),
+    statementPhoto: new FormControl(),
   });
 
   ngOnInit() {
@@ -148,7 +152,8 @@ export class AddQuestionsComponent {
       responses: responses,
       skill_id: this.selectedStatement.skill_id,
       level_id: this.selectedStatement.level_id,
-      statement_id: this.selectedStatement.id
+      statement_id: this.selectedStatement.id,
+      photo: this.questionPhoto
     };
     console.log(add)
     this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
@@ -170,7 +175,8 @@ export class AddQuestionsComponent {
       skills: this.questionForm.value.skills,
       statement: this.questionForm.value.statement,
       puntuation: this.questionForm.value.puntuation,
-      text: this.questionForm.value.text
+      text: this.questionForm.value.text,
+      photo: this.questionPhoto
     };
     console.log(add);
 
@@ -274,4 +280,25 @@ export class AddQuestionsComponent {
     console.log(this.selectedStatement)
     this.selectedStatement = [];
   };
+
+  statementPhotoConvert(event: any){
+    let file: any = event.target.files[0];
+    let url: any = file;
+    const fr: any = new FileReader();
+    fr.readAsDataURL(url)
+    fr.onload = () => {
+      this.statementPhoto = fr.result as string;
+    };
+  };
+
+  questionPhotoConvert(event: any){
+    let file: any = event.target.files[0];
+    let url: any = file;
+    const fr: any = new FileReader();
+    fr.readAsDataURL(url)
+    fr.onload = () => {
+      this.questionPhoto = fr.result as string;
+    };
+  };
+
 }

@@ -28,6 +28,8 @@ export class AddQuestionsComponent {
   blocks: any;
   questionPhoto: any;
   statementPhoto: any;
+  validatedQuestion: boolean = false;
+  validatedStatement: boolean = false;
   
   statementForm = new FormGroup({
     statement: new FormControl(""),
@@ -99,97 +101,103 @@ export class AddQuestionsComponent {
   };
 
   sendQuestion(){
-    let responses: any = [
-      {
-        content: this.questionForm.value.responseA,
-        letter: "A",
-        is_correct: false
-      },
-      {
-        content: this.questionForm.value.responseB,
-        letter: "B",
-        is_correct: false
-      },
-      {
-        content: this.questionForm.value.responseC,
-        letter: "C",
-        is_correct: false
-      },
-    ]
+    this.validateQuestion();
+    if (this.validatedQuestion) {
 
-    if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
-      responses.push({
-        content: this.questionForm.value.responseD,
-        letter: "D",
-        is_correct: false
-
-      })
-    }
-    if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
-      responses.push({
-        content: this.questionForm.value.responseE,
-        letter: "E",
-        is_correct: false
-      })
-    }
-    if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
-      responses.push({
-        content: this.questionForm.value.responseF,
-        letter: "F",
-        is_correct: false
-      })
-    }
-
-    responses.forEach((element: any) => {
-      if(this.questionForm.value.response === element.letter){
-        element.is_correct = true
+      let responses: any = [
+        {
+          content: this.questionForm.value.responseA,
+          letter: "A",
+          is_correct: false
+        },
+        {
+          content: this.questionForm.value.responseB,
+          letter: "B",
+          is_correct: false
+        },
+        {
+          content: this.questionForm.value.responseC,
+          letter: "C",
+          is_correct: false
+        },
+      ]
+  
+      if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
+        responses.push({
+          content: this.questionForm.value.responseD,
+          letter: "D",
+          is_correct: false
+  
+        })
       }
-    });
-
-    let add: any = {
-      question: this.questionForm.value.question,
-      block: this.questionForm.value.block,
-      responses: responses,
-      skill_id: this.selectedStatement.skill_id,
-      level_id: this.selectedStatement.level_id,
-      statement_id: this.selectedStatement.id,
-      photo: this.questionPhoto
+      if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
+        responses.push({
+          content: this.questionForm.value.responseE,
+          letter: "E",
+          is_correct: false
+        })
+      }
+      if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
+        responses.push({
+          content: this.questionForm.value.responseF,
+          letter: "F",
+          is_correct: false
+        })
+      }
+  
+      responses.forEach((element: any) => {
+        if(this.questionForm.value.response === element.letter){
+          element.is_correct = true
+        }
+      });
+  
+      let add: any = {
+        question: this.questionForm.value.question,
+        block: this.questionForm.value.block,
+        responses: responses,
+        skill_id: this.selectedStatement.skill_id,
+        level_id: this.selectedStatement.level_id,
+        statement_id: this.selectedStatement.id,
+        photo: this.questionPhoto
+      };
+      console.log(add)
+      this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
+        next: (res) => {
+          this.selectStatement();
+          let form: any = document.getElementById("questionForm");
+          form.reset();
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
     };
-    console.log(add)
-    this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
-      next: (res) => {
-        this.selectStatement();
-        let form: any = document.getElementById("questionForm");
-        form.reset();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
   };
 
   sendStatement(){
-
-    let add: any = {
-      level: this.questionForm.value.level,
-      skills: this.questionForm.value.skills,
-      statement: this.questionForm.value.statement,
-      puntuation: this.questionForm.value.puntuation,
-      text: this.questionForm.value.text,
-      photo: this.questionPhoto
+    this.validateStatement();
+    if (this.validatedStatement) {
+      let add: any = {
+        level: this.questionForm.value.level,
+        skills: this.questionForm.value.skills,
+        statement: this.questionForm.value.statement,
+        puntuation: this.questionForm.value.puntuation,
+        text: this.questionForm.value.text,
+        photo: this.questionPhoto
+      };
+      console.log(add);
+  
+      this.http.post<any>('http://localhost:4000/api/statements', add).subscribe({
+        next: (res) => {
+          console.log(res);
+          let form: any = document.getElementById("questionForm");
+          form.reset();
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
     };
-    console.log(add);
-
-    this.http.post<any>('http://localhost:4000/api/statements', add).subscribe({
-      next: (res) => {
-        console.log(res);
-        let form: any = document.getElementById("questionForm");
-        form.reset();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
   };
 
   closeStatementModal(){
@@ -298,6 +306,59 @@ export class AddQuestionsComponent {
     fr.readAsDataURL(url)
     fr.onload = () => {
       this.questionPhoto = fr.result as string;
+    };
+  };
+
+  validateStatement() {
+    let statement: any = this.questionForm.value.statement;
+    let text: any = this.questionForm.value.text;
+    let puntuation: any = this.questionForm.value.puntuation;
+    let level: any = this.questionForm.value.level;
+    let skill: any = this.questionForm.value.skills;
+    let photo: any = this.statementPhoto;
+
+    if (
+      statement === '' ||
+      text === '' ||
+      puntuation === '' ||
+      level === '' ||
+      skill === '' ||
+      photo === '' 
+    ) {
+      alert( 'Debe de rellenar todos los campos del enunciado' );
+      this.validatedStatement = false;
+    } else {
+      this.validatedStatement = true;
+    };
+  };
+
+  validateQuestion() {
+    let question: any = this.questionForm.value.question;
+    let block: any = this.questionForm.value.block;
+    let response1: any = this.questionForm.value.responseA;
+    let response2: any = this.questionForm.value.responseB;
+    let response3: any = this.questionForm.value.responseC;
+    let responseCorrect: any = this.questionForm.value.response;
+    let photo: any = this.questionForm.value.questionPhoto;
+
+    if (
+      question === '' ||
+      block === '' ||
+      response1 === '' ||
+      response2 === '' ||
+      response3 === '' ||
+      responseCorrect === '' ||
+      photo === '' 
+    ) {
+      alert( 'Debe de rellenar todos los campos de la pregunta' );
+      this.validatedQuestion = false;
+    } else {
+      this.validatedQuestion = true;
+    };
+
+    let statement: any = this.selectedStatement
+    if ( statement === undefined ) {
+      alert( 'Debe de seleccionar un enunciado' );
     };
   };
 

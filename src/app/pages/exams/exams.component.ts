@@ -5,6 +5,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { style } from '@angular/animations';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
@@ -95,15 +96,15 @@ export class ExamsComponent {
           style: 'header'
         },
         {
-          text: '1a PARTE: Comprensión y expresión escrita (Tiempo: 1 hora y 30 minutos) \n\n',
+          text: '1ª PARTE: Comprensión y expresión escrita (Tiempo: 1 hora y 30 minutos) \n\n',
           style: 'instructions'
         },
         {
-          text: '2a PARTE: Comprensión auditiva (Tiempo: 8 minutos) \n\n',
+          text: '2ª PARTE: Comprensión auditiva (Tiempo: 8 minutos) \n\n',
           style: 'instructions'
         },
         {
-          text: '3a PARTE: Expresión oral (Tiempo: 3-5 minutos) \n\n\n\n\n',
+          text: '3ª PARTE: Expresión oral (Tiempo: 3-5 minutos) \n\n\n\n\n',
           style: 'instructions'
         },
         {
@@ -111,19 +112,29 @@ export class ExamsComponent {
           style: 'subheader'
         },
         {
-          text: 'Nombre: ................................................................................................................ \n\n\n\n',
+          text: 'Nombre: ...............................................................................................................',
           style: 'subheader'
         },
         {
+          canvas: [
+            {
+              type: 'line',
+              x1: 40, y1: 40,
+              x2: 460, y2: 40,
+              lineWidth: 1
+            },
+          ]
+        },
+        {
           text: 'A rellenar por el centro \n\n\n',
-          style: 'subheader'
+          style: 'subheader1'
         },
         {
           text: `Puntuación: ................../100 =..............................\n\n\n\n`,
           style: 'subheader'
         },
         {
-          text: `CORRESPONDENCIAS CON LA NOTA: \n
+          text: `CORRESPONDENCIAS CON LA NOTA: \n\n
             Inferior al 60% = No apto \n
             60-70% = Apto/Suficiente \n
             70-90% = Notable \n
@@ -136,25 +147,36 @@ export class ExamsComponent {
         header: {
           fontSize: 20,
           bold: true,
-          alignment: 'center'
+          alignment: 'center',
+          margin: [40, 0],
         },
         subheader: {
           fontSize: 12,
-          bold: true
+          bold: true,
+          margin: [40, 0],
         },
         normal: {
-          fontSize: 10
+          fontSize: 10,
+          margin: [40, 0],
         },
         small: {
-          fontSize: 8
+          fontSize: 8,
+          color: '#EF8533',
+          margin: [40, 0],
         },
         column: {
           margin: [250, 0],
         },
         instructions: {
-          fontSize: 10,
-          margin: [130, 0],
-        }
+          fontSize: 11,
+          margin: [40, 0],
+          alignment: 'center'
+        },
+        subheader1: {
+          fontSize: 12,
+          bold: true,
+          margin: [40, 40, 0, 0],
+        },
       }
     }
     pdfMake.createPdf(pdf).download("test.pdf");

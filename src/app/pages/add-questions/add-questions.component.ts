@@ -315,15 +315,15 @@ export class AddQuestionsComponent {
     let puntuation: any = this.questionForm.value.puntuation;
     let level: any = this.questionForm.value.level;
     let skill: any = this.questionForm.value.skills;
-    let photo: any = this.statementPhoto;
+    //let photo: any = this.statementPhoto;
 
     if (
       statement === '' ||
       text === '' ||
       puntuation === '' ||
       level === '' ||
-      skill === '' ||
-      photo === '' 
+      skill === '' //||
+      //photo === '' 
     ) {
       alert( 'Debe de rellenar todos los campos del enunciado' );
       this.validatedStatement = false;
@@ -333,22 +333,22 @@ export class AddQuestionsComponent {
   };
 
   validateQuestion() {
-    let question: any = this.questionForm.value.question;
-    let block: any = this.questionForm.value.block;
+    //let question: any = this.questionForm.value.question;
+    //let block: any = this.questionForm.value.block;
     let response1: any = this.questionForm.value.responseA;
     let response2: any = this.questionForm.value.responseB;
     let response3: any = this.questionForm.value.responseC;
     let responseCorrect: any = this.questionForm.value.response;
-    let photo: any = this.questionForm.value.questionPhoto;
+    //let photo: any = this.questionForm.value.questionPhoto;
 
     if (
-      question === '' ||
-      block === '' ||
+      //question === '' ||
+      //block === '' ||
       response1 === '' ||
       response2 === '' ||
       response3 === '' ||
-      responseCorrect === '' ||
-      photo === '' 
+      responseCorrect === '' //||
+      //photo === '' 
     ) {
       alert( 'Debe de rellenar todos los campos de la pregunta' );
       this.validatedQuestion = false;

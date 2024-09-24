@@ -58,6 +58,7 @@ export class ExamsComponent {
 
     let pdf: any = {
       pageSize: 'A4',
+      //pageMargins: [ 40, 60, 40, 60 ],
       footer: function(currentPage: any) { 
         return [
           {
@@ -140,43 +141,19 @@ export class ExamsComponent {
               {
                 columns: [
                   {
-                    text: '1. Este examen evalúa la gramática avanzada', //statement
-                    style: 'statement'
+                    text: '1. Este examen evalúa la gramática avanzada Este examen evalúa la gramática avanzada Este examen evalúa la gramática avanzada Este examen evalúa la gramática avanzada ', 
+                    style: 'statement',
+                    width: 'auto',
                   },
                   {
-                    text: 'Puntuacion: 20', // puntuation
-                    style: 'puntuationStatement'
+                    text: '____/20', 
+                    style: 'puntuationStatement',
+                    width: 'auto',
                   },
-                ]
+                ],
               },
               {
-                text: `Fascinado por la actitud positiva de Robert, en un momento de la conversación se me
-                  ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde
-                  el 0 (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me
-                  respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A
-                  continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin
-                  vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto
-                  más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert
-                  pausadamente como para tranquilizarme—, aunque le parezca mentira me considero
-                  un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis
-                  facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado
-                  más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más
-                  comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes
-                  consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema
-                  a otras personas que, como yo, han visto su destino torcerse de repente».
-                  Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en
-                  el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para
-                  mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la
-                  labor también me suponía un reto: los profesionales de la medicina no le hemos
-                  prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos
-                  acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se
-                  explica en parte porque, desde que aparecieron los primeros curanderos y
-                  ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi
-                  gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y
-                  roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por
-                  dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los
-                  remedios de las enfermedades y epidemias que dominaban implacablemente el destino
-                  de los mortales. Y la verdad es que no daban ____________ (12).`,
+                text: `Fascinado por la actitud positiva de Robert, en un momento de la conversación se me ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde el   0   (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert pausadamente como para tranquilizarme—, aunque le parezca mentira me considero un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema a otras personas que, como yo, han visto su destino torcerse de repente». Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la labor también me suponía un reto: los profesionales de la medicina no le hemos prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se explica en parte porque, desde que aparecieron los primeros curanderos y ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los remedios de las enfermedades y epidemias que dominaban implacablemente el destino de los mortales. Y la verdad es que no daban ____________ (12).`,
                 style: 'textStatement'
               },
               {
@@ -186,19 +163,19 @@ export class ExamsComponent {
               {
                 columns: [
                   {
-                    text: 'A. Fui',
+                    text: 'A. Fui a comer',
                     style: 'answer'
                   },
                   {
-                    text: 'B. Temporal',
+                    text: 'B. Temporal en la peninsula',
                     style: 'answer'
                   },
                   {
-                    text: 'C. Permanente',
+                    text: 'C. Permanente cerrado',
                     style: 'answer'
                   },
                   {
-                    text: 'D. Voy',
+                    text: 'D. Voy a compar el pan',
                     style: 'answer'
                   },
                 ]
@@ -297,6 +274,213 @@ export class ExamsComponent {
                     style: 'answer'
                   },
                 ]
+              },{
+                text: `6. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `7. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `8. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `9. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `10. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `11. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `12. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `13. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
+              },{
+                text: `14. ¿Cómo se conjuga el verbo 'ir' en pasado?`,
+                style: 'question'
+              },
+              {
+                columns: [
+                  {
+                    text: 'A. Fui',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'B. Temporal',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'C. Permanente',
+                    style: 'answer'
+                  },
+                  {
+                    text: 'D. Voy',
+                    style: 'answer'
+                  },
+                ]
               },
             ],
             pageBreak: 'after',
@@ -305,12 +489,12 @@ export class ExamsComponent {
         {
           stack: [
               {
-                text: '5555555555555555555fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffyy',
-                style: ''
+                text: `Fascinado por la actitud positiva de Robert, en un momento de la conversación se me ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde el   0   (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert pausadamente como para tranquilizarme—, aunque le parezca mentira me considero un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema a otras personas que, como yo, han visto su destino torcerse de repente». Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la labor también me suponía un reto: los profesionales de la medicina no le hemos prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se explica en parte porque, desde que aparecieron los primeros curanderos y ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los remedios de las enfermedades y epidemias que dominaban implacablemente el destino de los mortales. Y la verdad es que no daban ____________ (12).Fascinado por la actitud positiva de Robert, en un momento de la conversación se me ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde el   0   (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert pausadamente como para tranquilizarme—, aunque le parezca mentira me considero un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema a otras personas que, como yo, han visto su destino torcerse de repente». Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la labor también me suponía un reto: los profesionales de la medicina no le hemos prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se explica en parte porque, desde que aparecieron los primeros curanderos y ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los remedios de las enfermedades y epidemias que dominaban implacablemente el destino de los mortales. Y la verdad es que no daban ____________ (12).Fascinado por la actitud positiva de Robert, en un momento de la conversación se me ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde el   0   (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert pausadamente como para tranquilizarme—, aunque le parezca mentira me considero un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema a otras personas que, como yo, han visto su destino torcerse de repente». Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la labor también me suponía un reto: los profesionales de la medicina no le hemos prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se explica en parte porque, desde que aparecieron los primeros curanderos y ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los remedios de las enfermedades y epidemias que dominaban implacablemente el destino de los mortales. Y la verdad es que no daban ____________ (12).Fascinado por la actitud positiva de Robert, en un momento de la conversación se me ocurrió preguntarle que calculara su nivel de satisfacción con la vida en general desde el   0   (muy desgraciado) al 10 (muy dichoso). Después de una breve reflexión me respondió sonriente y con seguridad que «un ocho». El notable me sorprendió. A continuación, le pregunté qué número se hubiera dado antes del accidente. Casi sin vacilar contestó: «Yo diría que un ocho y medio, más o menos». «¿Sólo medio punto más?», exclamé en un reflejo de incredulidad. «Querido doctor —me replicó Robert pausadamente como para tranquilizarme—, aunque le parezca mentira me considero un hombre con suerte. He sobrevivido a un terrible percance y mantengo intactas mis facultades mentales. De hecho, desde el accidente mi vida ha adquirido un significado más profundo. Creo que, de alguna forma, me he convertido en mejor persona. Soy más comprensivo con los demás, aprecio mucho más las cosas pequeñas que antes consideraba triviales. Quién sabe, quizá un día pueda ayudar a superar este problema a otras personas que, como yo, han visto su destino torcerse de repente». Nada más empezar me di cuenta de lo placentero de la tarea. Habituado a trabajar en el campo de los males del cuerpo y de la mente, estudiar el optimismo entrañaba para mí un grato respiro, una tregua reconfortante. ____________ (10) debo confesar que la labor también me suponía un reto: los profesionales de la medicina no le hemos prestado mucha atención a los rasgos saludables de la naturaleza humana y no estamos acostumbrados a pensar en las actitudes positivas de las personas. Esta deficiencia se explica en parte porque, desde que aparecieron los primeros curanderos y ____________ (11) en la prehistoria hasta hace poco, los hombres y las mujeres de mi gremio se han ocupado casi en exclusiva de aliviar los padecimientos que torturan y roban la vida sin piedad a sus semejantes. Los pocos compañeros que optaron por dedicarse a la investigación se concentraban, por pura necesidad, en las causas y los remedios de las enfermedades y epidemias que dominaban implacablemente el destino de los mortales. Y la verdad es que no daban ____________ (12).`,
+                style: 'textStatement'
               },
               {
                 text: '5555555555555555555fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffyy',
-                style: ''
+                style: 'textStatement'
               },
             ],
             pageBreak: 'after',
@@ -351,18 +535,19 @@ export class ExamsComponent {
         header: {
           margin: [ 45, 7, 0, 0 ]
         },
-        statement: { /*////////////////////////*/
+        statement: {
           fontSize: 12,
           bold: true,
-          margin: [ 0, 5, 0, 5 ]
+          margin: [ 0, 0, 0, 0 ],
         },
-        puntuationStatement: {
+        puntuationStatement: { 
           fontSize: 12,
-          margin: [ 0, 5, 0, 5 ]
+          margin: [ 0, 0, 20, 0 ],
+          alignment: 'right'
         },
         textStatement: {
           fontSize: 10,
-          margin: [ 0, 5, 0, 5 ]
+          margin: [ 0, 10, 0, 10 ]
         },
         photoStatement: {
 
@@ -372,18 +557,15 @@ export class ExamsComponent {
           bold: true,
           margin: [ 0, 5, 0, 5 ]
         },
-        textQuestion: {
-
-        },
         photoQuestion: {
 
         },
         answer: {
-          fontSize: 8,
-          margin: [ 20, 5, 0, 5 ]
+          fontSize: 9,
+          margin: [ 15, 5, 0, 5 ]
         },
         stack: {
-          margin: [ 45, 30, 0, 30 ]
+          margin: [ 45, 30, 20, 30 ],
         }
       }
     }

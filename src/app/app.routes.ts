@@ -1,4 +1,6 @@
-import { Routes } from '@angular/router';
+import { Routes, CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+
 import { HomeComponent } from './pages/home/home.component';
 import { ExamsComponent } from './pages/exams/exams.component';
 import { AddQuestionsComponent } from './pages/add-questions/add-questions.component';
@@ -23,27 +25,48 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { StudentsDetailsComponent } from './pages/students-details/students-details.component';
 import { TriggersComponent } from './pages/triggers/triggers.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
+import { VerifyService } from './services/verify.service';
+
+export const authGuard: CanActivateFn = (route, state) => {
+    let router = inject(Router);
+    const verifyService = inject(VerifyService);
+    console.log(verifyService.verify())
+  
+    if ( verifyService.verify() ) {
+      return true;
+    } else {
+      alert('Unauthorized access.')
+      router.navigateByUrl('/login');
+      return false;
+    }
+  };
 
 export const routes: Routes = [
     {
         path: "",
-        component: HomeComponent
+        component: HomeComponent,
+        title: "Home",
     },
     {
         path: "exams",
-        component: ExamsComponent
+        component: ExamsComponent,
+        title: "Exámenes",
+        canActivate: [authGuard]
     },
     {
         path: "add_questions",
-        component: AddQuestionsComponent
+        component: AddQuestionsComponent,
+        title: "Añadir preguntas"
     },
     {
         path: "manage_questions",
-        component: ManageQuestionsComponent
+        component: ManageQuestionsComponent,
+        title: "Editar preguntas"
     },
     {
         path: "validate_questions",
-        component: ValidateQuestionsComponent
+        component: ValidateQuestionsComponent,
+        title: "Validar preguntas"
     },
     {
         path: "exam/:id",
@@ -51,74 +74,91 @@ export const routes: Routes = [
     },
     {
         path: "login",
-        component: LoginComponent
+        component: LoginComponent,
+        title: "Iniciar sesión"
     },
     {
         path: "manage_structure",
-        component: ManageStructureComponent
+        component: ManageStructureComponent,
+        title: "Editar estructuras"
     },
     {
         path: "classes",
-        component: ClassesComponent
+        component: ClassesComponent,
+        title: "Clases"
     },
     {
         path: "manage_classes",
-        component: ManageClassesComponent
+        component: ManageClassesComponent,
+        title: "Editar clases"
     },
     {
         path: "exams_results",
-        component: ExamsResultsComponent
+        component: ExamsResultsComponent,
+        title: "Resultados de exámenes"
     },
     {
         path: "manage_exams_results",
-        component: ManageExamsResultsComponent
+        component: ManageExamsResultsComponent,
+        title: "Editar resultados exámenes"
     },
     {
         path: "students",
-        component: StudentsComponent
+        component: StudentsComponent,
+        title: "Estudiantes"
     },
     {
         path: "manage_students",
-        component: ManageStudentsComponent
+        component: ManageStudentsComponent,
+        title: "Editar estudiantes"
     },
     {
         path: "sign_in",
-        component: SignInComponent
+        component: SignInComponent,
+        title: "Registrarse"
     },
     {
         path: "teachers",
-        component: TeachersComponent
+        component: TeachersComponent,
+        title: "Profesores"
     },
     {
         path: "manage_teachers",
-        component: ManageTeachersComponent
+        component: ManageTeachersComponent,
+        title: "Editar profesores"
     },
     {
         path: "manage_users",
-        component: ManageUsersComponent
+        component: ManageUsersComponent,
+        title: "Editar usuarios"
     },
     {
         path: "add_exams_notes",
-        component: AddExamsNotesComponent
+        component: AddExamsNotesComponent,
+        title: "Añadir notas de examenes"
     },
     {
         path: "search_exams",
-        component: SearchExamsComponent
+        component: SearchExamsComponent,
+        title: "Buscar exámenes"
     },
     {
         path: "statistics",
-        component: StatisticsComponent
+        component: StatisticsComponent,
+        title: "Estadísticas"
     },
     {
         path: "student_details/:id",
-        component: StudentsDetailsComponent
+        component: StudentsDetailsComponent,
+        title: "Alumno"
     },
     {
         path: "triggers",
-        component: TriggersComponent
+        component: TriggersComponent,
+        title: "Triggers"
     },{
         path: "bitacora",
-        component: BitacoraComponent
+        component: BitacoraComponent,
+        title: "Bitácora"
     }
-
 ];

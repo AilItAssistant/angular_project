@@ -18,30 +18,49 @@ export class LoginComponent {
     password: new FormControl(""),
   });
 
+  ngOnInit(){
+    this.verify();
+  };
+
   constructor(
     private http: HttpClient, 
     private router: Router, 
     private authService: AuthService) {}
+
+  verify(){
+    if ( localStorage.getItem('token') !== 'undefined' ) {
+      let token: any = { token: localStorage.getItem('token') };
+      this.http.post<any>('http://localhost:4000/api/users/verify', token).subscribe({
+        next: (res) => {
+          console.log(res)
+          if (res) {
+            this.router.navigate(['']);
+          };
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    };
+  };
 
   login(){
     let credentials: any = {
       user: this.loginForm.value.user,
       pass: this.loginForm.value.password,
     };
-
-    /*this.authService.singin(credentials).subscribe( (res:any) => {
-      console.log(res);
-      localStorage.setItem('token',res.token);
-      this.router.navigate(['']);
-      let form: any = document.getElementById("loginForm");
-      form.reset();
-    })*/
-
     this.http.post<any>('http://localhost:4000/api/users/login', credentials).subscribe({
       next: (res) => {
-        console.log(res)
         localStorage.setItem('token',res.token);
-        this.router.navigate([''])
+        if ( res === 'Usuario o clave incorrecto' ) {
+          alert(res);
+        } else {
+          this.router.navigate(['']);
+        }
+        credentials = {
+          user: '',
+          pass: '',
+        };
       },
       error: (err) => {
         alert('Cargar fallo' + err);

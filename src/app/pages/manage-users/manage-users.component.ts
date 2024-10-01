@@ -39,7 +39,7 @@ export class ManageUsersComponent {
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
-    })
+    });
     this.http.get<any>('http://localhost:4000/api/users', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.users = res.users;
@@ -92,10 +92,11 @@ export class ManageUsersComponent {
       created: this.addUserForm.value.created,
       username: this.addUserForm.value.username
     };
-    
-    console.log(this.addUserForm.value);
-
-    this.http.post<any>('http://localhost:4000/api/users/add', user).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/users/add', user, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
         this.load();
@@ -103,7 +104,7 @@ export class ManageUsersComponent {
       error: (err) => {
         alert('Cargar fallo' + err);
       },
-      });
+    });
   };
 
   openDeleteModal(user: any){
@@ -116,7 +117,11 @@ export class ManageUsersComponent {
   delete(){
     let del: any = {id: this.deleteVariables.id}
     this.charge = true;
-    this.http.put<any>('http://localhost:4000/api/users/delete', del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/users/delete', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res)
         let deleteModal: any;
@@ -161,8 +166,12 @@ export class ManageUsersComponent {
       created: this.editUserForm.value.created,
       id: this.editVariables.id
     };
-    console.log(mod)
-    this.http.put<any>('http://localhost:4000/api/users/edit', mod).subscribe({
+    console.log(mod);
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/users/edit', mod, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
         let editModal: any;
@@ -199,7 +208,11 @@ export class ManageUsersComponent {
 
   desactivate(user: any){
     let des: any = {id: user.id, status: user.status};
-    this.http.put<any>('http://localhost:4000/api/users/status', des).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/users/status', des, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
         this.load();
@@ -337,14 +350,18 @@ export class ManageUsersComponent {
     if(filters.permissions === ""){filters.permissions = null};
     if(filters.status === ""){filters.status = null};
     
-      this.http.put<any>('http://localhost:4000/api/users/filter', filters).subscribe({
-        next: (res) => {
-          this.users = res;
-        },
-        error: (err) => {
-          alert('Cargar fallo' + err);
-        },
-      });
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/users/filter', filters, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.users = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   deleteFilter(){
@@ -359,6 +376,5 @@ export class ManageUsersComponent {
       status:"",
     });
   };
-
 
 }

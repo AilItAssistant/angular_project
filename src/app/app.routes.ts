@@ -29,8 +29,8 @@ import { VerifyService } from './services/verify.service';/** */
 
 export const authGuard: CanActivateFn = (route, state) => {
     let router = inject(Router);
-    const verifyService = inject(VerifyService);
-    console.log(verifyService.verify())
+    //const verifyService = inject(VerifyService);
+    //console.log(verifyService.verify())
   
     if ( localStorage.getItem('token') ) {
       return true;

@@ -6,62 +6,80 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" active href="./classes">Clases</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./students">Estudiantes</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./teachers">Profesores</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Exámenes
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="./exams">Exámenes</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="./add_exams_notes">Añadir notas de exámenes</a></li>
-              <li><a class="dropdown-item" href="./search_exams">Buscar exámenes</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/add_questions">Añadir pregunta</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/validate_questions">Validar preguntas</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="./statistics">Estadística de exámenes</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="">Gestión</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/manage_questions">Gestionar preguntas</a></li>
-              <li><a class="dropdown-item" href="/manage_structure">Gestionar estructura</a></li>
-              <li><a class="dropdown-item" href="/manage_exams_results">Gestionar exámenes hechos</a></li>
-              <li><a class="dropdown-item" href="/manage_students">Gestionar alumnos</a></li>
-              <li><a class="dropdown-item" href="/manage_teachers">Gestionar profesores</a></li>
-              <li><a class="dropdown-item" href="/manage_classes">Gestionar clases</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/manage_users">Gestionar usuarios</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="">Control</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/bitacora">Bitácora</a></li>
-              <li><a class="dropdown-item" href="/triggers">Triggers</a></li>
-             
-            </ul>
-          </li>
+          @if ( session.permissions === 'admin' || session.permissions === 'employee' ) {
+            <li class="nav-item">
+              <a class="nav-link" active href="./classes">Clases</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./students">Estudiantes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./teachers">Profesores</a>
+            </li>
+          }
+          @if ( session.permissions === 'admin' || session.permissions === 'employee' || session.permissions === 'teacher' ) {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Exámenes
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="./exams">Exámenes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="./add_exams_notes">Añadir notas de exámenes</a></li>
+                <li><a class="dropdown-item" href="./search_exams">Buscar exámenes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/add_questions">Añadir pregunta</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/validate_questions">Validar preguntas</a></li>
+              </ul>
+            </li>
+          }
+          @if ( session.permissions === 'admin' || session.permissions === 'employee' ) {
+            <li class="nav-item">
+              <a class="nav-link" href="./statistics">Estadística de exámenes</a>
+            </li>
+          }
+          @if ( session.permissions === 'admin' || session.permissions === 'employee' ) {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="">Gestión</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/manage_questions">Gestionar preguntas</a></li>
+                <li><a class="dropdown-item" href="/manage_structure">Gestionar estructura</a></li>
+                <li><a class="dropdown-item" href="/manage_exams_results">Gestionar exámenes hechos</a></li>
+                <li><a class="dropdown-item" href="/manage_students">Gestionar alumnos</a></li>
+                <li><a class="dropdown-item" href="/manage_teachers">Gestionar profesores</a></li>
+                <li><a class="dropdown-item" href="/manage_classes">Gestionar clases</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/manage_users">Gestionar usuarios</a></li>
+              </ul>
+            </li>
+          }
+          @if ( session.permissions === 'admin' ) {
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="">Control</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/bitacora">Bitácora</a></li>
+                <li><a class="dropdown-item" href="/triggers">Triggers</a></li>
+              </ul>
+            </li>
+          }
         </ul>
-        <ul class="navbar-nav  mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./login">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./sign_in">Sign in</a>
-          </li>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          @if(session.logged){
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" href="">{{session.user }}</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/login" (click)="closeSesion()">Cerrar sesión</a></li>
+              </ul>
+            </li>
+          } @else {
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="./sign_in">Sign in</a>
+            </li>
+          }
         </ul>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-manage-users',
@@ -18,7 +19,7 @@ export class ManageUsersComponent {
   charge: boolean = false;
   users: any = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   orderForm = new FormGroup({
     select: new FormControl(""),
@@ -47,6 +48,7 @@ export class ManageUsersComponent {
       },
       error: (err) => {
         alert('Cargar fallo' + err);
+        this.router.navigateByUrl(`/login`);
       },
     });
   };
@@ -58,7 +60,7 @@ export class ManageUsersComponent {
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
-    position: new FormControl(""),
+    
     status: new FormControl(""),
     created: new FormControl(""),
     username: new FormControl("")
@@ -71,7 +73,7 @@ export class ManageUsersComponent {
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
-    position: new FormControl(""),
+ 
     status: new FormControl(""),
     created: new FormControl(""),
     username: new FormControl("")
@@ -87,7 +89,6 @@ export class ManageUsersComponent {
       email: this.addUserForm.value.email,
       city: this.addUserForm.value.city,
       permissions: this.addUserForm.value.permissions,
-      position: this.addUserForm.value.position,
       status: this.addUserForm.value.status,
       created: this.addUserForm.value.created,
       username: this.addUserForm.value.username
@@ -151,7 +152,6 @@ export class ManageUsersComponent {
 
   modify(){
     this.charge = true;
-    if(this.editUserForm.value.position === null){this.editUserForm.value.position = ""}
     if(this.editUserForm.value.created === null){this.editUserForm.value.created = ""}
     if(this.editUserForm.value.last_name === null){this.editUserForm.value.last_name = ""}
     let mod: any = {
@@ -162,7 +162,6 @@ export class ManageUsersComponent {
       email: this.editUserForm.value.email,
       city: this.editUserForm.value.city,
       role: this.editUserForm.value.permissions,
-      position: this.editUserForm.value.position,
       created: this.editUserForm.value.created,
       id: this.editVariables.id
     };
@@ -194,7 +193,6 @@ export class ManageUsersComponent {
       email: new FormControl(user.email),
       city: new  FormControl(user.city),
       permissions: new FormControl(user.permissions),
-      position: new FormControl(user.position),
       status: new FormControl(user.status),
       created: new FormControl(user.created),
       username: new FormControl(user.username)

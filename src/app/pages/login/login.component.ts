@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -24,13 +23,15 @@ export class LoginComponent {
 
   constructor(
     private http: HttpClient, 
-    private router: Router, 
-    private authService: AuthService) {}
+    private router: Router) {}
 
   verify(){
     if ( localStorage.getItem('token') !== 'undefined' ) {
-      let token: any = { token: localStorage.getItem('token') };
-      this.http.post<any>('http://localhost:4000/api/users/verify', token).subscribe({
+      let token: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': token
+      });
+      this.http.get<any>('http://localhost:4000/api/users/verifyHeader', {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res)
           if (res) {
@@ -38,7 +39,7 @@ export class LoginComponent {
           };
         },
         error: (err) => {
-          alert('Cargar fallo' + err);
+          alert('Fallo verify' + err);
         },
       });
     };
@@ -63,7 +64,7 @@ export class LoginComponent {
         };
       },
       error: (err) => {
-        alert('Cargar fallo' + err);
+        alert('Fallo login' + err);
       },
     });
   };

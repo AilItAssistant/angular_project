@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -22,22 +22,23 @@ export class HeaderComponent {
   constructor( private http: HttpClient, private router: Router ) {}
 
   ngOnInit(){
-    //this.verify();
+    this.verify();
   };
 
-  verify( path: string ){
+  verify(){
+    let token: any = localStorage.getItem('token');
     if ( localStorage.getItem('token') !== 'undefined' ) {
-      let token: any = { token: localStorage.getItem('token') };
-      this.http.post<any>('http://localhost:4000/api/users/verify', token).subscribe({
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': token
+    });
+    console.log(token)
+      this.http.get<any>('http://localhost:4000/api/users/verifyHeader', {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res)
           if (res) {
-            //this.router.navigate(['/${path}']);
-            this.router.navigateByUrl(`/${path}`);
             this.session = {
               logged: true,
               user: res.username,
-              role: res.role,
               permissions: res.permissions,
               name: res.name,
               lastname: res.last_name
@@ -46,9 +47,14 @@ export class HeaderComponent {
           };
         },
         error: (err) => {
-          alert('Cargar fallo' + err);
+          alert('Verify header fallo' + err);
+          this.router.navigateByUrl(`/login`);
         },
       });
     };
+  };
+
+  closeSesion(){
+    localStorage.removeItem('token');
   };
 }

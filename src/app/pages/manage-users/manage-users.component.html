@@ -92,9 +92,6 @@
           {{ user.permissions}}
         </div>
         <div class="col-1">
-          {{ user.role }}
-        </div>
-        <div class="col-1">
             {{ user.created_at }}
         </div>
         <div class="col-1">
@@ -204,15 +201,6 @@
       <div class="col-3">
         <label for="created">Fecha de creación</label>
         <input id="created" class="form-control mt-2" type="date" formControlName="created" />
-    </div>
-      <div class="col-3">
-        <label for="position" class="form-label">Cargo</label>
-        <select id="position" class="form-select" formControlName="position">
-          <option value="teacher">Teacher</option>
-          <option value="student">Student</option>
-          <option value="marketing">Marketing</option>
-          <option value="it">It</option>
-        </select>
       </div>
       <div class="col-3">
         <label for="status" class="form-label">Estado</label>
@@ -302,14 +290,6 @@
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
-          </select>
-
-          <label for="position" class="form-label">Cargo</label>
-          <select id="position" class="form-select" formControlName="position">
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
-            <option value="marketing">Marketing</option>
-            <option value="it">It</option>
           </select>
 
           <p class="mt-3">Elige un estado</p>

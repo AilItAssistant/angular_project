@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-users',
@@ -36,9 +36,13 @@ export class ManageUsersComponent {
   }
   
   load(){
-    this.http.get<any>('http://localhost:4000/api/users').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    })
+    this.http.get<any>('http://localhost:4000/api/users', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.users = res;
+        this.users = res.users;
         console.log(res)
       },
       error: (err) => {

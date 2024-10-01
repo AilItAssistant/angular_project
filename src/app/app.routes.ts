@@ -25,14 +25,14 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { StudentsDetailsComponent } from './pages/students-details/students-details.component';
 import { TriggersComponent } from './pages/triggers/triggers.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
-import { VerifyService } from './services/verify.service';
+import { VerifyService } from './services/verify.service';/** */
 
 export const authGuard: CanActivateFn = (route, state) => {
     let router = inject(Router);
     const verifyService = inject(VerifyService);
     console.log(verifyService.verify())
   
-    if ( verifyService.verify() ) {
+    if ( localStorage.getItem('token') ) {
       return true;
     } else {
       alert('Unauthorized access.')

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -30,10 +30,13 @@ export class TeachersComponent {
   }
   
   load(){
-    this.http.get<any>('http://localhost:4000/api/teachers').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.teachers = res;
-        console.log(this.teachers)
+        this.teachers = res.teachers;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -101,14 +104,18 @@ export class TeachersComponent {
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.email === ""){filters.email = null};
     
-      this.http.put<any>('http://localhost:4000/api/teachers/filter', filters).subscribe({
-        next: (res) => {
-          this.teachers = res;
-        },
-        error: (err) => {
-          alert('Cargar fallo' + err);
-        },
-      });
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/teachers/filter', filters).subscribe({
+      next: (res) => {
+        this.teachers = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   deleteFilter(){

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-teachers',
@@ -36,9 +36,13 @@ export class ManageTeachersComponent {
   }
   
   load(){
-    this.http.get<any>('http://localhost:4000/api/teachers').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.teachers = res;
+        this.teachers = res.teachers;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -79,10 +83,12 @@ export class ManageTeachersComponent {
       address: this.addTeachersForm.value.address,
       department:this.addTeachersForm.value.department
     };
-    
-    console.log(this.addTeachersForm.value);
 
-    this.http.post<any>('http://localhost:4000/api/teachers/add', teacher).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/teachers/add', teacher, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
         this.load();
@@ -105,7 +111,11 @@ export class ManageTeachersComponent {
     let del: any = { id: this.deleteVariables.teacher_id };
     console.log(del);
     this.charge = true;
-    this.http.put<any>('http://localhost:4000/api/teachers/delete', del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/teachers/delete', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res)
         this.load();
@@ -165,7 +175,11 @@ export class ManageTeachersComponent {
     console.log(mod);
     if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
 
-      this.http.put<any>('http://localhost:4000/api/teachers/edit', mod).subscribe({
+      let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+      this.http.put<any>('http://localhost:4000/api/teachers/edit', mod, {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res);
           this.charge = false;
@@ -203,7 +217,11 @@ export class ManageTeachersComponent {
     let des: any = {};
     des.id = teacher.teacher_id;
     des.status = teacher.teacher_status;
-    this.http.put<any>('http://localhost:4000/api/teachers/status', des).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/teachers/status', des, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.load();
       },
@@ -272,8 +290,11 @@ export class ManageTeachersComponent {
     if(filters.last_name === ""){filters.last_name = null};
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.email === ""){filters.email = null};
-    
-      this.http.put<any>('http://localhost:4000/api/teachers/filter', filters).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+      this.http.put<any>('http://localhost:4000/api/teachers/filter', filters, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.teachers = res;
         },
@@ -294,9 +315,13 @@ export class ManageTeachersComponent {
   };
 
   loadClasses(){
-    this.http.get<any>('http://localhost:4000/api/classes').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/classes', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.classes = res;
+        this.classes = res.classes;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -305,7 +330,11 @@ export class ManageTeachersComponent {
   };
 
   getClassesById(id: any){
-    this.http.put<any>('http://localhost:4000/api/classes/teacherId', id).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/classes/teacherId', id, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.classesId = res;
       },
@@ -335,8 +364,11 @@ export class ManageTeachersComponent {
       teacher_id: this.teacher.teacher_id
     };
     let id: any = { id: this.teacher.teacher_id };
-
-    this.http.put<any>('http://localhost:4000/api/teachers/addClass', add).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/teachers/addClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
         this.getClassesById(id);
@@ -355,7 +387,11 @@ export class ManageTeachersComponent {
       teacher_id: this.teacher.teacher_id
     };
     let id: any = { id: this.teacher.teacher_id };
-    this.http.put<any>('http://localhost:4000/api/teachers/deleteClass', del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/teachers/deleteClass', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.getClassesById(id);
         console.log(res)

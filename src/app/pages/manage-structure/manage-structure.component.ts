@@ -3,7 +3,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { identity } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-structure',
@@ -56,6 +56,8 @@ export class ManageStructureComponent {
   validation ( data: any, type: any ) {
     let id: any;
     this.val = true;
+    console.log(data);
+    console.log(type)
 
     switch ( type ) {
       case "add_level":
@@ -104,9 +106,13 @@ export class ManageStructureComponent {
   };
 
   loadLevels(){
-    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res;
+        this.levels = res.levels;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -115,9 +121,13 @@ export class ManageStructureComponent {
   };
 
   loadSkills(){
-    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/skills', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.skills = res;
+        this.skills = res.skills;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -126,9 +136,13 @@ export class ManageStructureComponent {
   };
 
   loadBlocks(){
-    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.blocks = res;
+        this.blocks = res.blocks;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -214,7 +228,11 @@ export class ManageStructureComponent {
     let type: any = "add_level"
     this.validation(add, type);
     if ( this.val ) {
-      this.http.post<any>('http://localhost:4000/api/levels/add', add).subscribe({
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/levels/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.loadLevels();
           let form: any = document.getElementById("structureForm");
@@ -248,7 +266,11 @@ export class ManageStructureComponent {
     let type: any = "add_skill";
     this.validation(add, type);
     if ( this.val ) {
-      this.http.post<any>('http://localhost:4000/api/skills/add', add).subscribe({
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/skills/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.loadSkills();
           let form: any = document.getElementById("structureForm");
@@ -283,7 +305,11 @@ export class ManageStructureComponent {
     let type: any = "add_block"
     this.validation(add, type);
     if ( this.val ) {
-      this.http.post<any>('http://localhost:4000/api/blocks/add', add).subscribe({
+      let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+      this.http.post<any>('http://localhost:4000/api/blocks/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           let form: any = document.getElementById("structureForm");
           form.reset();
@@ -314,7 +340,11 @@ export class ManageStructureComponent {
       id: level.id,
       status: change
     }
-    this.http.put<any>('http://localhost:4000/api/levels/status', status).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/levels/status', status, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadLevels();
       },
@@ -335,7 +365,11 @@ export class ManageStructureComponent {
       id: block.id,
       status: change
     }
-    this.http.put<any>('http://localhost:4000/api/blocks/status', status).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/blocks/status', status, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocks();
       },
@@ -356,7 +390,11 @@ export class ManageStructureComponent {
       id: skill.id,
       status: change
     }
-    this.http.put<any>('http://localhost:4000/api/skills/status', status).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/skills/status', status, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadSkills();
       },
@@ -377,7 +415,11 @@ export class ManageStructureComponent {
     this.validation(changes, this.editVariables.type);
     if ( this.val ) {
       this.charge = true;
-      this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes).subscribe({
+      let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+      this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes, {headers: httpHeaders}).subscribe({
         next: (res) => {
           let form: any = document.getElementById("editForm");
           if( this.editVariables.type === "levels" ){
@@ -436,7 +478,11 @@ export class ManageStructureComponent {
     this.charge = true;
     let del: any = {}; 
     del.id = this.deleteVariables.id;
-    this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`,del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`, del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.charge = false;
         if( this.deleteVariables.type === "levels" ){
@@ -456,13 +502,17 @@ export class ManageStructureComponent {
   };
 
   search(type: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
     switch(type){
       case "levels":
         let level: any = {
           name: this.structureForm.value.searchLevel
         }
         if ( level.name !== "" ) {
-          this.http.put<any>('http://localhost:4000/api/levels/search', level).subscribe({
+          this.http.put<any>('http://localhost:4000/api/levels/search', level, {headers: httpHeaders}).subscribe({
             next: (res) => {
               this.levels = res;
             },
@@ -480,7 +530,7 @@ export class ManageStructureComponent {
         if ( skill.level === "all_skills" ) {
           this.loadSkills();
         }else if ( skill.name !== "" || skill.level !== "" ){
-          this.http.put<any>('http://localhost:4000/api/skills/search', skill).subscribe({
+          this.http.put<any>('http://localhost:4000/api/skills/search', skill, {headers: httpHeaders}).subscribe({
             next: (res) => {
               this.skills = res;
             },
@@ -498,7 +548,7 @@ export class ManageStructureComponent {
         if ( block.skill === "all_blocks") {
           this.loadBlocks();
         }else if ( block.name !== "" || block.skill !== "" ){
-          this.http.put<any>('http://localhost:4000/api/blocks/search', block).subscribe({
+          this.http.put<any>('http://localhost:4000/api/blocks/search', block, {headers: httpHeaders}).subscribe({
             next: (res) => {
               this.blocks = res;
             },
@@ -535,5 +585,5 @@ export class ManageStructureComponent {
         });
         break;
     }
-  }
+  };
 }

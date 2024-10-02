@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { last } from 'rxjs';
 
@@ -32,9 +32,13 @@ export class StudentsComponent {
   }
   
   load(){
-    this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/alumnos', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.students = res;
+        this.students = res.students;
         console.log(res)
       },
       error: (err) => {
@@ -105,14 +109,18 @@ export class StudentsComponent {
     if(filters.city === ""){filters.city = null};
     if(filters.email === ""){filters.email = null};
     
-      this.http.put<any>('http://localhost:4000/api/alumnos/filter', filters).subscribe({
-        next: (res) => {
-          this.students = res;
-        },
-        error: (err) => {
-          alert('Cargar fallo' + err);
-        },
-      });
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/filter', filters, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.students = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   deleteFilter(){

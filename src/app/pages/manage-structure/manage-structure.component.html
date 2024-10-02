@@ -102,10 +102,10 @@
         </ul>
         <div class="row my-4">
             <div class="col-1 text-end mt-1"><p>Destreza:</p></div>
-            <div class="col-3"><input type="text" class="form-control" formControlName="searchBlock" id="skill"></div>
+            <div class="col-3"><input type="text" class="form-control" formControlName="skill" id="skill"></div>
             <div class="col-1 text-end mt-1"><p>Nivel</p></div>
             <div class="col-2">
-                <select id="levelSkill" class="form-select" formControlName="searchSkillBlock">
+                <select id="levelSkill" class="form-select" formControlName="levelSkill">
                     @for(level of levels; track level.id){
                         <option [value]="level.id">{{level.name}}</option>
                     }

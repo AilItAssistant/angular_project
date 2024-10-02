@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage-students',
@@ -39,9 +39,13 @@ export class ManageStudentsComponent {
   });
   
   load(){
-    this.http.get<any>('http://localhost:4000/api/alumnos').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/alumnos', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.students = res;
+        this.students = res.students;
         console.log(res)
       },
       error: (err) => {
@@ -81,7 +85,11 @@ export class ManageStudentsComponent {
   delete(){
     let del;
     del = {id: this.deleteVariables.student_id};
-    this.http.put<any>('http://localhost:4000/api/alumnos/delete', del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/delete', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         let deleteModal: any;
         deleteModal = document.getElementById('deleteModal');
@@ -137,7 +145,11 @@ export class ManageStudentsComponent {
     let des: any = {};
     des.id = student.student_id;
     des.status = student.student_status;
-    this.http.put<any>('http://localhost:4000/api/alumnos/status', des).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/status', des, {headers: httpHeaders}).subscribe({
       next: (res) => {
       this.load();
       },
@@ -192,7 +204,11 @@ export class ManageStudentsComponent {
     console.log(mod)
     if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
       this.charge = true;
-      this.http.put<any>('http://localhost:4000/api/alumnos/edit', mod).subscribe({
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.put<any>('http://localhost:4000/api/alumnos/edit', mod, {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res)
           let editModal: any;
@@ -236,7 +252,11 @@ export class ManageStudentsComponent {
       address: this.addStudentsForm.value.address
     }
     this.charge = true;
-    this.http.post<any>('http://localhost:4000/api/alumnos/add',add).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/alumnos/add',add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res)
         let editModal: any;
@@ -326,14 +346,18 @@ export class ManageStudentsComponent {
     if(filters.city === ""){filters.city = null};
     if(filters.email === ""){filters.email = null};
     
-      this.http.put<any>('http://localhost:4000/api/alumnos/filter', filters).subscribe({
-        next: (res) => {
-          this.students = res;
-        },
-        error: (err) => {
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/filter', filters, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.students = res;
+      },
+      error: (err) => {
           alert('Cargar fallo' + err);
-        },
-      });
+      },
+    });
   };
 
   deleteFilter(){
@@ -348,7 +372,11 @@ export class ManageStudentsComponent {
   };
 
   loadLevels(){
-    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.levels = res;
       },
@@ -359,9 +387,13 @@ export class ManageStudentsComponent {
   };
 
   loadClasses(){
-    this.http.get<any>('http://localhost:4000/api/classes').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/classes', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.classes = res;
+        this.classes = res.classes;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -370,8 +402,13 @@ export class ManageStudentsComponent {
   };
 
   getClassesById(id: any){
-    this.http.put<any>('http://localhost:4000/api/classes/studentId', id).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/classes/studentId', id, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        console.log(res)
         this.classesId = res;
       },
       error: (err) => {
@@ -399,10 +436,14 @@ export class ManageStudentsComponent {
       student_id: this.student.student_id
     };
     let id: any = { id: this.student.student_id };
-
-    this.http.put<any>('http://localhost:4000/api/alumnos/addClass', add).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/addClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
+        this.loadClasses();
         this.getClassesById(id);
       },
       error: (err) => {
@@ -419,8 +460,13 @@ export class ManageStudentsComponent {
       student_id: this.student.student_id
     };
     let id: any = { id: this.student.student_id };
-    this.http.put<any>('http://localhost:4000/api/alumnos/deleteClass', del).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/deleteClass', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        this.loadClasses();
         this.getClassesById(id);
         console.log(res)
       },

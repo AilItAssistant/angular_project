@@ -3,7 +3,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import {FormControl, FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { response } from 'express';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { text } from 'stream/consumers';
 
 @Component({
@@ -62,9 +62,13 @@ export class AddQuestionsComponent {
   };
 
   loadLevels(){
-    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res;
+        this.levels = res.levels;
       },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -73,9 +77,13 @@ export class AddQuestionsComponent {
   };
 
   loadSkills(){
-    this.http.get<any>('http://localhost:4000/api/skills').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/skills', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.skills = res;
+        this.skills = res.skills;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -84,9 +92,13 @@ export class AddQuestionsComponent {
   };
 
   loadBLocks(){
-    this.http.get<any>('http://localhost:4000/api/blocks').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.blocks = res;
+        this.blocks = res.blocks;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -161,7 +173,11 @@ export class AddQuestionsComponent {
         photo: this.questionPhoto
       };
       console.log(add)
-      this.http.post<any>('http://localhost:4000/api/questions/add', add).subscribe({
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.selectStatement();
           let form: any = document.getElementById("questionForm");
@@ -186,8 +202,11 @@ export class AddQuestionsComponent {
         photo: this.questionPhoto
       };
       console.log(add);
-  
-      this.http.post<any>('http://localhost:4000/api/statements', add).subscribe({
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/statements', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res);
           let form: any = document.getElementById("questionForm");
@@ -222,7 +241,11 @@ export class AddQuestionsComponent {
 
   selectStatement(){
     let statementModal: any;
-    this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`).subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];
         if(res[0].question_ids !== null){
@@ -249,7 +272,11 @@ export class AddQuestionsComponent {
       this.selectedStatement = Object.assign({questions: []}, this.selectedStatement);
       for( let i: any = 0; ids.length > i; i++ ){
         let id: any = {id: ids[i]};
-        this.http.put<any>(`http://localhost:4000/api/questions/getById`, id).subscribe({
+        let auth: any = localStorage.getItem('token');
+        let httpHeaders: any = new HttpHeaders({
+          'authorization': auth
+        });
+        this.http.put<any>(`http://localhost:4000/api/questions/getById`, id, {headers: httpHeaders}).subscribe({
           next: (res) => {
             questions.push(res[0]);
             for(let x: any = 0; questions.length > x; x++){

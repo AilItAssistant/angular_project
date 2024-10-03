@@ -1,5 +1,6 @@
 import { Routes, CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 import { HomeComponent } from './pages/home/home.component';
 import { ExamsComponent } from './pages/exams/exams.component';
@@ -26,20 +27,45 @@ import { StudentsDetailsComponent } from './pages/students-details/students-deta
 import { TriggersComponent } from './pages/triggers/triggers.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
 import { VerifyService } from './services/verify.service';/** */
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-export const authGuard: CanActivateFn = (route, state) => {
-    let router = inject(Router);
-    //const verifyService = inject(VerifyService);
-    //console.log(verifyService.verify())
-  
-    if ( localStorage.getItem('token') ) {
-      return true;
-    } else {
-      alert('Unauthorized access.')
-      router.navigateByUrl('/login');
-      return false;
+  @Injectable({
+    providedIn: 'root'
+  })
+export class verify{
+    constructor(private http: HttpClient, private router: Router,) { this.result }
+    result: any;
+    ver(){
+        let itsTrue: boolean = true;
+        let auth: any = localStorage.getItem('token');
+        let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+        });
+        this.http.get<any>('http://localhost:4000/api/users/verifyHeader', {headers: httpHeaders}).subscribe({
+            next: (res) => {
+                console.log(res);
+                itsTrue = true;
+                this.result = true;
+                return true
+            },
+            error: (err) => {
+                itsTrue = false;
+                this.result = false;
+                this.router.navigateByUrl(`/login`);
+                alert('Verify' + err);
+                return false
+            }
+        });
+        return this.result
     }
-  };
+}
+
+async function ver(){
+    const veri = inject(verify);
+    let res = await veri.ver()
+    console.log(res)
+    return res
+  }
 
 export const routes: Routes = [
     {
@@ -51,7 +77,7 @@ export const routes: Routes = [
         path: "exams",
         component: ExamsComponent,
         title: "Exámenes",
-        canActivate: [authGuard]
+        canActivate: [ver]
     },
     {
         path: "add_questions",

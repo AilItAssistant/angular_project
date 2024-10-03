@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -9,18 +9,20 @@ import { Router } from '@angular/router';
 export class VerifyService {
 
   constructor(private http: HttpClient, private router: Router) { }
-
-  verify(): boolean {
-
+  
+  verify = async () => {
+  
     let itsTrue: boolean = false;
-    let token = { token: localStorage.getItem('token') };
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
 
-    this.http.post<any>('http://localhost:4000/api/users/verify', token).subscribe({
+    this.http.get<any>('http://localhost:4000/api/users/verify', {headers: httpHeaders}).subscribe({
       next: (res) => {
         console.log(res);
-        if (res) {
-          itsTrue = true;
-        }
+        itsTrue = true;
+
       },
       error: (err) => {
         itsTrue = false;

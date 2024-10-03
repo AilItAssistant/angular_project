@@ -60,10 +60,11 @@ export class ManageUsersComponent {
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
-    
     status: new FormControl(""),
     created: new FormControl(""),
-    username: new FormControl("")
+    username: new FormControl(""),
+    password: new FormControl(""),
+    repitPassword: new FormControl(""),
   });
 
   editUserForm = new FormGroup({
@@ -73,10 +74,11 @@ export class ManageUsersComponent {
     email: new FormControl(""),
     city: new FormControl(""),
     permissions: new FormControl(""),
- 
     status: new FormControl(""),
     created: new FormControl(""),
-    username: new FormControl("")
+    username: new FormControl(""),
+    password: new FormControl(""),
+    repitPassword: new FormControl(""),
   });
 
   addUser(){
@@ -91,21 +93,33 @@ export class ManageUsersComponent {
       permissions: this.addUserForm.value.permissions,
       status: this.addUserForm.value.status,
       created: this.addUserForm.value.created,
-      username: this.addUserForm.value.username
+      username: this.addUserForm.value.username,
+      
     };
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.http.post<any>('http://localhost:4000/api/users/add', user, {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.load();
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+    if ( this.addUserForm.value.password !== "" || this.addUserForm.value.repitPassword !== ""){
+      if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
+        let add: any = {
+          pass: this.addUserForm.value.password,
+          repitPass: this.addUserForm.value.repitPassword
+        };
+        user = Object.assign(add, user)
+        let auth: any = localStorage.getItem('token');
+        let httpHeaders: any = new HttpHeaders({
+          'authorization': auth
+        });
+        this.http.post<any>('http://localhost:4000/api/users/add', user, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.load();
+          },
+          error: (err) => {
+            alert('Cargar fallo' + err);
+          },
+        });
+      } else {
+        alert("Las contraseñas no coinciden")
+      };
+    };
   };
 
   openDeleteModal(user: any){
@@ -165,6 +179,14 @@ export class ManageUsersComponent {
       created: this.editUserForm.value.created,
       id: this.editVariables.id
     };
+    if ( this.addUserForm.value.password !== "" || this.addUserForm.value.repitPassword !== ""){
+      if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
+        mod.push({
+          pass: this.addUserForm.value.password,
+          repitPass: this.addUserForm.value.repitPassword
+        });
+      };
+    };
     console.log(mod);
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -195,7 +217,9 @@ export class ManageUsersComponent {
       permissions: new FormControl(user.permissions),
       status: new FormControl(user.status),
       created: new FormControl(user.created),
-      username: new FormControl(user.username)
+      username: new FormControl(user.username),
+      password: new FormControl(""),
+      repitPassword: new FormControl("")
     });
     this.editVariables = user;
 

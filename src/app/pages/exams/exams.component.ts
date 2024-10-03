@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
@@ -30,9 +30,13 @@ export class ExamsComponent {
   };
 
   loadLevels(){
-    this.http.get<any>('http://localhost:4000/api/levels').subscribe({
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res;
+        this.levels = res.levels;
       },
       error: (err) => {
         alert('Cargar fallo' + err);

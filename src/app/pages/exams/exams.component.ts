@@ -830,8 +830,6 @@ export class ExamsComponent {
       }
     ];
     pdf.content.push(readQuestion2);
-
-    console.log(pdf);
       
     //pdfMake.createPdf(pdf).open();
     pdfMake.createPdf(pdf).download("test.pdf");

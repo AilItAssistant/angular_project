@@ -39,7 +39,6 @@ export class StudentsComponent {
     this.http.get<any>('http://localhost:4000/api/alumnos', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.students = res.students;
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -95,7 +94,6 @@ export class StudentsComponent {
   };
 
   filter(){
-    console.log( this.orderForm.value);
     let filters: any = {
       identification_number: this.orderForm.value.identification_number,
       last_name: this.orderForm.value.last_name,

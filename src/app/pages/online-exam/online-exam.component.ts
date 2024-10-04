@@ -25,10 +25,9 @@ export class OnlineExamComponent {
         alert('Cargar fallo' + err);
       },
     });
-    this.getId();
+  
     this.takeQuestionArray();
   }
-  getId(){console.log(this.route.snapshot.paramMap.get('id'))};
 
   takeQuestionArray(){
     this.statements = []

@@ -56,8 +56,6 @@ export class ManageStructureComponent {
   validation ( data: any, type: any ) {
     let id: any;
     this.val = true;
-    console.log(data);
-    console.log(type)
 
     switch ( type ) {
       case "add_level":
@@ -421,6 +419,7 @@ export class ManageStructureComponent {
     });
       this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes, {headers: httpHeaders}).subscribe({
         next: (res) => {
+          console.log(res)
           let form: any = document.getElementById("editForm");
           if( this.editVariables.type === "levels" ){
             this.loadLevels();

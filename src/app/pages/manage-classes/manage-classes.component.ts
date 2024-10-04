@@ -43,8 +43,6 @@ export class ManageClassesComponent {
   }
   
   load(){
-    console.log(window.localStorage.getItem('token'))
-    console.log(localStorage.getItem('token'))
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth,
@@ -66,7 +64,7 @@ export class ManageClassesComponent {
     });
     this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.teachers = res;
+        this.teachers = res.teachers;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -81,7 +79,7 @@ export class ManageClassesComponent {
     });
     this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res;
+        this.levels = res.levels;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -123,7 +121,6 @@ export class ManageClassesComponent {
     });
     this.http.post<any>('http://localhost:4000/api/classes/add', classes, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         this.load();
       },
       error: (err) => {
@@ -189,7 +186,6 @@ export class ManageClassesComponent {
     });
     this.http.put<any>('http://localhost:4000/api/classes/edit', mod, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         this.load();
         let editModal: any;
         editModal = document.getElementById('editModal');
@@ -204,7 +200,6 @@ export class ManageClassesComponent {
   };
 
   openEditModal(classes: any){
-    console.log(classes)
     this.editVaribles = classes;
     this.editClassesForm = new FormGroup({
       teacher: new FormControl(classes.teacher_id),
@@ -347,7 +342,7 @@ export class ManageClassesComponent {
     });
     this.http.get<any>('http://localhost:4000/api/alumnos', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.students = res;
+        this.students = res.students;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -388,9 +383,7 @@ export class ManageClassesComponent {
   openStudentsModal(classes: any){
     let id: any = { id: classes.class_id };
     this.loadStudents();
-    console.log(this.students);
     this.loadStudentsById(id);
-    console.log(this.studentsId);
     this.relationsVariables = classes;
     let classStudentsModal: any;
     classStudentsModal = document.getElementById('classStudentsModal');
@@ -406,7 +399,6 @@ export class ManageClassesComponent {
   openTeachersModal(classes: any){
     let id: any = { id: classes.class_id };
     this.loadTeachers();
-    console.log(this.teachers);
     this.loadTeachersById(id)
     this.relationsVariables = classes;
     let classTeachersModal: any;

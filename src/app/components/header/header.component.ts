@@ -34,7 +34,6 @@ export class HeaderComponent {
       });
       this.http.get<any>('http://localhost:4000/api/users/verifyHeader', {headers: httpHeaders}).subscribe({
         next: (res) => {
-          console.log(res)
           if (res) {
             this.session = {
               logged: true,
@@ -44,7 +43,6 @@ export class HeaderComponent {
               lastname: res.last_name
             };
             this.test();
-            console.log(this.session)
           };
         },
         error: (err) => {
@@ -63,8 +61,6 @@ export class HeaderComponent {
 
   test(){
     let path: any = this.router.url;
-    console.log(path);
-    console.log();
     switch( this.session.permissions ){
       case "admin":
         /*if(path === "") {
@@ -86,14 +82,12 @@ export class HeaderComponent {
         };
         break;
       case "student":
-        console.log(path)
         if( path === "/bitacora" || path === "/triggers" ||
           path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" || 
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" || path === "/manage_users"
           || path === "/manage_users" || path === "/statistics" || path === "/classes" || 
           path === "/students" || path === "/teachers" || path === "/exams" || path === "/add_exams_notes" || path === "/search_exams"
           || path === "/add_questions" || path === "/validate_questions" ) {
-            console.log("works")
           this.router.navigateByUrl("/");
         };
         break;

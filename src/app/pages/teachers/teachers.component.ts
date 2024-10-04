@@ -92,7 +92,6 @@ export class TeachersComponent {
   };
 
   filter(){
-    console.log( this.orderForm.value);
     let filters: any = {
       department: this.orderForm.value.department,
       last_name: this.orderForm.value.last_name,

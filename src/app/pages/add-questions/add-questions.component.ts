@@ -133,13 +133,11 @@ export class AddQuestionsComponent {
           is_correct: false
         },
       ]
-  
       if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
         responses.push({
           content: this.questionForm.value.responseD,
           letter: "D",
           is_correct: false
-  
         })
       }
       if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
@@ -156,13 +154,11 @@ export class AddQuestionsComponent {
           is_correct: false
         })
       }
-  
       responses.forEach((element: any) => {
         if(this.questionForm.value.response === element.letter){
           element.is_correct = true
         }
       });
-  
       let add: any = {
         question: this.questionForm.value.question,
         block: this.questionForm.value.block,
@@ -172,7 +168,6 @@ export class AddQuestionsComponent {
         statement_id: this.selectedStatement.id,
         photo: this.questionPhoto
       };
-      console.log(add)
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
@@ -201,14 +196,12 @@ export class AddQuestionsComponent {
         text: this.questionForm.value.text,
         photo: this.questionPhoto
       };
-      console.log(add);
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
       this.http.post<any>('http://localhost:4000/api/statements', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          console.log(res);
           let form: any = document.getElementById("questionForm");
           form.reset();
         },
@@ -227,9 +220,13 @@ export class AddQuestionsComponent {
 
   openStatementModal(){
     let statementModal: any;
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
     statementModal = document.getElementById('statementModal');
     statementModal.style.display="block";
-    this.http.get<any>('http://localhost:4000/api/statements').subscribe({
+    this.http.get<any>('http://localhost:4000/api/statements', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.statementSelected = res;
       },
@@ -247,6 +244,7 @@ export class AddQuestionsComponent {
     });
     this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        console.log(res)
         this.selectedStatement = res[0];
         if(res[0].question_ids !== null){
           let ids: any = res[0].question_ids.split(",");
@@ -283,7 +281,7 @@ export class AddQuestionsComponent {
               let answers_ids: any = questions[x].answers_ids.split(",");
               for(let y: any = 0; answers_ids.length > y; y++){
                 let id = {id: answers_ids[y]};
-                this.http.put<any>(`http://localhost:4000/api/answers/getById`, id).subscribe({
+                this.http.put<any>(`http://localhost:4000/api/answers/getById`, id, {headers: httpHeaders}).subscribe({
                   next: (res) => {
                     questions[x] = Object.assign({answers: []}, questions[x]);
                     if(!questions[x].answers.find((e: any) => e.id === res[0].id)){
@@ -312,7 +310,6 @@ export class AddQuestionsComponent {
 
   writeStatement(){
     this.statement = false;
-    console.log(this.selectedStatement)
     this.selectedStatement = [];
   };
 

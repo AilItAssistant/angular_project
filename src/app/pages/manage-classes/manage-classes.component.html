@@ -98,8 +98,8 @@
                                 }
                             </div>
                             <div class="col-1 text-end">
-                                <button class="btn btn-success btn-sm" (click)="openStudentsModal(class)">AES</button>
-                                <button class="btn btn-success btn-sm" (click)="openTeachersModal(class)">APR</button>
+                                <button class="btn btn-success btn-sm" (click)="openStudentsModal(class)">A.ES</button>
+                                <button class="btn btn-success btn-sm" (click)="openTeachersModal(class)">A.PR</button>
                                 <button class="btn btn-primary btn-sm" (click)="openEditModal(class)">M</button>
                                 <button class="btn btn-secondary btn-sm" (click)="desactivate(class)">D</button>
                                 <button class="btn btn-danger btn-sm" (click)="openDeleteModal(class)">E</button>     
@@ -175,7 +175,7 @@
 <form [formGroup] = "addClassesForm">
     <div class="container">
         <div class="row mb-3">
-            <div class="col-4">
+            <div class="col-6">
                 <label for="namme" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
             </div>
@@ -187,7 +187,7 @@
                     }
                 </select>
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <label for="level" class="form-label">Level</label>
                 <select id="level" class="form-select" formControlName="level">
                     @for(level of levels; track level.id){
@@ -197,15 +197,15 @@
             </div>
         </div>
         <div class="row text-center">
-            <div class="col-4">
+            <div class="col-5">
                 <label for="schedule" class="form-label">Calendario</label>
                 <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
             </div>
-            <div class="col-3">
+            <div class="col-4">
                 <label for="class" class="form-label">Clase</label>
                 <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <label for="status" class="form-label">Estado</label>
                 <select id="status" class="form-select" formControlName="status">
                     <option value="active">Activo</option>

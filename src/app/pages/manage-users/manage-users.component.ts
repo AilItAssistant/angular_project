@@ -44,7 +44,6 @@ export class ManageUsersComponent {
     this.http.get<any>('http://localhost:4000/api/users', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.users = res.users;
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -83,7 +82,6 @@ export class ManageUsersComponent {
 
   addUser(){
     if(this.addUserForm.value.status === ""){this.addUserForm.value.status = "active"}
-    console.log(this.addUserForm)
     let user: any = {
       name: this.addUserForm.value.name,
       last_name: this.addUserForm.value.last_name,
@@ -107,7 +105,6 @@ export class ManageUsersComponent {
         });
         this.http.post<any>('http://localhost:4000/api/users/add', user, {headers: httpHeaders}).subscribe({
           next: (res) => {
-            console.log(res);
             this.load();
           },
           error: (err) => {
@@ -136,7 +133,6 @@ export class ManageUsersComponent {
     });
     this.http.put<any>('http://localhost:4000/api/users/delete', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res)
         let deleteModal: any;
         this.load();
         deleteModal = document.getElementById('deleteModal');
@@ -198,14 +194,12 @@ export class ManageUsersComponent {
         alert("Las contraseñas no coinciden")
       }
     };
-    console.log(mod);
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
     this.http.put<any>('http://localhost:4000/api/users/edit', mod, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         let editModal: any;
         editModal = document.getElementById('editModal');
         editModal.style.display="none";
@@ -219,7 +213,6 @@ export class ManageUsersComponent {
   };
 
   openEditModal(user: any){
-    console.log(user)
     this.editUserForm = new FormGroup({
       name: new FormControl(user.name),
       last_name: new FormControl(user.last_name),
@@ -234,7 +227,6 @@ export class ManageUsersComponent {
       repitPassword: new FormControl("")
     });
     this.editVariables = user;
-    console.log(this.editUserForm.value)
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display="block";
@@ -248,7 +240,6 @@ export class ManageUsersComponent {
     });
     this.http.put<any>('http://localhost:4000/api/users/status', des, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         this.load();
       },
       error: (err) => {
@@ -365,7 +356,6 @@ export class ManageUsersComponent {
   };
 
   filter(){
-    console.log( this.orderForm.value);
     let filters: any = {
       email: this.orderForm.value.email,
       last_name: this.orderForm.value.last_name,

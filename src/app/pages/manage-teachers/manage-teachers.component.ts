@@ -90,7 +90,6 @@ export class ManageTeachersComponent {
     });
     this.http.post<any>('http://localhost:4000/api/teachers/add', teacher, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         this.load();
       },
       error: (err) => {
@@ -100,7 +99,6 @@ export class ManageTeachersComponent {
   };
 
   openDeleteModal(teacher: any){
-    console.log(teacher)
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display="block";
@@ -109,7 +107,6 @@ export class ManageTeachersComponent {
 
   delete(){
     let del: any = { id: this.deleteVariables.teacher_id };
-    console.log(del);
     this.charge = true;
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -117,7 +114,6 @@ export class ManageTeachersComponent {
     });
     this.http.put<any>('http://localhost:4000/api/teachers/delete', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res)
         this.load();
         let deleteModal: any;
         deleteModal = document.getElementById('deleteModal');
@@ -172,7 +168,6 @@ export class ManageTeachersComponent {
       mod.email = this.editTeachersForm.value.email;
     } else mod.email = "";
 
-    console.log(mod);
     if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
 
       let auth: any = localStorage.getItem('token');
@@ -181,7 +176,6 @@ export class ManageTeachersComponent {
     });
       this.http.put<any>('http://localhost:4000/api/teachers/edit', mod, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          console.log(res);
           this.charge = false;
           let editModal: any;
           editModal = document.getElementById('editModal');
@@ -279,7 +273,6 @@ export class ManageTeachersComponent {
   };
 
   filter(){
-    console.log( this.orderForm.value);
     let filters: any = {
       department: this.orderForm.value.department,
       last_name: this.orderForm.value.last_name,
@@ -345,7 +338,6 @@ export class ManageTeachersComponent {
   };
 
   openClassModal(teacher: any){
-    console.log(teacher)
     let id: any = {id: teacher.teacher_id}
     this.loadClasses();
     this.getClassesById(id);
@@ -357,8 +349,6 @@ export class ManageTeachersComponent {
   };
 
   addClass(classId: any){
-    console.log(classId.class_id);
-    console.log(this.teacher.teacher_id);
     let add: any = {
       class_id: classId.class_id,
       teacher_id: this.teacher.teacher_id
@@ -370,7 +360,6 @@ export class ManageTeachersComponent {
     });
     this.http.put<any>('http://localhost:4000/api/teachers/addClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res);
         this.getClassesById(id);
       },
       error: (err) => {
@@ -380,8 +369,6 @@ export class ManageTeachersComponent {
   };
 
   deleteClass(classes: any){
-    console.log(classes.class_id);
-    console.log(this.teacher.teacher_id);
     let del: any = {
       class_id: classes.class_id,
       teacher_id: this.teacher.teacher_id
@@ -394,7 +381,6 @@ export class ManageTeachersComponent {
     this.http.put<any>('http://localhost:4000/api/teachers/deleteClass', del, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.getClassesById(id);
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

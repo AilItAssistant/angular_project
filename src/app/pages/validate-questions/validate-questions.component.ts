@@ -151,8 +151,6 @@ export class ValidateQuestionsComponent {
   //ADD
 
   openAddModal(exam: any, question: any){
-    console.log(exam);
-    console.log(question);
     this.selectQuestion = {
       statement: question.statement,
       A: "",

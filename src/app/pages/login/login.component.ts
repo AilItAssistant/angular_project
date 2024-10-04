@@ -33,7 +33,6 @@ export class LoginComponent {
       });
       this.http.get<any>('http://localhost:4000/api/users/verifyHeader', {headers: httpHeaders}).subscribe({
         next: (res) => {
-          console.log(res)
           if (res) {
             this.router.navigate(['']);
           };
@@ -52,7 +51,6 @@ export class LoginComponent {
     };
     this.http.post<any>('http://localhost:4000/api/users/login', credentials).subscribe({
       next: (res) => {
-        console.log(res)
         localStorage.setItem('token',res.token);
         if ( res === 'Usuario o clave incorrecto' ) {
           alert(res);

@@ -120,7 +120,6 @@ export class ManageQuestionsComponent {
           deleteModal.style.display = 'none';
         },
         error: (err) => {
-          console.log(err);
           alert('No se pudo borrar');
           this.charge = false;
         },
@@ -161,8 +160,6 @@ export class ManageQuestionsComponent {
   }
 
   openEditModal(exam: any, question: any) {
-    console.log(exam);
-    console.log(question);
     let responseA: string = '';
     let responseB: string = '';
     let responseC: string = '';
@@ -260,7 +257,6 @@ export class ManageQuestionsComponent {
       changes.responseE = this.questionForm.value.responseE;
     }
 
-    console.log(changes);
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -278,7 +274,6 @@ export class ManageQuestionsComponent {
           this.charge = false;
         },
         error: (err) => {
-          console.log(err);
           alert('No se pudo editar');
           this.charge = false;
         },

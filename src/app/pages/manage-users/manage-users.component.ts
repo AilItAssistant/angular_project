@@ -100,7 +100,6 @@ export class ManageUsersComponent {
       if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
         let add: any = {
           pass: this.addUserForm.value.password,
-          repitPass: this.addUserForm.value.repitPassword
         };
         user = Object.assign(add, user)
         let auth: any = localStorage.getItem('token');
@@ -183,7 +182,6 @@ export class ManageUsersComponent {
       if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
         mod.push({
           pass: this.addUserForm.value.password,
-          repitPass: this.addUserForm.value.repitPassword
         });
       };
     };

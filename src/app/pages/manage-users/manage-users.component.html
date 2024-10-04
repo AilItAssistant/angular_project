@@ -52,11 +52,10 @@
         <div class="col-1">Nombre</div>
         <div class="col-1">Apellidos</div>
         <div class="col-1">Username</div>
-        <div class="col-1">Número de télefono</div>
+        <div class="col-2">Número de télefono</div>
         <div class="col-2">Email</div>
         <div class="col-1">Ciudad</div>
         <div class="col-1">Permisos</div>
-        <div class="col-1">Cargo</div>
         <div class="col-1">Creado</div>
         <div class="col-1">Estado</div>
         <div class="col-1"></div>
@@ -71,15 +70,15 @@
     <li class="list-group-item">
       <div class="row">
         <div class="col-1">
-            {{ user.username }}
+            {{ user.name }}
           </div>
         <div class="col-1">
-          {{ user.name }}
+          {{ user.last_name }}
         </div>
         <div class="col-1">
-          {{ user.last_name}}
+          {{ user.username}}
         </div>
-        <div class="col-1">
+        <div class="col-2">
           {{ user.phone_number}}
         </div>
         <div class="col-2">
@@ -288,6 +287,14 @@
             class="form-control"
             formControlName="city"
             placeholder="Ciudad del usuario"
+          />
+
+          <p class="mt-1">Username</p>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="username"
+            placeholder="Nombre de usuario"
           />
 
           <label for="permissions" class="form-label">Permisos</label>

@@ -94,7 +94,6 @@ export class ManageUsersComponent {
       status: this.addUserForm.value.status,
       created: this.addUserForm.value.created,
       username: this.addUserForm.value.username,
-      
     };
     if ( this.addUserForm.value.password !== "" || this.addUserForm.value.repitPassword !== ""){
       if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
@@ -168,22 +167,36 @@ export class ManageUsersComponent {
     if(this.editUserForm.value.created === null){this.editUserForm.value.created = ""}
     if(this.editUserForm.value.last_name === null){this.editUserForm.value.last_name = ""}
     let mod: any = {
-      name: this.editUserForm.value.name,
-      last_name: this.editUserForm.value.last_name,
-      phone_number: this.editUserForm.value.phone_number,
-      status: this.editUserForm.value.status,
-      email: this.editUserForm.value.email,
-      city: this.editUserForm.value.city,
-      role: this.editUserForm.value.permissions,
-      created: this.editUserForm.value.created,
       id: this.editVariables.id
     };
-    if ( this.addUserForm.value.password !== "" || this.addUserForm.value.repitPassword !== ""){
-      if ( this.addUserForm.value.password === this.addUserForm.value.repitPassword ) {
-        mod.push({
-          pass: this.addUserForm.value.password,
-        });
-      };
+    if ( this.editUserForm.value.name !== null && this.editUserForm.value.name !== undefined && this.editUserForm.value.name !== this.editVariables.name ) { 
+      mod.name = this.editUserForm.value.name } else {  mod.name = "" };
+    if ( this.editUserForm.value.last_name !== null && this.editUserForm.value.last_name !== undefined && this.editUserForm.value.last_name !== this.editVariables.last_name ) { 
+      mod.last_name = this.editUserForm.value.last_name } else {  mod.last_name = "" };
+    if ( this.editUserForm.value.phone_number !== null && this.editUserForm.value.phone_number !== undefined && this.editUserForm.value.phone_number !== this.editVariables.phone_number ) { 
+      mod.phone_number = this.editUserForm.value.phone_number } else {  mod.phone_number = "" };
+    if ( this.editUserForm.value.status !== null && this.editUserForm.value.status !== undefined && this.editUserForm.value.status !== this.editVariables.status ) { 
+      mod.status = this.editUserForm.value.status } else {  mod.status = "" };
+    if ( this.editUserForm.value.email !== null && this.editUserForm.value.email !== undefined && this.editUserForm.value.email !== this.editVariables.email ) { 
+      mod.email = this.editUserForm.value.email } else {  mod.email = "" };
+    if ( this.editUserForm.value.city !== null && this.editUserForm.value.city !== undefined && this.editUserForm.value.city !== this.editVariables.city ) { 
+      mod.city = this.editUserForm.value.city } else {  mod.city = "" };
+    if ( this.editUserForm.value.permissions !== null && this.editUserForm.value.permissions !== undefined && this.editUserForm.value.permissions !== this.editVariables.permissions ) { 
+      mod.permissions = this.editUserForm.value.permissions } else {  mod.permissions = "" };
+    if ( this.editUserForm.value.created !== null && this.editUserForm.value.created !== undefined && this.editUserForm.value.created !== this.editVariables.created ) { 
+      mod.created = this.editUserForm.value.created } else {  mod.created = "" };
+    if ( this.editUserForm.value.username !== null && this.editUserForm.value.username !== undefined && this.editUserForm.value.username !== this.editVariables.username ) { 
+      mod.username = this.editUserForm.value.username } else {  mod.username = "" };
+
+    if ( this.editUserForm.value.password !== "" || this.editUserForm.value.repitPassword !== ""){
+      if ( this.editUserForm.value.password === this.editUserForm.value.repitPassword ) {
+        let add: any = {
+          pass: this.editUserForm.value.password,
+        };
+        mod = Object.assign(add, mod)
+      } else {
+        alert("Las contraseñas no coinciden")
+      }
     };
     console.log(mod);
     let auth: any = localStorage.getItem('token');
@@ -206,6 +219,7 @@ export class ManageUsersComponent {
   };
 
   openEditModal(user: any){
+    console.log(user)
     this.editUserForm = new FormGroup({
       name: new FormControl(user.name),
       last_name: new FormControl(user.last_name),
@@ -220,7 +234,7 @@ export class ManageUsersComponent {
       repitPassword: new FormControl("")
     });
     this.editVariables = user;
-
+    console.log(this.editUserForm.value)
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display="block";

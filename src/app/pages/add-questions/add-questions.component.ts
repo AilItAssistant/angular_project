@@ -66,9 +66,9 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
+    this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res.levels;
+        this.levels = res;
       },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -81,9 +81,9 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>('http://localhost:4000/api/skills', {headers: httpHeaders}).subscribe({
+    this.http.get<any>('http://localhost:4000/api/skills/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.skills = res.skills;
+        this.skills = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -96,9 +96,9 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
+    this.http.get<any>('http://localhost:4000/api/blocks/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.blocks = res.blocks;
+        this.blocks = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -200,7 +200,7 @@ export class AddQuestionsComponent {
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
-      this.http.post<any>('http://localhost:4000/api/statements', add, {headers: httpHeaders}).subscribe({
+      this.http.post<any>('http://localhost:4000/api/statements/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           let form: any = document.getElementById("questionForm");
           form.reset();

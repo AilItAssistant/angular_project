@@ -1,11 +1,11 @@
 <app-header></app-header>
 <div class="m-5">
 
-    <form [formGroup] = "questionForm" id="questionForm">
+    <form [formGroup] = "statementForm" id="statementForm">
+        <h3 class="mb-4 text-center"><strong>Añadir enunciado</strong></h3>
         @if(!statement){
-            <h3 class="mb-4 text-center">Añadir enunciado</h3>
             <div class="container text-center">
-                <div class="row">
+                <div class="row text-center">
                     <div class="col">
                         <p>Elige un nivel</p>
                         <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
@@ -14,150 +14,236 @@
                             }
                         </select>
                     </div>
+                    @if( questionForm.value.level ){
                     <div class="col">
-                        <p>Elige una destreza</p>
-                    <select class="form-select" placeholder="Elige una destreza" formControlName="skills" aria-label="Elige una destreza" required>
-                        @for(skill of skills; track skill.id){
-                            <option [value]="skill.id">{{skill.name}}</option>
-                        }
-                    </select>
-                    </div>
-                    <div class="col mt-3">
-                        <button class="btn btn-info mt-4" (click)="openStatementModal()">Seleccionar un enunciado existente</button>
-                    </div>
+                            <p>Elige una destreza</p>
+                            <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" required>
+                                @for(skill of skills; track skill.id){
+                                    <option [value]="skill.id">{{skill.name}}</option>
+                                }
+                            </select>
+                        </div>
+                    }
                 </div>
             </div>
 
             <div class="row my-3">
-                <div class="col text-center">
+                @if( statementForm.value.skill ){
+                    <div class="col text-center">
                         <p>Enunciado</p>
                         <textarea class="form-control" formControlName="statement" placeholder="Enunciado" id="statement" aria-label="With textarea" required></textarea>
-                </div>
-            
+                    </div>
+                }
                 <div class="col col-sm-2 text-center">
+                    @if( statementForm.value.skill ){
                         <p>Puntuacion</p>
-                        <input type="text" class="form-control" formControlName="puntuation" placeholder="Puntuacion" id="result" aria-label="" required>
+                        <select class="form-select" formControlName="puntuation" id="puntuation">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
+                    }
                 </div>
             </div>
-                <p class="mt-2 text-center">Texto</p>
-                <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
-
+                @if( statementForm.value.skill ){
+                    <p class="mt-2 text-center">Texto</p>
+                    <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
+                }
             <div class="mb-3">
-                <label for="formFile" class="form-label">Foto del enunciado</label>
-                <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
+                @if( statementForm.value.skill ){ 
+                    <label for="formFile" class="form-label">Foto del enunciado</label>
+                    <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
+                }
             </div>
         
         } @else {
             <div class="row">
-                <h3 class="mb-4 text-center">Añadir a enunciado</h3>
+                <h5 class="col-4">Nivel</h5>
+                <h5 class="col-4">Destreza</h5>
+                <h5 class="col-4">Puntuación</h5>
+            </div>
+            <div class="row">
+                <p class="col-4">{{selectedStatement.level_name}}</p>
+                <p class="col-4">{{selectedStatement.skill_name}}</p>
+                <p class="col-4">{{selectedStatement.score}}</p>
+            </div>
+            <div class="row mt-4">
                 <h5 class="col-4">Enunciado</h5>
-                <h5 class="col-7">Texto</h5>
-                <h5 class="col-1">Puntuacion</h5>
-                <p class="col-4">{{selectedStatement.content}}</p>
-                <p class="col-7">{{selectedStatement.text}}</p>
-                <p class="col-1">{{selectedStatement.score}}</p>
-                @for(question of selectedStatement.questions[0]; track question.id){
-                    <div class="row text-center">
-                        <p class="col">{{question.content}}</p>
-                    </div>
-                    @for(answer of question.answers; track answer.id){
-                            <p class="col">{{answer.content}}</p>
+                <h5 class="col-8">Texto</h5>
+                <p class="col-4">{{selectedStatement.statement_content}}</p>
+                <p class="col-8">{{selectedStatement.text}}</p>
+                @if(selectedStatement.questions){
+                    @for(question of selectedStatement.questions[0]; track question.id){
+                        <div class="row text-center">
+                            <p class="col">{{question.content}}</p>
+                        </div>
+                        @for(answer of question.answers; track answer.id){
+                            <p class="col">{{answer.letter}}</p>
+                                <p class="col">{{answer.content}}</p>
+                        }
                     }
                 }
                 <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>
             </div>
         }
         @if(!statement){
-            <div class="row text-center my-4">
+            <div class="row text-center my-5">
+                @if( statementForm.value.statement ){
                 <div class="col">
-                    <button type="submit" class="btn btn-primary ms-5" (click)="sendStatement()">Añadir enunciado</button>
+                        <button type="submit" class="btn btn-primary ms-5" (click)="sendStatement()">Añadir enunciado</button>
+                    </div>
+                }
+                <div class="col text-center">
+                    <button class="btn btn-info" (click)="openStatementModal()">Seleccionar un enunciado existente</button>
                 </div>
             </div>
         }
-
-       <h3 class="text-center my-4">Añadir pregunta</h3>
-            
-        <div class="row">
-            <div class="col">
-                    <p class="text-center">Pregunta</p>
-                    <textarea class="form-control" formControlName="question" id="question" placeholder="Pregunta" aria-label="With textarea" required></textarea>
-            </div>
-
-            <div class="mb-3 col">
-                <label for="formFile" class="form-label">Foto de la pregunta</label>
-                <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
-              </div>
-            
-            <div class="col col-lg-2 text-center">
-                <p>Elige un bloque</p>
+    </form>
+    <form [formGroup] = "questionForm" id="questionForm">
+       <h3 class="text-center my-5"><strong>Añadir pregunta</strong></h3>
+        <div class="row text-center">
+            @if( !selectedStatement ){
+                <div class="col">
+                    <p>Elige un nivel</p>
+                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" required>
+                        @for(level of levels; track level.id){
+                            <option [value]="level.id">{{level.name}}</option>
+                        }
+                    </select>
+                </div>
+                @if( questionForm.value.level ){
+                    <div class="col text-center">
+                        <p>Elige una destreza</p>
+                        <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" required>
+                            @for(skill of skills; track skill.id){
+                                <option [value]="skill.id">{{skill.name}}</option>
+                            }
+                        </select>
+                    </div>
+                }
+            }
+            @if( selectedStatement || questionForm.value.skill ){
+                <div class="col">
+                    <p>Elige un bloque</p>
                     <select class="form-select" formControlName="block" aria-label="Select-block" required>
                         @for(block of blocks; track block.id){
                             <option [value]="block.id">{{block.name}}</option>
                         }
                     </select>
-                
-            </div>
+                </div>
+            }
+            @if( questionForm.value.block ){
+                <div class="col-7">
+                    <p class="text-center">Pregunta</p>
+                    <textarea class="form-control" formControlName="question" id="question" placeholder="Pregunta" aria-label="With textarea" required></textarea>
+                </div>
+            }
         </div>
-        
-        <button type="button" class="btn btn-info my-4" (click)="addResponse()">Añadir respuesta</button>
-
-        <div class="row">
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="ResponseA">Respuesta A</span>
-                    <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
-                </div>
-                @if(numberResponses >= 4){
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="ResponseC">Respuesta D</span>
-                        <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-                }
-            </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="ResponseB">Respuesta B</span>
-                    <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                </div>
-                @if(numberResponses >= 5){
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="ResponseD">Respuesta E</span>
-                        <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-                }
-            </div>
-            <div class="col">
-                <div class="input-group mb-3">
-                    <span class="input-group-text" id="ResponseC">Respuesta C</span>
-                    <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                </div>
-                @if(numberResponses >= 6){
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="ResponseE">Respuesta F</span>
-                        <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-                }
-            </div>
-            <div class="col col-lg-2 text-center">
-                <p>Respuesta correcta</p>
-                <select class="form-select" formControlName="response" id="response">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
+        @if( questionForm.value.block ){
+            <div class="my-4">
+                <label for="formFile" class="form-label text-center">Tipo de pregunta</label>
+                <select class="form-select" formControlName="responsesMode" id="response">
+                    <option value="phrase">Respuestas basadas en frases</option>
+                    <option value="photo">Respuestas basadas en fotografías</option>
                 </select>
             </div>
-          </div>
+            @if( questionForm.value.responsesMode ){
+                <div class="row text-center my-5">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-info" (click)="addResponse()" [disabled]="numberResponses >= 6">Añadir respuesta</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-info" (click)="removeResponse()" [disabled]="numberResponses <= 3">Quitar respuesta</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ResponseA">Respuesta A</span>
+                            @if( questionForm.value.responsesMode === "photo" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event)">
+                            } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                            }
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ResponseC">Respuesta C</span>
+                            @if( questionForm.value.responsesMode === "photo" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+                            } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                        </div>
+                        @if(numberResponses >= 5){
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="ResponseD">Respuesta E</span>
+                                @if( questionForm.value.responsesMode === "photo" ){
+                                    <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+                                } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                    <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                }
+                            </div>
+                        }
+                    </div>
+                    <div class="col">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="ResponseB">Respuesta B</span>
+                            @if( questionForm.value.responsesMode === "photo" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+                            } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                        </div>
+                        @if(numberResponses >= 4){
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="ResponseC">Respuesta D</span>
+                                @if( questionForm.value.responsesMode === "photo" ){
+                                    <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+                                } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                    <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                }
+                            </div>
+                        }
+                        @if(numberResponses >= 6){
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="ResponseE">Respuesta F</span>
+                                @if( questionForm.value.responsesMode === "photo" ){
+                                    <input class="form-control" type="file" id="questionPhoto" formControlName="questionPhoto" (change)="questionPhotoConvert($event)">
+                                } @else if( questionForm.value.responsesMode === "phrase" ) {
+                                    <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-lg-2 text-center">
+                        <p>Respuesta correcta</p>
+                        <select class="form-select" formControlName="correctResponse" id="response">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
+                    </div>
+                </div>
+            }
+        }
         
     </form>
 
-    <div class="row text-center my-4">
-        <div class="col">
-            <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>
+    @if( questionForm.value.block ){
+        <div class="row text-center my-4">
+            <div class="col">
+                <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>
+            </div>
         </div>
-    </div>
+    }
 
     <!-- Select statement modal -->
 
@@ -175,19 +261,33 @@
           }
         </div>
         <div class="modal-body">
-            <form [formGroup] = "statementForm">
-                <p>Elige un enunciado</p>
-                <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
-                    @for(statement of statementSelected; track statement.id){
-                        <option [value]="statement.id">{{statement.content}}</option>
+            <form [formGroup] = "modalForm">
+                <p>Elige un nivel</p>
+                <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1"  (change)="chargeStatements()">
+                    @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
                     }
                 </select>
+                <p>Elige una destreza</p>
+                <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeStatements()">
+                    @for(skill of skills; track skill.id){
+                        <option [value]="skill.id">{{skill.name}}</option>
+                    }
+                </select>
+                @if( modalForm.value.skill && modalForm.value.level ){
+                    <p>Elige un enunciado</p>
+                    <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
+                        @for(statement of statementSelected; track statement.id){
+                            <option [value]="statement.id">{{statement.content}}</option>
+                        }
+                    </select>
+                }
         </form>
         </div>
         @if (!charge){
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="closeStatementModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="selectStatement()">Seleccionar</button>
+            <button type="button" class="btn btn-primary" (click)="selectStatement()" [disabled]="modalForm.value.statement === ''">Seleccionar</button>
           </div>
         } @else {
           <div class="spinner-border text-primary mx-auto mb-3" role="status">

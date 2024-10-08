@@ -31,29 +31,43 @@ export class AddQuestionsComponent {
   validatedQuestion: boolean = false;
   validatedStatement: boolean = false;
   
-  statementForm = new FormGroup({
+  modalForm = new FormGroup({
     statement: new FormControl(""),
+    skill: new FormControl(""),
+    level: new FormControl(""),
   });
   
   questionForm = new FormGroup({
+    
     level: new FormControl(""),
+    skill: new FormControl(""),
     block: new FormControl(""),
     question: new FormControl(""),
-    skills: new FormControl(""),
+    responsesMode: new FormControl(""),
+
+    responseA: new FormControl(""),
+    photoA: new FormControl(),
+    responseB: new FormControl(""),
+    photoB: new FormControl(),
+    responseC: new FormControl(""),
+    photC: new FormControl(),
+    responseD: new FormControl(""),
+    photoC: new FormControl(),
+    responseE: new FormControl(""),
+    photoD: new FormControl(),
+    responseF: new FormControl(""),
+    photoF: new FormControl(),
+    correctResponse: new FormControl(""),
+  });
+  
+  statementForm = new FormGroup({
+    level: new FormControl(""),
+    skill: new FormControl(""),
+    statement: new FormControl(""),
     puntuation: new FormControl(""),
     text: new FormControl(""),
-    modalLevel: new FormControl(""),
-    response: new FormControl(""),
-    statement: new FormControl(""),
-    responseA: new FormControl(""),
-    responseB: new FormControl(""),
-    responseC: new FormControl(""),
-    responseD: new FormControl(""),
-    responseE: new FormControl(""),
-    responseF: new FormControl(""),
-    questionPhoto: new FormControl(),
     statementPhoto: new FormControl(),
-  });
+  })
 
   ngOnInit() {
     this.loadLevels();
@@ -106,11 +120,19 @@ export class AddQuestionsComponent {
     });
   };
 
+  removeResponse(){
+    if(this.numberResponses > 3){
+      this.numberResponses--;
+    };
+  };
+
   addResponse(){
     if(this.numberResponses < 6){
       this.numberResponses++;
-    }
+    };
   };
+
+  /* */
 
   sendQuestion(){
     this.validateQuestion();
@@ -155,7 +177,7 @@ export class AddQuestionsComponent {
         })
       }
       responses.forEach((element: any) => {
-        if(this.questionForm.value.response === element.letter){
+        if(this.questionForm.value.correctResponse === element.letter){
           element.is_correct = true
         }
       });
@@ -166,7 +188,6 @@ export class AddQuestionsComponent {
         skill_id: this.selectedStatement.skill_id,
         level_id: this.selectedStatement.level_id,
         statement_id: this.selectedStatement.id,
-        photo: this.questionPhoto
       };
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
@@ -189,12 +210,12 @@ export class AddQuestionsComponent {
     this.validateStatement();
     if (this.validatedStatement) {
       let add: any = {
-        level: this.questionForm.value.level,
-        skills: this.questionForm.value.skills,
-        statement: this.questionForm.value.statement,
-        puntuation: this.questionForm.value.puntuation,
-        text: this.questionForm.value.text,
-        photo: this.questionPhoto
+        level: this.statementForm.value.level,
+        skills: this.statementForm.value.skill,
+        statement: this.statementForm.value.statement,
+        puntuation: this.statementForm.value.puntuation,
+        text: this.statementForm.value.text,
+        photo: this.statementPhoto
       };
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
@@ -220,40 +241,47 @@ export class AddQuestionsComponent {
 
   openStatementModal(){
     let statementModal: any;
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
     statementModal = document.getElementById('statementModal');
     statementModal.style.display="block";
-    this.http.get<any>('http://localhost:4000/api/statements', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.statementSelected = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+  };
+  
+  chargeStatements(){
+    if( this.modalForm.value.skill !== "" && this.modalForm.value.level !== "" ){
+      let search: any = {
+        skill_id: this.modalForm.value.skill,
+        level_id: this.modalForm.value.level
+      }
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/statements/levelSkill', search, {headers: httpHeaders}).subscribe({
+        next: (res) => {
+          this.statementSelected = res;
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
+    };
   };
 
   selectStatement(){
-    let statementModal: any;
+    console.log(this.modalForm.value.statement)
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>(`http://localhost:4000/api/statements/${this.statementForm.value.statement}`, {headers: httpHeaders}).subscribe({
+    this.http.get<any>(`http://localhost:4000/api/statements/${this.modalForm.value.statement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res)
         this.selectedStatement = res[0];
-        if(res[0].question_ids !== null){
-          let ids: any = res[0].question_ids.split(",");
+        if(res[0].questions !== null){
+          let ids: any = res[0].questions.split(",");
+          console.log(ids)
           this.addQuestionToStatement(ids);
         };
-        
-        statementModal = document.getElementById('statementModal');
-        statementModal.style.display="none";
-        if(this.statementForm.value.statement !== ""){
+        this.closeStatementModal();
+        if(this.modalForm.value.statement !== ""){
           this.statement = true;
         };
       },
@@ -263,10 +291,12 @@ export class AddQuestionsComponent {
     });
   };
 
+  /* */
+
   addQuestionToStatement(ids: any){
     let questions :any = [];
     
-    if( ids !== undefined ){
+    if( ids !== undefined && ids !== null && ids !== "" ){
       this.selectedStatement = Object.assign({questions: []}, this.selectedStatement);
       for( let i: any = 0; ids.length > i; i++ ){
         let id: any = {id: ids[i]};
@@ -334,11 +364,11 @@ export class AddQuestionsComponent {
   };
 
   validateStatement() {
-    let statement: any = this.questionForm.value.statement;
-    let text: any = this.questionForm.value.text;
-    let puntuation: any = this.questionForm.value.puntuation;
-    let level: any = this.questionForm.value.level;
-    let skill: any = this.questionForm.value.skills;
+    let statement: any = this.statementForm.value.statement;
+    let text: any = this.statementForm.value.text;
+    let puntuation: any = this.statementForm.value.puntuation;
+    let level: any = this.statementForm.value.level;
+    let skill: any = this.statementForm.value.skill;
     //let photo: any = this.statementPhoto;
 
     if (
@@ -362,7 +392,7 @@ export class AddQuestionsComponent {
     let response1: any = this.questionForm.value.responseA;
     let response2: any = this.questionForm.value.responseB;
     let response3: any = this.questionForm.value.responseC;
-    let responseCorrect: any = this.questionForm.value.response;
+    let responseCorrect: any = this.questionForm.value.correctResponse;
     //let photo: any = this.questionForm.value.questionPhoto;
 
     if (

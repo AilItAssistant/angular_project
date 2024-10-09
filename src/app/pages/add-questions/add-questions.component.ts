@@ -195,7 +195,8 @@ export class AddQuestionsComponent {
       let add: any = {
         question: this.questionForm.value.question,
         responses: responses,
-        typeAnswers: this.questionForm.value.responsesMode
+        typeAnswers: this.questionForm.value.responsesMode,
+        puntuation: this.questionForm.value.puntuation,
       };
       if ( this.selectedStatement ) {
         add.skill_id = this.selectedStatement.skill_id;
@@ -204,6 +205,7 @@ export class AddQuestionsComponent {
       } else {
         add.skill_id = this.questionForm.value.skill;
         add.level_id = this.questionForm.value.level;
+        add.statement_id = "";
       };
       if ( this.questionForm.value.photoQuestion ) { add.photoQuestion = this.questionForm.value.photoQuestion }
       if ( this.questionForm.value.block ) { add.block = this.questionForm.value.block }

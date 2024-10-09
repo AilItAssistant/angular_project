@@ -24,7 +24,8 @@ export class AddQuestionsComponent {
   charge: boolean = false;
   statementSelected: any;
   levels: any;
-  skills: any;
+  skillsStatement: any;
+  skillsQuestion: any;
   blocks: any;
   questionPhoto: any;
   statementPhoto: any;
@@ -38,26 +39,26 @@ export class AddQuestionsComponent {
   });
   
   questionForm = new FormGroup({
-    
     level: new FormControl(""),
     skill: new FormControl(""),
     block: new FormControl(""),
     question: new FormControl(""),
     responsesMode: new FormControl(""),
-
+    puntuation: new FormControl(""),
     responseA: new FormControl(""),
     photoA: new FormControl(),
     responseB: new FormControl(""),
     photoB: new FormControl(),
     responseC: new FormControl(""),
-    photC: new FormControl(),
-    responseD: new FormControl(""),
     photoC: new FormControl(),
-    responseE: new FormControl(""),
+    responseD: new FormControl(""),
     photoD: new FormControl(),
+    responseE: new FormControl(""),
+    photoE: new FormControl(),
     responseF: new FormControl(""),
     photoF: new FormControl(),
     correctResponse: new FormControl(""),
+    photoQuestion: new FormControl(),
   });
   
   statementForm = new FormGroup({
@@ -71,8 +72,6 @@ export class AddQuestionsComponent {
 
   ngOnInit() {
     this.loadLevels();
-    this.loadSkills();
-    this.loadBLocks();
   };
 
   loadLevels(){
@@ -86,36 +85,6 @@ export class AddQuestionsComponent {
       },
         error: (err) => {
           alert('Cargar fallo' + err);
-      },
-    });
-  };
-
-  loadSkills(){
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.http.get<any>('http://localhost:4000/api/skills/active', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.skills = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-  };
-
-  loadBLocks(){
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.http.get<any>('http://localhost:4000/api/blocks/active', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.blocks = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
       },
     });
   };
@@ -135,67 +104,117 @@ export class AddQuestionsComponent {
   /* */
 
   sendQuestion(){
-    this.validateQuestion();
-    if (this.validatedQuestion) {
+    //this.validateQuestion();
+    if ( true/*this.validatedQuestion*/) {
+      let responses: any;
 
-      let responses: any = [
-        {
-          content: this.questionForm.value.responseA,
-          letter: "A",
-          is_correct: false
-        },
-        {
-          content: this.questionForm.value.responseB,
-          letter: "B",
-          is_correct: false
-        },
-        {
-          content: this.questionForm.value.responseC,
-          letter: "C",
-          is_correct: false
-        },
-      ]
-      if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
-        responses.push({
-          content: this.questionForm.value.responseD,
-          letter: "D",
-          is_correct: false
-        })
-      }
-      if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
-        responses.push({
-          content: this.questionForm.value.responseE,
-          letter: "E",
-          is_correct: false
-        })
-      }
-      if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
-        responses.push({
-          content: this.questionForm.value.responseF,
-          letter: "F",
-          is_correct: false
-        })
-      }
+      if( this.questionForm.value.responsesMode === "photo" ){
+        responses = [
+          {
+            photo_id: this.questionForm.value.photoA,
+            letter: "A",
+            is_correct: false
+          },
+          {
+            photo_id: this.questionForm.value.photoB,
+            letter: "B",
+            is_correct: false
+          },
+          {
+            photo_id: this.questionForm.value.photoC,
+            letter: "C",
+            is_correct: false
+          },
+        ];
+        if(this.questionForm.value.photoD !== "" && this.questionForm.value.photoD !== null){
+          responses.push({
+            photo_id: this.questionForm.value.photoD,
+            letter: "D",
+            is_correct: false
+          })
+        };
+        if(this.questionForm.value.photoE !== "" && this.questionForm.value.photoE !== null){
+          responses.push({
+            photo_id: this.questionForm.value.photoE,
+            letter: "E",
+            is_correct: false
+          })
+        };
+        if(this.questionForm.value.photoF !== "" && this.questionForm.value.photoF !== null){
+          responses.push({
+            photo_id: this.questionForm.value.photoF,
+            letter: "F",
+            is_correct: false
+          })
+        };
+      } else if ( this.questionForm.value.responsesMode === "phrase" ) {
+        responses = [
+          {
+            content: this.questionForm.value.responseA,
+            letter: "A",
+            is_correct: false
+          },
+          {
+            content: this.questionForm.value.responseB,
+            letter: "B",
+            is_correct: false
+          },
+          {
+            content: this.questionForm.value.responseC,
+            letter: "C",
+            is_correct: false
+          },
+        ];
+        if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
+          responses.push({
+            content: this.questionForm.value.responseD,
+            letter: "D",
+            is_correct: false
+          })
+        };
+        if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
+          responses.push({
+            content: this.questionForm.value.responseE,
+            letter: "E",
+            is_correct: false
+          })
+        };
+        if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
+          responses.push({
+            content: this.questionForm.value.responseF,
+            letter: "F",
+            is_correct: false
+          })
+        };
+      };
       responses.forEach((element: any) => {
         if(this.questionForm.value.correctResponse === element.letter){
           element.is_correct = true
-        }
+        };
       });
       let add: any = {
         question: this.questionForm.value.question,
-        block: this.questionForm.value.block,
         responses: responses,
-        skill_id: this.selectedStatement.skill_id,
-        level_id: this.selectedStatement.level_id,
-        statement_id: this.selectedStatement.id,
+        typeAnswers: this.questionForm.value.responsesMode
       };
+      if ( this.selectedStatement ) {
+        add.skill_id = this.selectedStatement.skill_id;
+        add.level_id = this.selectedStatement.level_id;
+        add.statement_id = this.selectedStatement.id;
+      } else {
+        add.skill_id = this.questionForm.value.skill;
+        add.level_id = this.questionForm.value.level;
+      };
+      if ( this.questionForm.value.photoQuestion ) { add.photoQuestion = this.questionForm.value.photoQuestion }
+      if ( this.questionForm.value.block ) { add.block = this.questionForm.value.block }
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
+      console.log(add);
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          this.selectStatement();
+          this.selectStatement('');
           let form: any = document.getElementById("questionForm");
           form.reset();
         },
@@ -223,8 +242,10 @@ export class AddQuestionsComponent {
       });
       this.http.post<any>('http://localhost:4000/api/statements/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
+          console.log(res)
           let form: any = document.getElementById("questionForm");
           form.reset();
+          this.selectStatement(res);
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -266,7 +287,10 @@ export class AddQuestionsComponent {
     };
   };
 
-  selectStatement(){
+  selectStatement(id: any){
+    if ( id !== "" ) {
+      this.modalForm.value.statement = id;
+    };
     console.log(this.modalForm.value.statement)
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -275,6 +299,9 @@ export class AddQuestionsComponent {
     this.http.get<any>(`http://localhost:4000/api/statements/${this.modalForm.value.statement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];
+        console.log(this.selectedStatement)
+        this.questionForm.value.level = this.selectedStatement.level_id;
+        this.questionForm.value.skill = this.selectedStatement.skill_id;
         if(res[0].questions !== null){
           let ids: any = res[0].questions.split(",");
           console.log(ids)
@@ -353,13 +380,37 @@ export class AddQuestionsComponent {
     };
   };
 
-  questionPhotoConvert(event: any){
+  questionPhotoConvert(event: any, letter: any){
     let file: any = event.target.files[0];
     let url: any = file;
     const fr: any = new FileReader();
     fr.readAsDataURL(url)
     fr.onload = () => {
       this.questionPhoto = fr.result as string;
+      console.log(this.questionPhoto + "  " + letter);
+      switch(letter){
+        case "A": 
+          this.questionForm.value.photoA = fr.result as string;
+          break;
+        case "B": 
+          this.questionForm.value.photoB = fr.result as string;
+          break;
+        case "C": 
+          this.questionForm.value.photoC = fr.result as string;
+          break;
+        case "D": 
+          this.questionForm.value.photoD = fr.result as string;
+          break;
+        case "E": 
+          this.questionForm.value.photoE = fr.result as string;
+          break;
+        case "F": 
+          this.questionForm.value.photoF = fr.result as string;
+          break;
+        case 'question':
+          this.questionForm.value.photoQuestion = fr.result as string;
+          break;
+      }
     };
   };
 
@@ -414,6 +465,63 @@ export class AddQuestionsComponent {
     if ( statement === undefined ) {
       alert( 'Debe de seleccionar un enunciado' );
     };
+  };
+
+  chargeSkillsStatement(type: any){
+    let level: any = {};
+    if ( type === 'statement' ){
+      level.level_id = this.statementForm.value.level
+    } else if ( type === 'modal' ) {
+      level.level_id = this.modalForm.value.level
+    };
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/skills/skillsId', level, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.skillsStatement = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  chargeSkillsQuestions(){
+    let level: any = {
+      level_id: this.questionForm.value.level,
+    }
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/skills/skillsId', level, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.skillsQuestion = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  chargeBlocksQuestions(){
+    let skill: any = {
+      skill_id: this.questionForm.value.skill,
+    };
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', skill, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.blocks = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
 }

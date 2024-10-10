@@ -75,14 +75,16 @@
                 <h5 class="col-8">Texto</h5>
                 <p class="col-4">{{selectedStatement.statement_content}}</p>
                 <p class="col-8">{{selectedStatement.text}}</p>
-                @if(selectedStatement.questions){
-                    @for(question of selectedStatement.questions[0]; track question.id){
+                @if(selectedStatement.questionsArray){
+                    @for(question of selectedStatement.questionsArray; track question.id){
                         <div class="row text-center">
+                            <h5>Enunciado</h5>
                             <p class="col">{{question.content}}</p>
                         </div>
+                        <h5 class="col">Respuestas</h5>
                         @for(answer of question.answers; track answer.id){
                             <p class="col">{{answer.letter}}</p>
-                                <p class="col">{{answer.content}}</p>
+                            <p class="col">{{answer.content}}</p>
                         }
                     }
                 }
@@ -105,7 +107,7 @@
     <form [formGroup] = "questionForm" id="questionForm">
        <h3 class="text-center my-5"><strong>Añadir pregunta</strong></h3>
         <div class="row text-center">
-            @if( !selectedStatement ){
+            @if( !selectedStatement || selectedStatement === "" ){
                 <div class="col">
                     <p>Elige un nivel</p>
                     <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" (change)="chargeSkillsQuestions()">
@@ -117,7 +119,7 @@
                 @if( questionForm.value.level ){
                     <div class="col text-center">
                         <p>Elige una destreza</p>
-                        <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeBlocksQuestions()">
+                        <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeBlocksQuestions('')">
                             @for(skill of skillsQuestion; track skill.id){
                                 <option [value]="skill.id">{{skill.name}}</option>
                             }

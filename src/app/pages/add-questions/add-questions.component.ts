@@ -31,6 +31,7 @@ export class AddQuestionsComponent {
   statementPhoto: any;
   validatedQuestion: boolean = false;
   validatedStatement: boolean = false;
+  photos: any = {};
   
   modalForm = new FormGroup({
     statement: new FormControl(""),
@@ -107,42 +108,41 @@ export class AddQuestionsComponent {
     //this.validateQuestion();
     if ( true/*this.validatedQuestion*/) {
       let responses: any;
-
       if( this.questionForm.value.responsesMode === "photo" ){
         responses = [
           {
-            photo_id: this.questionForm.value.photoA,
+            photo: this.photos.photoA,
             letter: "A",
             is_correct: false
           },
           {
-            photo_id: this.questionForm.value.photoB,
+            photo: this.photos.photoB,
             letter: "B",
             is_correct: false
           },
           {
-            photo_id: this.questionForm.value.photoC,
+            photo: this.photos.photoC,
             letter: "C",
             is_correct: false
           },
         ];
-        if(this.questionForm.value.photoD !== "" && this.questionForm.value.photoD !== null){
+        if(this.photos.photoD !== "" && this.photos.photoD !== null && this.photos.photoD !== undefined){
           responses.push({
-            photo_id: this.questionForm.value.photoD,
+            photo: this.photos.photoD,
             letter: "D",
             is_correct: false
           })
         };
-        if(this.questionForm.value.photoE !== "" && this.questionForm.value.photoE !== null){
+        if(this.photos.photoE !== "" && this.photos.photoE !== null && this.photos.photoE !== undefined){
           responses.push({
-            photo_id: this.questionForm.value.photoE,
+            photo: this.photos.photoE,
             letter: "E",
             is_correct: false
           })
         };
-        if(this.questionForm.value.photoF !== "" && this.questionForm.value.photoF !== null){
+        if(this.photos.photoF !== "" && this.photos.photoF !== null && this.photos.photoF !== undefined){
           responses.push({
-            photo_id: this.questionForm.value.photoF,
+            photo: this.photos.photoF,
             letter: "F",
             is_correct: false
           })
@@ -207,8 +207,8 @@ export class AddQuestionsComponent {
         add.level_id = this.questionForm.value.level;
         add.statement_id = "";
       };
-      if ( this.questionForm.value.photoQuestion ) { add.photoQuestion = this.questionForm.value.photoQuestion }
-      if ( this.questionForm.value.block ) { add.block = this.questionForm.value.block }
+      if ( this.photos.photoQuestion && this.photos.photoQuestion !== undefined ) { add.photoQuestion = this.photos.photoQuestion }
+      if ( this.questionForm.value.block ) { add.block = this.questionForm.value.block } else { add.block = null }
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
@@ -216,7 +216,7 @@ export class AddQuestionsComponent {
       console.log(add);
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          this.selectStatement('');
+          /**/this.selectStatement('');
           let form: any = document.getElementById("questionForm");
           form.reset();
         },
@@ -290,15 +290,18 @@ export class AddQuestionsComponent {
   };
 
   selectStatement(id: any){
+    let idSatement: any;
     if ( id !== "" ) {
-      this.modalForm.value.statement = id;
+      idSatement = id;
     };
-    console.log(this.modalForm.value.statement)
+    idSatement = this.modalForm.value.statement;
+    console.log(idSatement)
+    console.log(id)
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>(`http://localhost:4000/api/statements/${this.modalForm.value.statement}`, {headers: httpHeaders}).subscribe({
+    this.http.get<any>(`http://localhost:4000/api/statements/${idSatement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.selectedStatement = res[0];
         console.log(this.selectedStatement)
@@ -306,13 +309,13 @@ export class AddQuestionsComponent {
         this.questionForm.value.skill = this.selectedStatement.skill_id;
         if(res[0].questions !== null){
           let ids: any = res[0].questions.split(",");
-          console.log(ids)
           this.addQuestionToStatement(ids);
         };
         this.closeStatementModal();
         if(this.modalForm.value.statement !== ""){
           this.statement = true;
         };
+        this.chargeBlocksQuestions(res[0].skill_id)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -345,31 +348,35 @@ export class AddQuestionsComponent {
                     questions[x] = Object.assign({answers: []}, questions[x]);
                     if(!questions[x].answers.find((e: any) => e.id === res[0].id)){
                       questions[x].answers.push(res[0]);
+                    };
+                    if (x  === questions.length-1 && i === ids.length-1 && y === answers_ids.length-1) {
+                      this.test(questions);
                     }
                   },
                   error: (err) => {
                     alert('Cargar fallo' + err);
                   },
                 });
-              }
-            }
+              };
+            };
           },
           error: (err) => {
             alert('Cargar fallo' + err);
           },
         });
-      }
-    }
-    setTimeout(() => {
-      console.log(questions)
-      this.selectedStatement.questions.push(questions)
-      console.log(this.selectedStatement)
-    }, 100);
+      };
+    };
+  };
+
+  test(questions: any){
+    this.selectedStatement.questionsArray = Object.assign(questions, this.selectedStatement.questiosArray);
+    console.log(this.selectedStatement)
   };
 
   writeStatement(){
+    console.log(this.selectedStatement)
     this.statement = false;
-    this.selectedStatement = [];
+    this.selectedStatement = "";
   };
 
   statementPhotoConvert(event: any){
@@ -392,25 +399,25 @@ export class AddQuestionsComponent {
       console.log(this.questionPhoto + "  " + letter);
       switch(letter){
         case "A": 
-          this.questionForm.value.photoA = fr.result as string;
+          this.photos.photoA = fr.result as string;
           break;
         case "B": 
-          this.questionForm.value.photoB = fr.result as string;
+          this.photos.photoB = fr.result as string;
           break;
         case "C": 
-          this.questionForm.value.photoC = fr.result as string;
+          this.photos.photoC = fr.result as string;
           break;
         case "D": 
-          this.questionForm.value.photoD = fr.result as string;
+          this.photos.photoD = fr.result as string;
           break;
         case "E": 
-          this.questionForm.value.photoE = fr.result as string;
+          this.photos.photoE = fr.result as string;
           break;
         case "F": 
-          this.questionForm.value.photoF = fr.result as string;
+          this.photos.photoF = fr.result as string;
           break;
         case 'question':
-          this.questionForm.value.photoQuestion = fr.result as string;
+          this.photos.photoQuestion = fr.result as string;
           break;
       }
     };
@@ -508,9 +515,12 @@ export class AddQuestionsComponent {
     });
   };
 
-  chargeBlocksQuestions(){
-    let skill: any = {
-      skill_id: this.questionForm.value.skill,
+  chargeBlocksQuestions(id: any){
+    let skill: any = {}; 
+    if ( id === '') {
+      skill.skill_id = this.questionForm.value.skill;
+    } else if ( id !== '' ) {
+      skill.skill_id = id;
     };
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({

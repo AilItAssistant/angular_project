@@ -291,31 +291,51 @@ export class AddQuestionsComponent {
 
   selectStatement(id: any){
     let idSatement: any;
+    let statementRes: any;
     if ( id !== "" ) {
       idSatement = id;
     };
     idSatement = this.modalForm.value.statement;
-    console.log(idSatement)
-    console.log(id)
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
     this.http.get<any>(`http://localhost:4000/api/statements/${idSatement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        statementRes = res;
         this.selectedStatement = res[0];
-        console.log(this.selectedStatement)
         this.questionForm.value.level = this.selectedStatement.level_id;
         this.questionForm.value.skill = this.selectedStatement.skill_id;
-        if(res[0].questions !== null){
-          let ids: any = res[0].questions.split(",");
-          this.addQuestionToStatement(ids);
+        if( res[0].photo_id !== null ){
+          let photoId: any = { id: res[0].photo_id };
+          this.http.post<any>(`http://localhost:4000/api/photo/IdActive`, photoId, {headers: httpHeaders}).subscribe({
+            next: (res) => {  
+              console.log(res);
+              statementRes[0].image = res[0].base64_data
+              if(statementRes[0].questions !== null){
+                let ids: any = statementRes[0].questions.split(",");
+                this.addQuestionToStatement(ids);
+              };
+              this.closeStatementModal();
+              if(this.modalForm.value.statement !== ""){
+                this.statement = true;
+              };
+              this.chargeBlocksQuestions(statementRes[0].skill_id)
+            }, error: (err) => {
+              alert('Cargar fallo' + err);
+            }
+          });
+        } else {
+          if(statementRes[0].questions !== null){
+            let ids: any = statementRes[0].questions.split(",");
+            this.addQuestionToStatement(ids);
+          };
+          this.closeStatementModal();
+          if(this.modalForm.value.statement !== ""){
+            this.statement = true;
+          };
+          this.chargeBlocksQuestions(statementRes[0].skill_id)
         };
-        this.closeStatementModal();
-        if(this.modalForm.value.statement !== ""){
-          this.statement = true;
-        };
-        this.chargeBlocksQuestions(res[0].skill_id)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -338,6 +358,7 @@ export class AddQuestionsComponent {
         });
         this.http.put<any>(`http://localhost:4000/api/questions/getById`, id, {headers: httpHeaders}).subscribe({
           next: (res) => {
+            console.log(res[0])
             questions.push(res[0]);
             for(let x: any = 0; questions.length > x; x++){
               let answers_ids: any = questions[x].answers_ids.split(",");
@@ -345,9 +366,25 @@ export class AddQuestionsComponent {
                 let id = {id: answers_ids[y]};
                 this.http.put<any>(`http://localhost:4000/api/answers/getById`, id, {headers: httpHeaders}).subscribe({
                   next: (res) => {
-                    questions[x] = Object.assign({answers: []}, questions[x]);
-                    if(!questions[x].answers.find((e: any) => e.id === res[0].id)){
-                      questions[x].answers.push(res[0]);
+                    let answersRes: any = res;
+                    if ( res[0].photo_id !== null ) {
+                      let photoId: any = { id: res[0].photo_id };
+                      this.http.post<any>(`http://localhost:4000/api/photo/IdActive`, photoId, {headers: httpHeaders}).subscribe({
+                        next: (res) => {  
+                          answersRes[0].image = res[0].base64_data;
+                          questions[x] = Object.assign({answers: []}, questions[x]);
+                          if(!questions[x].answers.find((e: any) => e.id === answersRes[0].id)){
+                            questions[x].answers.push(answersRes[0]);
+                          };
+                        }, error: (err) => {
+                          alert('Cargar fallo' + err);
+                        }
+                      })
+                    } else {
+                      questions[x] = Object.assign({answers: []}, questions[x]);
+                      if(!questions[x].answers.find((e: any) => e.id === res[0].id)){
+                        questions[x].answers.push(res[0]);
+                    };
                     };
                     if (x  === questions.length-1 && i === ids.length-1 && y === answers_ids.length-1) {
                       this.test(questions);

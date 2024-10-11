@@ -2,8 +2,8 @@
 <div class="m-5">
 
     <form [formGroup] = "statementForm" id="statementForm">
-        <h3 class="mb-4 text-center"><strong>Añadir enunciado</strong></h3>
         @if(!statement){
+            <h3 class="mb-4 text-center"><strong>Añadir enunciado</strong></h3>
             <div class="container text-center">
                 <div class="row text-center">
                     <div class="col">
@@ -48,18 +48,19 @@
                     }
                 </div>
             </div>
-                @if( statementForm.value.skill ){
+                @if( statementForm.value.skill ) {
                     <p class="mt-2 text-center">Texto</p>
                     <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
                 }
             <div class="mb-3">
-                @if( statementForm.value.skill ){ 
+                @if ( statementForm.value.skill ) { 
                     <label for="formFile" class="form-label">Foto del enunciado</label>
                     <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
                 }
             </div>
         
         } @else {
+            <h3 class="mb-5 text-center"><strong>Enunciado seleccionado</strong></h3>
             <div class="row">
                 <h5 class="col-4">Nivel</h5>
                 <h5 class="col-4">Destreza</h5>
@@ -73,18 +74,30 @@
             <div class="row mt-4">
                 <h5 class="col-4">Enunciado</h5>
                 <h5 class="col-8">Texto</h5>
-                <p class="col-4">{{selectedStatement.statement_content}}</p>
-                <p class="col-8">{{selectedStatement.text}}</p>
-                @if(selectedStatement.questionsArray){
-                    @for(question of selectedStatement.questionsArray; track question.id){
+                @if ( selectedStatement.image ) {
+                    <img class="col-6" [src]="selectedStatement.image" [alt]="selectedStatement.id"/>
+                }
+                @if( selectedStatement.statement_content !== 'null' ){<p class="col-4">{{selectedStatement.statement_content}}</p>}
+                @if( selectedStatement.text !== 'null' ){<p class="col-8">{{selectedStatement.text}}</p>}
+                @if ( selectedStatement.questionsArray !== undefined ) {
+                    @for ( question of selectedStatement.questionsArray; track question.id ) {
                         <div class="row text-center">
                             <h5>Enunciado</h5>
-                            <p class="col">{{question.content}}</p>
+                            @if ( question.content4 !== null ) {
+                                <p class="col">{{question.content}}</p>
+                            }
+                            @if ( question.photo_base64 !== null ) {
+                                <img class="col-6" [src]="question.photo_base64" [alt]="question.id"/>
+                            }
                         </div>
                         <h5 class="col">Respuestas</h5>
-                        @for(answer of question.answers; track answer.id){
-                            <p class="col">{{answer.letter}}</p>
-                            <p class="col">{{answer.content}}</p>
+                        @for ( answer of question.answers; track answer.id ) {
+                            <p class="col-1">{{answer.letter}}</p>
+                            @if ( answer.image ) {
+                                <img class="col" [src]="answer.image" [alt]="answer.id"/>
+                            } @else {
+                                <p class="col">{{answer.content}}</p>
+                            }
                         }
                     }
                 }

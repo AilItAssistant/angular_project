@@ -32,6 +32,7 @@ export class AddQuestionsComponent {
   validatedQuestion: boolean = false;
   validatedStatement: boolean = false;
   photos: any = {};
+  idSatement: any;
   
   modalForm = new FormGroup({
     statement: new FormControl(""),
@@ -101,8 +102,6 @@ export class AddQuestionsComponent {
       this.numberResponses++;
     };
   };
-
-  /* */
 
   sendQuestion(){
     //this.validateQuestion();
@@ -216,7 +215,7 @@ export class AddQuestionsComponent {
       console.log(add);
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          /**/this.selectStatement('');
+          /**/this.selectStatement(this.idSatement);
           let form: any = document.getElementById("questionForm");
           form.reset();
         },
@@ -244,7 +243,6 @@ export class AddQuestionsComponent {
       });
       this.http.post<any>('http://localhost:4000/api/statements/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          console.log(res)
           let form: any = document.getElementById("questionForm");
           form.reset();
           this.selectStatement(res);
@@ -290,19 +288,21 @@ export class AddQuestionsComponent {
   };
 
   selectStatement(id: any){
-    let idSatement: any;
     let statementRes: any;
     if ( id !== "" ) {
-      idSatement = id;
+      this.idSatement = id;
+    } else {
+      this.idSatement = this.modalForm.value.statement;
     };
-    idSatement = this.modalForm.value.statement;
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>(`http://localhost:4000/api/statements/${idSatement}`, {headers: httpHeaders}).subscribe({
+    this.http.get<any>(`http://localhost:4000/api/statements/${this.idSatement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        console.log(res)
         statementRes = res;
+        this.statement = true;
         this.selectedStatement = res[0];
         this.questionForm.value.level = this.selectedStatement.level_id;
         this.questionForm.value.skill = this.selectedStatement.skill_id;
@@ -342,8 +342,6 @@ export class AddQuestionsComponent {
       },
     });
   };
-
-  /* */
 
   addQuestionToStatement(ids: any){
     let questions :any = [];
@@ -387,7 +385,7 @@ export class AddQuestionsComponent {
                     };
                     };
                     if (x  === questions.length-1 && i === ids.length-1 && y === answers_ids.length-1) {
-                      this.test(questions);
+                      this.insertQuestions(questions);
                     }
                   },
                   error: (err) => {
@@ -405,7 +403,7 @@ export class AddQuestionsComponent {
     };
   };
 
-  test(questions: any){
+  insertQuestions(questions: any){
     this.selectedStatement.questionsArray = Object.assign(questions, this.selectedStatement.questiosArray);
     console.log(this.selectedStatement)
   };

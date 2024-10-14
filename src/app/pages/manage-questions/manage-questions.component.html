@@ -1,18 +1,59 @@
 <app-header></app-header>
 
-<div class="text-center card-group mb-5 mt-3">
-    @for(exam of exams; track exam.statement_id){
+<form class="text-center" [formGroup] = "filterForm">
+  <div class="container  mt-5"> 
+    <div class="row">
+      <div class="col">
+        <p>Elige un nivel</p>
+        <select id="levelStatement" class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" (change)="chargeSkills()">
+          @for(level of levels; track level.id){
+            <option [value]="level.id">{{level.name}}</option>
+          }
+        </select>
+      </div>
+      @if(filterForm.value.level){
+        <div class="col">
+          <p>Elige una destreza</p>
+          <select id="skillStatement" class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeBlocks()">
+            @for(skill of skills; track skill.id){
+              <option [value]="skill.id">{{skill.name}}</option>
+            }
+          </select>
+        </div>
+      }
+      @if(filterForm.value.skill){
+        <div class="col">
+          <p>Elige un bloque</p>
+          <select class="form-select" formControlName="block" aria-label="Select-block">
+            @for(block of blocks; track block.id){
+              <option [value]="block.id">{{block.name}}</option>
+            }
+          </select>
+        </div>
+      }
+      @if(filterForm.value.level && filterForm.value.skill){
+        <div class="col-1 mt-4">
+          <button class="btn btn-success mt-3" (click)="chargeStatements()">Buscar</button>
+          <button class="btn btn-success mt-3" (click)="infoResult()">Info</button>
+        </div>
+      }
+    </div>
+  </div>
+</form>
+<div class="text-center card-group mb-5 mt-3 container">
+    @for(statement of statements; track statement.id){
       <div class="mx-auto">
-        <div class="card m-2" style="width: 22rem;">
+        <div class="card m-2">
           <div class="card-header">
-            {{exam.statement_content}}
-            {{exam.question_content}}
-            {{exam.answer_content}}
+            <p>Puntuación : {{statement.score}}</p>
+            <p>Enunciado: {{statement.content}}</p>
+            <p>Texto: {{statement.text}}</p>
+            @if(statement.photo_id !== null){<img [src]="statement.photo_id">}
           </div>
-          @for(question of exam.questions; track question.question_id){
+          @for(question of statement.questions; track question.id){
             <ul class="list-group list-group p-3">
-              {{question.question_content}}
-            @for(answer of question.answers; track answer.answer_id){
+              <p>Pregunta: {{question.content}}</p>
+            @for(answer of question.answers; track answer.id){
               <ul class="list-group list-group">
                 <li class="list-group">{{answer.letter}}. {{answer.answer_content}} => {{answer.is_correct}}</li>
               </ul>

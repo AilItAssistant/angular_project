@@ -212,12 +212,14 @@ export class AddQuestionsComponent {
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
-      console.log(add);
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           /**/this.selectStatement(this.idSatement);
           let form: any = document.getElementById("questionForm");
           form.reset();
+          this.questionForm.patchValue({
+            responsesMode: ''  
+          });;
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -300,7 +302,6 @@ export class AddQuestionsComponent {
     });
     this.http.get<any>(`http://localhost:4000/api/statements/${this.idSatement}`, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res)
         statementRes = res;
         this.statement = true;
         this.selectedStatement = res[0];
@@ -310,7 +311,6 @@ export class AddQuestionsComponent {
           let photoId: any = { id: res[0].photo_id };
           this.http.post<any>(`http://localhost:4000/api/photo/IdActive`, photoId, {headers: httpHeaders}).subscribe({
             next: (res) => {  
-              console.log(res);
               statementRes[0].image = res[0].base64_data
               if(statementRes[0].questions !== null){
                 let ids: any = statementRes[0].questions.split(",");
@@ -356,7 +356,6 @@ export class AddQuestionsComponent {
         });
         this.http.put<any>(`http://localhost:4000/api/questions/getById`, id, {headers: httpHeaders}).subscribe({
           next: (res) => {
-            console.log(res[0])
             questions.push(res[0]);
             for(let x: any = 0; questions.length > x; x++){
               let answers_ids: any = questions[x].answers_ids.split(",");
@@ -405,11 +404,9 @@ export class AddQuestionsComponent {
 
   insertQuestions(questions: any){
     this.selectedStatement.questionsArray = Object.assign(questions, this.selectedStatement.questiosArray);
-    console.log(this.selectedStatement)
   };
 
   writeStatement(){
-    console.log(this.selectedStatement)
     this.statement = false;
     this.selectedStatement = "";
   };
@@ -431,7 +428,6 @@ export class AddQuestionsComponent {
     fr.readAsDataURL(url)
     fr.onload = () => {
       this.questionPhoto = fr.result as string;
-      console.log(this.questionPhoto + "  " + letter);
       switch(letter){
         case "A": 
           this.photos.photoA = fr.result as string;

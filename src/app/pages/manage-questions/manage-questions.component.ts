@@ -17,6 +17,8 @@ export class ManageQuestionsComponent {
   exams: any = [];
   charge: boolean = false;
   exam: any;
+  questions: any;
+  statements: any;
   question: any;
   levels: any;
   skills: any;
@@ -31,6 +33,7 @@ export class ManageQuestionsComponent {
     responseD: '',
     responseE: '',
   };
+  mode: any;
 
   questionForm = new FormGroup({
     level: new FormControl(''),
@@ -43,6 +46,12 @@ export class ManageQuestionsComponent {
     responseE: new FormControl(''),
   });
 
+  filterForm = new FormGroup({
+    level: new FormControl(''),
+    block: new FormControl(''),
+    skill: new FormControl(''),
+  });
+
   modalStatement: any;
   modalResponseA: any;
   modalResponseB: any;
@@ -53,49 +62,141 @@ export class ManageQuestionsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadQuestions();
+    this.chargeLevels();
   }
 
-  loadQuestions() {
+  chargeLevels() {
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http
-      .get<any>('http://localhost:4000/api/statements/details', {headers: httpHeaders})
-      .subscribe({
+    this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.levels = res;
+        this.filterForm.patchValue({
+          skill: '', 
+          block: ''  
+        });
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+  
+  chargeSkills(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let id: any = {
+      level_id: this.filterForm.value.level
+    }
+    this.http.post<any>('http://localhost:4000/api/skills/skillsId', id, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.skills = res;
+        this.filterForm.patchValue({
+          block: ''  
+        });;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  chargeBlocks(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let id: any = {
+      skill_id: this.filterForm.value.skill
+    }
+    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', id, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.blocks = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  chargeStatements(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let data: any = {
+      level_id: this.filterForm.value.level,
+      skill_id: this.filterForm.value.skill,
+    };
+    if(this.filterForm.value.block !== ""){
+      data.block_id = this.filterForm.value.block
+      this.http.post<any>('http://localhost:4000/api/statements/levelSkillBlock', data, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          this.exams = res;
+          this.questions = res[0];
+          this.mode = "questions";
         },
         error: (err) => {
           alert('Cargar fallo' + err);
         },
       });
-    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.levels = res.levels;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-    this.http.get<any>('http://localhost:4000/api/skills', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.skills = res.skills;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-    this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.blocks = res.blocks;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-  }
+    } else {
+      this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {
+          this.statements = res;
+          this.mode = "statements";
+     /* */this.statements.forEach( ( statement: any ) => {
+            if(statement.photo_id !== null){
+              let id: any = { id: statement.photo_id };
+              this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
+                next: (res) => { statement.photo_id = res[0].base64_data; },
+                error: (err) => { alert('Cargar fallo' + err); },
+              });
+            };
+            statement.questions = [];
+            let x: any = 0;
+        /**/statement.questionsId.split(",").forEach( ( question: any ) => {
+              let id: any = { id: question };
+              console.log(id)
+              this.http.put<any>('http://localhost:4000/api/questions/getById', id, {headers: httpHeaders}).subscribe({
+                next: (res) => { 
+                  let question = res[0];
+                  question.answers = [];
+                  question.answers_ids.forEach((answerId: any) => {
+                    let id = {id: answerId}
+                    this.http.put<any>('http://localhost:4000/api/answers/getById', id, {headers: httpHeaders}).subscribe({
+                      next: (res) => { 
+                        x++;
+                        if( question.answers_ids.length === x ) { 
+                          question.answers.push(res); 
+                        } 
+                      },
+                      error: (err) => { alert('Cargar fallo' + err); },
+                    });
+                  })
+                  
+                  let y: any = 0;
+                  y++;
+                  if( question.questionsId.split(",").length === y ) {
+                    statement.questions.push(question); 
+                  }
+                },
+                error: (err) => { alert('Cargar fallo' + err); },
+              });
+            })
+          });
+        },
+        error: (err) => { alert('Cargar fallo' + err); },
+      });
+    };
+  };
+  
+  infoResult(){
+    console.log(this.statements)
+  };
 
   deleteQuestion() {
     let selectQuestion: object = {
@@ -268,13 +369,14 @@ export class ManageQuestionsComponent {
           this.exams = res;
           this.charge = false;
           alert('Pregunta editada');
+
           let editModal: any;
           editModal = document.getElementById('editModal');
           editModal.style.display = 'none';
           this.charge = false;
         },
         error: (err) => {
-          alert('No se pudo editar');
+          alert('No se pudo editar' + err);
           this.charge = false;
         },
       });

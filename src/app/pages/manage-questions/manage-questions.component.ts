@@ -143,12 +143,12 @@ export class ManageQuestionsComponent {
           alert('Cargar fallo' + err);
         },
       });
-    } else {
+    } else { 
+
       this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
-        next: (res) => {
+        next: ( res ) => {
           this.statements = res;
-          this.mode = "statements";
-     /* */this.statements.forEach( ( statement: any ) => {
+          this.statements.forEach( ( statement: any ) => {
             if(statement.photo_id !== null){
               let id: any = { id: statement.photo_id };
               this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
@@ -156,42 +156,71 @@ export class ManageQuestionsComponent {
                 error: (err) => { alert('Cargar fallo' + err); },
               });
             };
+          });  
+        },
+        error: ( err ) => {alert('Cargar fallo' + err);},
+        complete: () => {
+          let st: any = 1;
+          this.statements.forEach((statement: any) => {  /** forEach st */
+            let questionsIds = statement.questionsId.split(",");
             statement.questions = [];
-            let x: any = 0;
-        /**/statement.questionsId.split(",").forEach( ( question: any ) => {
-              let id: any = { id: question };
-              console.log(id)
+            let q: any = 1;
+            questionsIds.forEach((questionId: any) => {   /** forEach q */
+              let id: any = { id: questionId };
               this.http.put<any>('http://localhost:4000/api/questions/getById', id, {headers: httpHeaders}).subscribe({
                 next: (res) => { 
-                  let question = res[0];
-                  question.answers = [];
-                  question.answers_ids.forEach((answerId: any) => {
-                    let id = {id: answerId}
-                    this.http.put<any>('http://localhost:4000/api/answers/getById', id, {headers: httpHeaders}).subscribe({
-                      next: (res) => { 
-                        x++;
-                        if( question.answers_ids.length === x ) { 
-                          question.answers.push(res); 
-                        } 
-                      },
-                      error: (err) => { alert('Cargar fallo' + err); },
-                    });
-                  })
-                  
-                  let y: any = 0;
-                  y++;
-                  if( question.questionsId.split(",").length === y ) {
-                    statement.questions.push(question); 
-                  }
+                  statement.questions.push(res[0]);
                 },
-                error: (err) => { alert('Cargar fallo' + err); },
+                error: (err) => {alert('Cargar fallo' + err);},
+                complete: () => {
+                  if ( statement.questionsId.split(",").length === q && this.statements.length === st ) {
+                    console.log("works")
+                    this.addAnswers();
+                  };
+
+                  console.log("st" + " " + st + " " + this.statements.length)
+                  if ( this.statements.length === st ) {
+                    console.log("st true")
+                    st = 0 ;
+                  };
+                  console.log("q" + " " + q + " " + statement.questionsId.split(",").length)
+                  if ( statement.questionsId.split(",").length === q ) { 
+                    console.log("q true")
+                    q = 0; 
+                  };
+                  st++;
+                  q++;
+                }
               });
             })
           });
-        },
-        error: (err) => { alert('Cargar fallo' + err); },
+        }
       });
+
+      
     };
+  };
+
+  addAnswers(){
+    console.log("answers")
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.statements.forEach((statement:any) => {
+      statement.questions.forEach((question: any) => {
+        let ids: any = question.answers_ids.split(",");
+        //question.answers = [];
+        ids.forEach( (id: any) => {
+          this.http.put<any>('http://localhost:4000/api/answers/getById', id, {headers: httpHeaders}).subscribe({
+            next: (res) => { 
+              question.answers.push(res[0]);
+            },
+            error: (err) => {alert('Cargar fallo' + err);},
+          });
+        });
+      });
+    });
   };
   
   infoResult(){

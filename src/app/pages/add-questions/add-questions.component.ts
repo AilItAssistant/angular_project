@@ -219,7 +219,7 @@ export class AddQuestionsComponent {
           form.reset();
           this.questionForm.patchValue({
             responsesMode: ''  
-          });;
+          });
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -248,6 +248,14 @@ export class AddQuestionsComponent {
           let form: any = document.getElementById("questionForm");
           form.reset();
           this.selectStatement(res);
+          this.statementForm.patchValue({
+            level: '',
+            skill: '',
+            statement: '',
+            puntuation: '',
+            text: '',
+            statementPhoto: '',
+          });
         },
         error: (err) => {
           alert('Cargar fallo' + err);

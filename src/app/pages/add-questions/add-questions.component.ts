@@ -229,8 +229,8 @@ export class AddQuestionsComponent {
   };
 
   sendStatement(){
-    this.validateStatement();
-    if (this.validatedStatement) {
+    //this.validateStatement();
+    if (true/*this.validatedStatement*/) {
       let add: any = {
         level: this.statementForm.value.level,
         skills: this.statementForm.value.skill,
@@ -304,7 +304,46 @@ export class AddQuestionsComponent {
     } else {
       this.idSatement = this.modalForm.value.statement;
     };
+
     let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let data: any = {}
+    this.http.get<any>(`http://localhost:4000/api/statements/${this.idSatement}`, {headers: httpHeaders}).subscribe({
+      next: ( res ) => {
+        this.selectedStatement = res[0];
+        this.statement = true;
+        this.selectedStatement.questions = [];
+          if(this.selectedStatement.photo_id !== null){
+            let id: any = { id: this.selectedStatement.photo_id };
+            this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
+              next: (res) => { this.selectedStatement.photo_id = res[0].base64_data; },
+              error: (err) => { alert('Cargar fallo' + err); },
+            });
+          };
+      },
+      error: ( err ) => {alert('Cargar fallo' + err);},
+      complete: () => {
+          let data: any = { statement_id: this.selectedStatement.id };
+          this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
+            next: ( res ) => {
+              console.log(res)
+              if ( res !== undefined ) {
+                this.selectedStatement.questions.push(res); 
+                console.log(this.selectedStatement);
+              }
+              
+            },
+            error: (err) => { alert('Cargar fallo' + err); }
+          });
+      }
+    });
+
+
+
+
+    /*let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
@@ -348,13 +387,13 @@ export class AddQuestionsComponent {
       error: (err) => {
         alert('Cargar fallo' + err);
       },
-    });
+    });*/
   };
 
-  addQuestionToStatement(ids: any){
+  /*addQuestionToStatement(ids: any){
     let questions :any = [];
     
-    if( ids !== undefined && ids !== null && ids !== "" ){
+    /*if( ids !== undefined && ids !== null && ids !== "" ){
       this.selectedStatement = Object.assign({questions: []}, this.selectedStatement);
       for( let i: any = 0; ids.length > i; i++ ){
         let id: any = {id: ids[i]};
@@ -407,16 +446,17 @@ export class AddQuestionsComponent {
           },
         });
       };
-    };
-  };
+    };*/
+  /*};*/
 
-  insertQuestions(questions: any){
+  /*insertQuestions(questions: any){
     this.selectedStatement.questionsArray = Object.assign(questions, this.selectedStatement.questiosArray);
-  };
+  };*/
 
   writeStatement(){
+    console.log(this.selectedStatement)
     this.statement = false;
-    this.selectedStatement = "";
+    this.selectedStatement = [];
   };
 
   statementPhotoConvert(event: any){

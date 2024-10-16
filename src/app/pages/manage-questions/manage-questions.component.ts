@@ -149,6 +149,7 @@ export class ManageQuestionsComponent {
         next: ( res ) => {
           this.statements = res;
           this.statements.forEach( ( statement: any ) => {
+            statement.questions = [];
             if(statement.photo_id !== null){
               let id: any = { id: statement.photo_id };
               this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
@@ -160,69 +161,21 @@ export class ManageQuestionsComponent {
         },
         error: ( err ) => {alert('Cargar fallo' + err);},
         complete: () => {
-          let st: any = 1;
-          this.statements.forEach((statement: any) => {  /** forEach st */
-            let questionsIds = statement.questionsId.split(",");
-            statement.questions = [];
-            let q: any = 1;
-            questionsIds.forEach((questionId: any) => {   /** forEach q */
-              let id: any = { id: questionId };
-              this.http.put<any>('http://localhost:4000/api/questions/getById', id, {headers: httpHeaders}).subscribe({
-                next: (res) => { 
-                  statement.questions.push(res[0]);
-                },
-                error: (err) => {alert('Cargar fallo' + err);},
-                complete: () => {
-                  if ( statement.questionsId.split(",").length === q && this.statements.length === st ) {
-                    console.log("works")
-                    this.addAnswers();
-                  };
-
-                  console.log("st" + " " + st + " " + this.statements.length)
-                  if ( this.statements.length === st ) {
-                    console.log("st true")
-                    st = 0 ;
-                  };
-                  console.log("q" + " " + q + " " + statement.questionsId.split(",").length)
-                  if ( statement.questionsId.split(",").length === q ) { 
-                    console.log("q true")
-                    q = 0; 
-                  };
-                  st++;
-                  q++;
-                }
-              });
-            })
+          this.statements.forEach(( statement: any ) => {
+            let data: any = { statement_id: statement.id };
+            this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
+              next: ( res ) => {
+                console.log(res)
+                if ( res !== undefined ) statement.questions.push(res);
+              },
+              error: (err) => { alert('Cargar fallo' + err); }
+            });
           });
         }
       });
-
-      
     };
   };
 
-  addAnswers(){
-    console.log("answers")
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.statements.forEach((statement:any) => {
-      statement.questions.forEach((question: any) => {
-        let ids: any = question.answers_ids.split(",");
-        //question.answers = [];
-        ids.forEach( (id: any) => {
-          this.http.put<any>('http://localhost:4000/api/answers/getById', id, {headers: httpHeaders}).subscribe({
-            next: (res) => { 
-              question.answers.push(res[0]);
-            },
-            error: (err) => {alert('Cargar fallo' + err);},
-          });
-        });
-      });
-    });
-  };
-  
   infoResult(){
     console.log(this.statements)
   };

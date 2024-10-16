@@ -74,31 +74,46 @@
             <div class="row mt-4">
                 <h5 class="col-4">Enunciado</h5>
                 <h5 class="col-8">Texto</h5>
-                @if ( selectedStatement.image ) {
-                    <img class="col-6" [src]="selectedStatement.image" [alt]="selectedStatement.id"/>
-                }
+            </div>
+            <div class="row">
                 @if( selectedStatement.statement_content !== 'null' ){<p class="col-4">{{selectedStatement.statement_content}}</p>}
                 @if( selectedStatement.text !== 'null' ){<p class="col-8">{{selectedStatement.text}}</p>}
-                @if ( selectedStatement.questionsArray !== undefined ) {
-                    @for ( question of selectedStatement.questionsArray; track question.id ) {
+            </div>
+            @if ( selectedStatement.photo_id ) {
+                <h5 class="mt-4">Foto</h5>
+                <img class="col-6" [src]="selectedStatement.photo_id" [alt]="selectedStatement.id"  style="width: 35rem;"/>
+            }
+            <div>
+                @if ( selectedStatement.questions !== undefined ) {
+                    @for ( question of selectedStatement.questions[0]; track question.id ) {
                         <div class="row text-center">
-                            <h5>Enunciado</h5>
-                            @if ( question.content4 !== null ) {
+                            @if ( question.content !== null ) {
+                                <h5>Pregunta</h5>
                                 <p class="col">{{question.content}}</p>
                             }
-                            @if ( question.photo_base64 !== null ) {
-                                <img class="col-6" [src]="question.photo_base64" [alt]="question.id"/>
+                            @if ( question.base64_data !== null ) {
+                                <h5>Foto</h5>
+                                <img class="col-6" [src]="question.base64_data" [alt]="question.id"  style="width: 30rem;"/>
                             }
                         </div>
-                        <h5 class="col">Respuestas</h5>
-                        @for ( answer of question.answers; track answer.id ) {
-                            <p class="col-1">{{answer.letter}}</p>
-                            @if ( answer.image ) {
-                                <img class="col" [src]="answer.image" [alt]="answer.id"/>
-                            } @else {
-                                <p class="col">{{answer.content}}</p>
+                        <h5>Respuestas</h5>
+                        <div class="row">
+                            @for ( answer of question.answers; track answer.id ) {
+                                @if ( answer.base64_data ) {
+                                    <div class="col-3">
+                                        <p>{{answer.letter}}</p>
+                                        <h5>Imagen</h5>
+                                        <img [src]="answer.base64_data" [alt]="answer.id" style="width: 15rem; height: 15rem;"/>
+                                    </div>
+                                } @else {
+                                    <div class="col-3">
+                                        <p>{{answer.letter}}</p>
+                                        <h5>Respuesta</h5>
+                                        <p>{{answer.content}}</p>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
                     }
                 }
                 <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>

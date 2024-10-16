@@ -43,22 +43,60 @@
 <div class="text-center card-group mb-5 mt-3 container">
     @for(statement of statements; track statement.id){
       <div class="mx-auto">
-        <div class="card m-2">
+        <div class="card m-2" style="width: 80rem;">
           <div class="card-header">
-            <p>Puntuación : {{statement.score}}</p>
+            <div class="row">
+              <h5 class="col">Enunciado</h5>
+              <p class="col">Puntuación : {{statement.score}}</p>
+            </div>
+          </div>
+          <div class="card-body text-center">
             <p>Enunciado: {{statement.content}}</p>
             <p>Texto: {{statement.text}}</p>
-            @if(statement.photo_id !== null){<img [src]="statement.photo_id">}
-          </div>
-          @for(question of statement.questions; track question.id){
-            <ul class="list-group list-group p-3">
-              <p>Pregunta: {{question.content}}</p>
-            @for(answer of question.answers; track answer.id){
-              <ul class="list-group list-group">
-                <li class="list-group">{{answer.letter}}. {{answer.answer_content}} => {{answer.is_correct}}</li>
-              </ul>
+            @if(statement.photo_id !== null){
+              <p>Imagen del enunciado</p>
+              <img [src]="statement.photo_id" style="width: 20rem; height: 15rem;">
             }
-          </ul>
+          </div>
+          @for(question of statement.questions[0]; track question.id){
+            <div class="card m-2">
+              <div class="card-header">
+                <div class="row">
+                  <h5 class="col">Pregunta</h5>
+                  <p class="col">Puntuación: {{question.puntuation}}</p>
+                </div>
+              </div>
+              <div class="card-body text-center list-group list-group p-3">
+                <p>Pregunta: {{question.content}}</p>
+                @if(question.base64_data !== null){
+                  <p>Imagen de la pregunta</p>
+                  <img [src]="question.base64_data" style="width: 15rem; height: 15rem;">
+                }
+                <div class="card m-2">
+                  @if(question.answers !== [] && question.answers !== null && question.answers !== undefined) {
+                    <div class="card-header">
+                      <h5>Respuestas</h5>
+                    </div>
+                    <div class="card-body text-center row">
+                      @for(answer of question.answers; track answer.id){
+                        <div class="col-3">
+                          @if(answer.is_correct){
+                              <p class="list-group"> <span class="text-success fs-3">{{answer.letter}}.</span> </p>
+                              @if(answer.content && answer.content !== undefined && answer.content !== null){<p>{{answer.content}}</p>}
+                            
+                          } @else{
+                           
+                              <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span> {{answer.content}}</p>
+                              @if(answer.content && answer.content !== undefined && answer.content !== null){<p>{{answer.content}}</p>}
+                            }
+                            @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="width: 15rem; height: 15rem;">}
+                          </div>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
           <div class="card-header">
             <button type="button" class="btn btn-primary mx-2" (click)="openEditModal(exam, question)">Editar</button>
             <button type="button" class="btn btn-primary mx-2" (click)="openDeleteModal(exam, question)">Eliminar</button>

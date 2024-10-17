@@ -23,16 +23,10 @@ export class ManageQuestionsComponent {
   levels: any;
   skills: any;
   blocks: any;
-  edit: any = {
-    level: '',
-    block: '',
-    statement: '',
-    responseA: '',
-    responseB: '',
-    responseC: '',
-    responseD: '',
-    responseE: '',
-  };
+  photos: any;
+  statementChange: any;
+
+  edit: any = {};
   mode: any;
 
   questionForm = new FormGroup({
@@ -44,6 +38,12 @@ export class ManageQuestionsComponent {
     responseC: new FormControl(''),
     responseD: new FormControl(''),
     responseE: new FormControl(''),
+    responseF: new FormControl(''),
+    skill: new FormControl(''),
+    text: new FormControl(''),
+    puntuation: new FormControl(''),
+    statement: new FormControl(''),
+    correctResponse: new FormControl('')
   });
 
   filterForm = new FormGroup({
@@ -51,13 +51,6 @@ export class ManageQuestionsComponent {
     block: new FormControl(''),
     skill: new FormControl(''),
   });
-
-  modalStatement: any;
-  modalResponseA: any;
-  modalResponseB: any;
-  modalResponseC: any;
-  modalResponseD: any;
-  modalResponseE: any;
 
   constructor(private http: HttpClient) {}
 
@@ -219,92 +212,189 @@ export class ManageQuestionsComponent {
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'block';
-    this.exam = exam;
-    this.question = question;
-    this.modalStatement = this.question.statement;
-
-    for (let i: any = 0; this.question.answers.length > i; i++) {
-      if (this.question.answers[i].letter === 'A') {
-        this.modalResponseA = this.question.answers[i].answer_content;
-      }
-      if (this.question.answers[i].letter === 'B') {
-        this.modalResponseB = this.question.answers[i].answer_content;
-      }
-      if (this.question.answers[i].letter === 'C') {
-        this.modalResponseC = this.question.answers[i].answer_content;
-      }
-      if (this.question.answers[i].letter === 'D') {
-        this.modalResponseD = this.question.answers[i].answer_content;
-      }
-      if (this.question.answers[i].letter === 'E') {
-        this.modalResponseE = this.question.answers[i].answer_content;
-      }
-    }
+    
   }
 
-  openEditModal(exam: any, question: any) {
-    let responseA: string = '';
-    let responseB: string = '';
-    let responseC: string = '';
-    let responseD: string = '';
-    let responseE: string = '';
-    for (let i: number = 0; question.answers.length > i; i++) {
-      switch (question.answers[i].letter) {
-        case 'A':
-          responseA = question.answers[i].answer_content;
-          break;
-        case 'B':
-          responseB = question.answers[i].answer_content;
-          break;
-        case 'C':
-          responseC = question.answers[i].answer_content;
-          break;
-        case 'D':
-          responseD = question.answers[i].answer_content;
-          break;
-        case 'E':
-          responseE = question.answers[i].answer_content;
-          break;
-      }
-    }
+  openEditModal(old: any, type: any) {
+    this.chargeSkills();
+    this.chargeLevels();
 
-    this.edit = {
-      level: 'A1',
-      block: exam.name,
-      statement: question.statement,
-      responseA: responseA,
-      responseB: responseB,
-      responseC: responseC,
-      responseD: responseD,
-      responseE: responseE,
+    console.log(old)
+    this.edit.type = type;
+    switch (type) {
+      case "statement":
+        this.edit.oldStatement = old;
+        this.questionForm = new FormGroup({
+          level: new FormControl(old.level_id),
+          skill: new FormControl(old.skill_id),
+          puntuation: new FormControl(old.score),
+          statement: new FormControl(old.content),
+          text: new FormControl(old.text),
+          block: new FormControl(''),
+          question: new FormControl(''),
+          responseA: new FormControl(''),
+          responseB: new FormControl(''),
+          responseC: new FormControl(''),
+          responseD: new FormControl(''),
+          responseE: new FormControl(''),
+          responseF: new FormControl(''),
+          correctResponse: new FormControl('')
+        });
+        break;
+      case "question":
+        this.edit.oldQuestion = old;
+        this.questionForm = new FormGroup({
+          level: new FormControl(''),
+          skill: new FormControl(''),
+          puntuation: new FormControl(old.puntuation),
+          statement: new FormControl(''),
+          text: new FormControl(old.text),
+          block: new FormControl(old.block_id),
+          question: new FormControl(old.content),
+          responseA: new FormControl(''),
+          responseB: new FormControl(''),
+          responseC: new FormControl(''),
+          responseD: new FormControl(''),
+          responseE: new FormControl(''),
+          responseF: new FormControl(''),
+          correctResponse: new FormControl('')
+        });
+        break;
+      case "answers":
+        this.questionForm = new FormGroup({
+          level: new FormControl(''),
+          skill: new FormControl(''),
+          puntuation: new FormControl(''),
+          statement: new FormControl(''),
+          text: new FormControl(''),
+          block: new FormControl(''),
+          question: new FormControl(''),
+          responseA: new FormControl(old[0] ? old[0].content : ''),
+          responseB: new FormControl(old[1] ? old[1].content : ''),
+          responseC: new FormControl(old[2] ? old[2].content : ''),
+          responseD: new FormControl(old[3] && old[3].content !== 'undefined' && old[3].content !== undefined ? old[3].content : ''),
+          responseE: new FormControl(old[4] && old[4].content !== 'undefined' && old[4].content !== undefined ? old[4].content : ''),
+          responseF: new FormControl(old[5] && old[5].content !== 'undefined' && old[5].content !== undefined ? old[5].content : ''),
+          correctResponse: new FormControl('')
+        });
+
+        this.edit.oldAnswers = old;
+        break;
     };
-
+    console.log(this.edit)
+    console.log(this.questionForm.value)
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display = 'block';
-
-    this.questionForm = new FormGroup({
-      level: new FormControl(this.edit.level),
-      block: new FormControl(this.edit.block),
-      question: new FormControl(this.edit.statement),
-      responseA: new FormControl(this.edit.responseA),
-      responseB: new FormControl(this.edit.responseB),
-      responseC: new FormControl(this.edit.responseC),
-      responseD: new FormControl(this.edit.responseD),
-      responseE: new FormControl(this.edit.responseE),
-    });
-  }
+  };
 
   closeEditModal() {
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display = 'none';
+    this.questionForm = new FormGroup({
+      level: new FormControl(''),
+      block: new FormControl(''),
+      question: new FormControl(''),
+      responseA: new FormControl(''),
+      responseB: new FormControl(''),
+      responseC: new FormControl(''),
+      responseD: new FormControl(''),
+      responseE: new FormControl(''),
+      responseF: new FormControl(''),
+      skill: new FormControl(''),
+      text: new FormControl(''),
+      puntuation: new FormControl(''),
+      statement: new FormControl(''),
+      correctResponse: new FormControl('')
+    });
   }
 
-  editQuestion() {
+  editQuestions() {
     this.charge = true;
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let changes: any;
 
-    let changes: any = new Object();
+    switch (this.edit.type) {
+      case "statement":
+
+      /*
+      this.questionForm.value.level_id
+      this.questionForm.value.skill_id
+      this.questionForm.value.puntuation
+      this.questionForm.value.statement
+      this.questionForm.value.text
+      this.photos.statement
+      */ 
+
+        this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+            this.charge = false;
+            alert('Enunciado editada');
+    
+            this.closeEditModal();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+      case "question":
+
+        /*
+        this.questionForm.value.statement
+        this.questionForm.value.block_id
+        this.questionForm.value.puntuation
+        this.questionForm.value.question
+        this.questionForm.value.text
+        this.photos.question
+        */ 
+
+        this.http.put<any>('http://localhost:4000/api/questions/edit', changes, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+            this.charge = false;
+            alert('Pregunta editada');
+    
+            this.closeEditModal();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+      case "answers":
+
+        /*
+        this.questionForm.value.level_id
+        this.questionForm.value.skill_id
+        this.questionForm.value.puntuation
+        this.questionForm.value.statement
+        this.questionForm.value.text
+        this.photos.statement
+        */ 
+
+        this.http.put<any>('http://localhost:4000/api/answers/edit', changes, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+            this.charge = false;
+            alert('Respuesta editada');
+    
+            this.closeEditModal();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+    }
 
     if (this.questionForm.value.level !== this.edit.level) {
       changes.level = this.questionForm.value.level;
@@ -339,28 +429,76 @@ export class ManageQuestionsComponent {
     ) {
       changes.responseE = this.questionForm.value.responseE;
     }
+  };
 
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.http
-      .put<any>('http://localhost:4000/api/exams/edit', changes, {headers: httpHeaders})
-      .subscribe({
+  photoConvert(event: any, type: any){
+    let file: any = event.target.files[0];
+    let url: any = file;
+    const fr: any = new FileReader();
+    fr.readAsDataURL(url)
+    switch (type) {
+      case "statement":
+        fr.onload = () => {
+          this.photos.statement = fr.result as string;
+        };
+        break;
+      case "question":
+        fr.onload = () => {
+          this.photos.question = fr.result as string;
+        };
+        break;
+      case "A":
+        fr.onload = () => {
+          this.photos.A = fr.result as string;
+        };
+        break;
+      case "B":
+        fr.onload = () => {
+          this.photos.B = fr.result as string;
+        };
+        break;
+      case "C":
+        fr.onload = () => {
+          this.photos.C = fr.result as string;
+        };
+        break;
+      case "D":
+        fr.onload = () => {
+          this.photos.D = fr.result as string;
+        };
+        break;
+      case "E":
+        fr.onload = () => {
+          this.photos.E = fr.result as string;
+        };
+        break;
+      case "F":
+        fr.onload = () => {
+          this.photos.F = fr.result as string;
+        };
+        break;
+    };
+  };
+
+  chargeStatementsList(){
+    if( this.questionForm.value.skill !== "" && this.questionForm.value.level !== "" ){
+      let search: any = {
+        skill_id: this.questionForm.value.skill,
+        level_id: this.questionForm.value.level
+      }
+      let auth: any = localStorage.getItem('token');
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
+      this.http.post<any>('http://localhost:4000/api/statements/levelSkill', search, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          this.exams = res;
-          this.charge = false;
-          alert('Pregunta editada');
-
-          let editModal: any;
-          editModal = document.getElementById('editModal');
-          editModal.style.display = 'none';
-          this.charge = false;
+          this.statementChange = res;
         },
         error: (err) => {
-          alert('No se pudo editar' + err);
-          this.charge = false;
+          alert('Cargar fallo' + err);
         },
       });
-  }
+    };
+  };
+
 }

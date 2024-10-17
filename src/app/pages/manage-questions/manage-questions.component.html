@@ -48,8 +48,20 @@
         <div class="card m-2" style="width: 80rem;">
           <div class="card-header">
             <div class="row mt-3">
-              <h5 class="col">Enunciado</h5>
-              <p class="col">Puntuación: {{statement.score}}</p>
+              <div class="col-1 mt-2">
+                @if (statement.status === "active") {
+                    <p class="text-success">Activo</p>
+                } @else {
+                    <p class="text-danger">Inactivo</p>
+                }
+              </div>
+              <p class="col-3">Puntuación: {{statement.score}}</p>
+              <h4 class="col">Enunciado</h4>
+              <div class="col-4 text-end">
+                <button class="btn btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
+                <button class="btn btn-secondary ms-3">Desactivar</button>
+                <button class="btn btn-danger ms-3">Eliminar</button>     
+            </div>  
             </div>
           </div>
           <div class="card-body text-center">
@@ -64,8 +76,20 @@
             <div class="card m-2">
               <div class="card-header">
                 <div class="row mt-3">
-                  <h5 class="col">Pregunta</h5>
-                  <p class="col">Puntuación: {{question.puntuation}}</p>
+                  <div class="col-1 mt-2">
+                    @if (statement.status === "active") {
+                        <p class="text-success">Activo</p>
+                    } @else {
+                        <p class="text-danger">Inactivo</p>
+                    }
+                  </div>
+                  <p class="col-3">Puntuación: {{question.puntuation}}</p>
+                  <h4 class="col">Pregunta</h4>
+                  <div class="col-4 text-end">
+                    <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
+                    <button class="btn btn-secondary ms-3">Desactivar</button>
+                    <button class="btn btn-danger ms-3">Eliminar</button>     
+                </div> 
                 </div>
               </div>
               <div class="card-body text-center list-group list-group p-3">
@@ -79,7 +103,22 @@
                 <div class="card m-2">
                   @if(question.answers !== [] && question.answers !== null && question.answers !== undefined) {
                     <div class="card-header">
-                      <h5 class=" mt-1">Respuestas</h5>
+                      <div class="row">
+                        <div class="col-1 mt-2">
+                          @if (statement.status === "active") {
+                              <p class="text-success">Activo</p>
+                          } @else {
+                              <p class="text-danger">Inactivo</p>
+                          }
+                        </div>
+                        <div class="col-3"></div>
+                        <h4 class="col">Respuestas</h4>
+                        <div class="col-4 text-end">
+                          <button class="btn btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
+                          <button class="btn btn-secondary ms-3">Desactivar</button>
+                          <button class="btn btn-danger ms-3">Eliminar</button>     
+                      </div> 
+                      </div>
                     </div>
                     <div class="card-body text-center row">
                       @for(answer of question.answers; track answer.id){
@@ -87,9 +126,7 @@
                           @if(answer.is_correct){
                               <p class="list-group"> <span class="text-success fs-3">{{answer.letter}}.</span> </p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                            
                           } @else{
-                           
                               <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
                             }
@@ -101,10 +138,6 @@
                 </div>
               </div>
             </div>
-          <!-- <div class="card-header">
-            <button type="button" class="btn btn-primary mx-2" (click)="openEditModal(exam, question)">Editar</button>
-            <button type="button" class="btn btn-primary mx-2" (click)="openDeleteModal(exam, question)">Eliminar</button>
-          </div> -->
         }
         </div>
       </div>
@@ -127,15 +160,6 @@
           }
         </div>
         <div class="modal-body">
-          {{modalStatement}}
-          <ul>
-            <li>{{modalResponseA}}</li>
-            <li>{{modalResponseB}}</li>
-            <li>{{modalResponseC}}</li>
-            <li>{{modalResponseD}}</li>
-            <li>{{modalResponseE}}</li>
-          </ul>
-          
         </div>
         @if (!charge){
           <div class="modal-footer">
@@ -153,11 +177,17 @@
 
   <!-- Edit modal -->
 
-  <div class="modal" id="editModal">
+  <div class="modal modal-lg" id="editModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar pregunta</h1>
+          @if(edit.type === "statement") {
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar enunciado</h1>
+          } @else if(edit.type === "question") {
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar pregunta</h1>
+          } @else if(edit.type === "answers") {
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar respuestas</h1>
+          }
           @if(!charge){
             <button type="button" class="btn-close" (click)="closeEditModal()"></button>
           } @else {
@@ -167,58 +197,121 @@
           }
         </div>
         <div class="modal-body">
-          
-            <form [formGroup] = "questionForm">
-        
-                <p>Elige un nivel</p>
-                <select class="form-select" placeholder="A1" formControlName="level" aria-label="Select-level">
-                  @for(level of levels; track level.id){
-                    <option [value]="level.id">{{level.name}}</option>
-                  }
-                </select>
-                <p class="mt-1">Elige un bloque</p>
+          <form [formGroup] = "questionForm">
+            @if(edit.type === "statement") {
+              <p>Editar nivel</p>
+              <select class="form-select" formControlName="level" aria-label="Select-level" (change)="chargeSkills()">
+                @for(level of levels; track level.id){
+                  <option [value]="level.id">{{level.name}}</option>
+                }
+              </select>
+              <p class="mt-2">Editar destreza</p>
+              <select class="form-select" formControlName="skill" aria-label="Select-skill">
+                @for(skill of skills; track skill.id){
+                  <option [value]="skill.id">{{skill.name}}</option>
+                }
+              </select>
+              <p class="mt-2">Puntuacion</p>
+              <select class="form-select" formControlName="puntuation" id="puntuation">
+                  <option value=5>5</option>
+                  <option value=10>10</option>
+                  <option value=15>15</option>
+                  <option value=20>20</option>
+                  <option value=25>25</option>
+                  <option value=30>30</option>
+              </select>
+              <p class="mt-2">Editar enunciado</p>
+              <textarea class="form-control" formControlName="statement" id="statement"></textarea>
+              <p class="mt-2">Editar texto del enunciado</p>
+              <textarea class="form-control" formControlName="text" id="text"></textarea>
+              <label for="formFile" class="form-label">Foto del enunciado</label>
+              <input class="form-control" type="file" id="statementPhoto" (change)="photoConvert($event, 'statement')">
+
+            } @else if(edit.type === "question") {
+              <div class="text-center">
+                <p class="d-inline-flex gap-1">
+                  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                    Cambiar de enunciado
+                  </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                  <div class="card card-body">
+                    <p>Seleccionar nivel</p>
+                    <select class="form-select" formControlName="level" aria-label="Select-level">
+                      @for(level of levels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                      }
+                    </select>
+                    @if(questionForm.value.level){
+                      <p class="mt-2">Seleccionar destreza</p>
+                      <select class="form-select" formControlName="skill" aria-label="Select-skill">
+                        @for(skill of skills; track skill.id){
+                          <option [value]="skill.id">{{skill.name}}</option>
+                        }
+                      </select>
+                    }
+                    @if(questionForm.value.level && questionForm.value.skill){
+                      <p>Elige un enunciado</p>
+                      <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
+                        @for(statement of statementChange; track statement.id){
+                          <option [value]="statement.id">{{statement.content}}</option>
+                        }
+                      </select>
+                    }
+                  </div>
+                </div>
+              </div>
+               <p class="mt-1">Editar bloque</p>
                 <select class="form-select" formControlName="block" aria-label="Select-block">
                   @for(block of blocks; track block.id){
                     <option [value]="block.id">{{block.name}}</option>
                   }
                 </select>
-        
-                <div class="input-group my-3">
-                    <span class="input-group-text">Pregunta</span>
-                    <textarea class="form-control" formControlName="question" id="question" aria-label="With textarea"></textarea>
-                </div>
-        
-                <div class="input-group mb-1">
-                    <span class="input-group-text" id="ResponseA">Respuesta A</span>
-                    <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
-                </div>
-                
-                <div class="input-group mb-1">
-                    <span class="input-group-text" id="ResponseB">Respuesta B</span>
-                    <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                </div>
-        
-                    <div class="input-group mb-1">
-                        <span class="input-group-text" id="ResponseC">Respuesta C</span>
-                        <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-        
-                    <div class="input-group mb-1">
-                        <span class="input-group-text" id="ResponseD">Respuesta D</span>
-                        <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-        
-                    <div class="input-group mb-1">
-                        <span class="input-group-text" id="ResponseE">Respuesta E</span>
-                        <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                    </div>
-            </form>
-        
+              <p class="mt-2">Puntuacion</p>
+              <select class="form-select" formControlName="puntuation" id="puntuation">
+                <option value=5>5</option>
+                <option value=10>10</option>
+                <option value=15>15</option>
+                <option value=20>20</option>
+                <option value=25>25</option>
+                <option value=30>30</option>
+              </select>
+              <p class="mt-2">Editar pregunta</p>
+              <textarea class="form-control" formControlName="question" id="question"></textarea>
+              <p class="mt-2">Editar texto de la pregunta</p>
+              <textarea class="form-control" formControlName="text" id="text"></textarea>
+              <label for="formFile" class="form-label">Foto de la pregunta</label>
+              <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, 'question')">
+
+            } @else if(edit.type === "answers") {
+              @for(answer of edit.oldAnswers; track answer.id){
+                <p>{{answer.letter}}</p>
+                @if(answer.content !== undefined && answer.content !== 'undefined' && answer.content !== null){
+                  <div class="input-group mb-1">
+                    <span class="input-group-text" id="Response">Respuesta {{answer.letter}}</span>
+                    <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                  </div>
+                } @else if (answer.base64_data) {
+                  <label for="formFile" class="form-label">Foto de la respuesta</label>
+                  <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, answer.letter)">
+                }
+              }
+              <p>Respuesta correcta</p>
+              <select class="form-select" formControlName="correctResponse" id="response">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            }   
+          </form>
         </div>
         @if (!charge){
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="editQuestion()">Editar</button>
+            <button type="button" class="btn btn-primary" (click)="editQuestions()">Editar</button>
           </div>
         } @else {
           <div class="spinner-border text-primary mx-auto mb-3" role="status">

@@ -23,7 +23,7 @@ export class ManageQuestionsComponent {
   levels: any;
   skills: any;
   blocks: any;
-  photos: any;
+  photos: any = {};
   statementChange: any;
 
   edit: any = {};
@@ -45,6 +45,25 @@ export class ManageQuestionsComponent {
     statement: new FormControl(''),
     correctResponse: new FormControl('')
   });
+
+  questionFormRestart(){
+    this.questionForm = new FormGroup({
+      level: new FormControl(''),
+      block: new FormControl(''),
+      question: new FormControl(''),
+      responseA: new FormControl(''),
+      responseB: new FormControl(''),
+      responseC: new FormControl(''),
+      responseD: new FormControl(''),
+      responseE: new FormControl(''),
+      responseF: new FormControl(''),
+      skill: new FormControl(''),
+      text: new FormControl(''),
+      puntuation: new FormControl(''),
+      statement: new FormControl(''),
+      correctResponse: new FormControl('')
+    });
+  };
 
   filterForm = new FormGroup({
     level: new FormControl(''),
@@ -219,7 +238,6 @@ export class ManageQuestionsComponent {
     this.chargeSkills();
     this.chargeLevels();
 
-    console.log(old)
     this.edit.type = type;
     switch (type) {
       case "statement":
@@ -292,23 +310,8 @@ export class ManageQuestionsComponent {
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display = 'none';
-    this.questionForm = new FormGroup({
-      level: new FormControl(''),
-      block: new FormControl(''),
-      question: new FormControl(''),
-      responseA: new FormControl(''),
-      responseB: new FormControl(''),
-      responseC: new FormControl(''),
-      responseD: new FormControl(''),
-      responseE: new FormControl(''),
-      responseF: new FormControl(''),
-      skill: new FormControl(''),
-      text: new FormControl(''),
-      puntuation: new FormControl(''),
-      statement: new FormControl(''),
-      correctResponse: new FormControl('')
-    });
-  }
+    this.questionFormRestart();
+  };
 
   editQuestions() {
     this.charge = true;
@@ -316,46 +319,76 @@ export class ManageQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    let changes: any;
+    let changes: any = {};
+    let level: any = this.questionForm.value.level; 
+    let skill: any = this.questionForm.value.skill;
+    let puntuation: any = this.questionForm.value.puntuation;
+    let statement: any = this.questionForm.value.statement;
+    let text: any = this.questionForm.value.text;
+    let block: any = this.questionForm.value.block;
+    let question: any = this.questionForm.value.question;
+    let responseA: any = this.questionForm.value.responseA;
+    let responseB: any = this.questionForm.value.responseB;
+    let responseC: any = this.questionForm.value.responseC;
+    let responseD: any = this.questionForm.value.responseD;
+    let responseE: any = this.questionForm.value.responseE;
+    let responseF: any = this.questionForm.value.responseF;
 
     switch (this.edit.type) {
       case "statement":
 
-      /*
-      this.questionForm.value.level_id
-      this.questionForm.value.skill_id
-      this.questionForm.value.puntuation
-      this.questionForm.value.statement
-      this.questionForm.value.text
-      this.photos.statement
-      */ 
-
-        this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
+        if(level && level !== null && level !== undefined && level !== "" && level !== this.edit.oldStatement.level_id){
+          changes.level_id = level;
+        };
+        if(skill && skill !== null && skill !== undefined && skill !== "" && skill !== this.edit.oldStatement.skill_id){
+          changes.skill_id = skill;
+        };
+        if(puntuation && puntuation !== null && puntuation !== undefined && puntuation !== "" && puntuation !== this.edit.oldStatement.score){
+          changes.score = puntuation;
+        };
+        if(statement && statement !== null && statement !== undefined && statement !== "" && statement !== this.edit.oldStatement.content){
+          changes.content = statement;
+        };
+        if(text && text !== null && text !== undefined && text !== "" && text !== this.edit.oldStatement.text){
+          changes.text = text;
+        };
+        if(this.photos.statement && this.photos.statement !== null && this.photos.statement !== undefined && this.photos.statement !== ""){
+          changes.photo = this.photos.statement;
+        };
+        console.log(changes);
+        /*this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
             this.charge = false;
             alert('Enunciado editada');
-    
             this.closeEditModal();
+            changes = {};
           },
           error: (err) => {
             alert('No se pudo editar' + err);
             this.charge = false;
           },
-        });
+        });*/
         break;
       case "question":
 
-        /*
-        this.questionForm.value.statement
-        this.questionForm.value.block_id
-        this.questionForm.value.puntuation
-        this.questionForm.value.question
-        this.questionForm.value.text
-        this.photos.question
-        */ 
-
-        this.http.put<any>('http://localhost:4000/api/questions/edit', changes, {headers: httpHeaders}).subscribe({
+        if(statement && statement !== null && statement !== undefined && statement !== ""){
+          changes.statement_id = statement;
+        };
+        if(block && block !== null && block !== undefined && block !== "" && block !== this.edit.oldQuestion.block_id){
+          changes.block_id = block;
+        };
+        if(puntuation && puntuation !== null && puntuation !== undefined && puntuation !== "" && puntuation !== this.edit.oldQuestion.puntuation){
+          changes.puntuation = puntuation;
+        };
+        if(question && question !== null && question !== undefined && question !== "" && question !== this.edit.oldQuestion.content){
+          changes.question = question;
+        };
+        if(this.photos.question && this.photos.question !== null && this.photos.question !== undefined && this.photos.question !== ""){
+          changes.photo = this.photos.question;
+        };
+        console.log(changes);
+        /*this.http.put<any>('http://localhost:4000/api/questions/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
             this.charge = false;
@@ -367,20 +400,102 @@ export class ManageQuestionsComponent {
             alert('No se pudo editar' + err);
             this.charge = false;
           },
-        });
+        });*/
         break;
       case "answers":
+        changes = {};
+        console.log(changes)
+        let correct: any = this.questionForm.value.correctResponse;
+        changes.responseA = {};
+        changes.responseB = {};
+        changes.responseC = {};
+        changes.responseD = {};
+        changes.responseE = {};
+        changes.responseF = {};
+        let separatedAnswers: any = {};
 
-        /*
-        this.questionForm.value.level_id
-        this.questionForm.value.skill_id
-        this.questionForm.value.puntuation
-        this.questionForm.value.statement
-        this.questionForm.value.text
-        this.photos.statement
-        */ 
+        this.edit.oldAnswers.forEach((answer: any) => {
+          if(answer.letter === "A"){separatedAnswers.answerA = answer};
+          if(answer.letter === "B"){separatedAnswers.answerB = answer};
+          if(answer.letter === "C"){separatedAnswers.answerC = answer};
+          if(answer.letter === "D"){separatedAnswers.answerD = answer};
+          if(answer.letter === "E"){separatedAnswers.answerE = answer};
+          if(answer.letter === "F"){separatedAnswers.answerF = answer};
+        });
+        if(correct && correct !== undefined && correct !== null){
+          switch (correct) {
+            case "A":
+              if(separatedAnswers.answerA.is_correct !== 1){
+                changes.responseA.is_correct = 1;
+              };
+              break;
+            case "B":
+              if(separatedAnswers.answerB.is_correct !== 1){
+                changes.responseB.is_correct = 1;
+              }
+              break;
+            case "C":
+              if(separatedAnswers.answerC.is_correct !== 1){
+                changes.responseC.is_correct = 1;
+              }
+              break;
+            case "D":
+              if(separatedAnswers.answerD && separatedAnswers.answerD.is_correct !== 1){
+                changes.responseD.is_correct = 1;
+              }
+              break;
+            case "E":
+              if(separatedAnswers.answerE &&separatedAnswers.answerE.is_correct !== 1){
+                changes.responseE.is_correct = 1;
+              }
+              break;
+            case "F":
+              if(separatedAnswers.answerF &&separatedAnswers.answerF.is_correct !== 1){
+                changes.responseF.is_correct = 1;
+              }
+              break;
+          };
+        };
+        if(responseA && responseA !== null && responseA !== undefined && responseA !== "" && responseA !== separatedAnswers.answerA.content){
+          changes.responseA.text = responseA;
+        };
+        if(responseB && responseB !== null && responseB !== undefined && responseB !== "" && responseB !== separatedAnswers.answerB.content){
+          changes.responseB.text = responseB;
+        };
+        if(responseC && responseC !== null && responseC !== undefined && responseC !== "" && responseC !== separatedAnswers.answerC.content){
+          changes.responseC.text = responseC;
+        };
+        if(responseD && responseD !== null && responseD !== undefined && responseD !== "" && responseD !== separatedAnswers.answerD.content){
+          changes.responseD.text = responseD;
+        };
+        if(responseE && responseE !== null && responseE !== undefined && responseE !== "" && responseE !== separatedAnswers.answerE.content){
+          changes.responseE.text = responseE;
+        };
+        if(responseF && responseF !== null && responseF !== undefined && responseF !== "" && responseF !== separatedAnswers.answerF.content){
+          changes.responseF.text = responseF;
+        };
 
-        this.http.put<any>('http://localhost:4000/api/answers/edit', changes, {headers: httpHeaders}).subscribe({
+        if(this.photos.A && this.photos.A !== null && this.photos.A !== undefined && this.photos.A !== ""){
+          changes.photo = this.photos.A;
+        };
+        if(this.photos.B && this.photos.B !== null && this.photos.B !== undefined && this.photos.B !== ""){
+          changes.photo = this.photos.B;
+        };
+        if(this.photos.C && this.photos.C !== null && this.photos.C !== undefined && this.photos.C !== ""){
+          changes.photo = this.photos.C;
+        };
+        if(this.photos.D && this.photos.D !== null && this.photos.D !== undefined && this.photos.D !== ""){
+          changes.photo = this.photos.D;
+        };
+        if(this.photos.E && this.photos.E !== null && this.photos.E !== undefined && this.photos.E !== ""){
+          changes.photo = this.photos.E;
+        };
+        if(this.photos.F && this.photos.F !== null && this.photos.F !== undefined && this.photos.F !== ""){
+          changes.photo = this.photos.F;
+        };
+        console.log(changes);
+
+        /*this.http.put<any>('http://localhost:4000/api/answers/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
             this.charge = false;
@@ -392,43 +507,9 @@ export class ManageQuestionsComponent {
             alert('No se pudo editar' + err);
             this.charge = false;
           },
-        });
+        });*/
         break;
-    }
-
-    if (this.questionForm.value.level !== this.edit.level) {
-      changes.level = this.questionForm.value.level;
-    }
-    if (this.questionForm.value.block !== this.edit.block) {
-      changes.block = this.questionForm.value.block;
-    }
-    if (this.questionForm.value.question !== this.edit.statement) {
-      changes.statement = this.questionForm.value.question;
-    }
-    if (this.questionForm.value.responseA !== this.edit.responseA) {
-      changes.responseA = this.questionForm.value.responseA;
-    }
-    if (this.questionForm.value.responseB !== this.edit.responseB) {
-      changes.responseB = this.questionForm.value.responseB;
-    }
-    if (
-      this.questionForm.value.responseC !== '' &&
-      this.questionForm.value.responseC !== this.edit.responseC
-    ) {
-      changes.responseC = this.questionForm.value.responseC;
-    }
-    if (
-      this.questionForm.value.responseD !== '' &&
-      this.questionForm.value.responseD !== this.edit.responseD
-    ) {
-      changes.responseD = this.questionForm.value.responseD;
-    }
-    if (
-      this.questionForm.value.responseE !== '' &&
-      this.questionForm.value.responseE !== this.edit.responseE
-    ) {
-      changes.responseE = this.questionForm.value.responseE;
-    }
+    };
   };
 
   photoConvert(event: any, type: any){

@@ -315,7 +315,7 @@ export class ManageQuestionsComponent {
   };
 
   editQuestions() {
-    this.charge = true;
+    //this.charge = true;
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -405,6 +405,7 @@ export class ManageQuestionsComponent {
         });
         break;
       case "answers":
+        console.log(this.edit.oldAnswers);
         changes = {};
         let correct: any = this.questionForm.value.correctResponse;
         changes.responseA = {};
@@ -457,57 +458,127 @@ export class ManageQuestionsComponent {
               break;
           };
         };
+
+        this.edit.oldAnswers.forEach( (ans: any) => {
+          if(ans.letter === "A"){
+            changes.responseA.id = ans.id;
+          }
+        });
+
+
+
         if(responseA && responseA !== null && responseA !== undefined && responseA !== "" && responseA !== separatedAnswers.answerA.content){
           changes.responseA.text = responseA;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "A"){
+              changes.responseA.id = ans.id;
+            }
+          });
         };
         if(responseB && responseB !== null && responseB !== undefined && responseB !== "" && responseB !== separatedAnswers.answerB.content){
           changes.responseB.text = responseB;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "B"){
+              changes.responseB.id = ans.id;
+            }
+          });
         };
         if(responseC && responseC !== null && responseC !== undefined && responseC !== "" && responseC !== separatedAnswers.answerC.content){
           changes.responseC.text = responseC;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "C"){
+              changes.responseC.id = ans.id;
+            }
+          });
         };
         if(responseD && responseD !== null && responseD !== undefined && responseD !== "" && responseD !== separatedAnswers.answerD.content){
           changes.responseD.text = responseD;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "D"){
+              changes.responseD.id = ans.id;
+            }
+          });
         };
         if(responseE && responseE !== null && responseE !== undefined && responseE !== "" && responseE !== separatedAnswers.answerE.content){
           changes.responseE.text = responseE;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "E"){
+              changes.responseE.id = ans.id;
+            }
+          });
         };
         if(responseF && responseF !== null && responseF !== undefined && responseF !== "" && responseF !== separatedAnswers.answerF.content){
           changes.responseF.text = responseF;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "F"){
+              changes.responseF.id = ans.id;
+            }
+          });
         };
 
         if(this.photos.A && this.photos.A !== null && this.photos.A !== undefined && this.photos.A !== ""){
           changes.photo = this.photos.A;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "A"){
+              changes.responseA.id = ans.id;
+            }
+          });
         };
         if(this.photos.B && this.photos.B !== null && this.photos.B !== undefined && this.photos.B !== ""){
           changes.photo = this.photos.B;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "B"){
+              changes.responseB.id = ans.id;
+            }
+          });
         };
         if(this.photos.C && this.photos.C !== null && this.photos.C !== undefined && this.photos.C !== ""){
           changes.photo = this.photos.C;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "C"){
+              changes.responseC.id = ans.id;
+            }
+          });
         };
         if(this.photos.D && this.photos.D !== null && this.photos.D !== undefined && this.photos.D !== ""){
           changes.photo = this.photos.D;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "D"){
+              changes.responseD.id = ans.id;
+            }
+          });
         };
         if(this.photos.E && this.photos.E !== null && this.photos.E !== undefined && this.photos.E !== ""){
           changes.photo = this.photos.E;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "E"){
+              changes.responseE.id = ans.id;
+            }
+          });
         };
         if(this.photos.F && this.photos.F !== null && this.photos.F !== undefined && this.photos.F !== ""){
           changes.photo = this.photos.F;
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "F"){
+              changes.responseF.id = ans.id;
+            }
+          });
         };
         console.log(changes);
-
-        /*this.http.put<any>('http://localhost:4000/api/answers/edit', changes, {headers: httpHeaders}).subscribe({
-          next: (res) => {
-            this.chargeStatements();
-            this.charge = false;
-            alert('Respuesta editada');
-            this.closeEditModal();
-          },
-          error: (err) => {
-            alert('No se pudo editar' + err);
-            this.charge = false;
-          },
-        });*/
+        /*for (let change of changes) {
+          this.http.put<any>('http://localhost:4000/api/answers/edit', change, {headers: httpHeaders}).subscribe({
+            next: (res) => {
+              this.chargeStatements();
+              this.charge = false;
+              alert('Respuesta editada');
+              this.closeEditModal();
+            },
+            error: (err) => {
+              alert('No se pudo editar' + err);
+              this.charge = false;
+            },
+          });
+        }*/
         break;
     };
   };

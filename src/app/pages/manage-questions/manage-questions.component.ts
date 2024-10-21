@@ -25,6 +25,7 @@ export class ManageQuestionsComponent {
   blocks: any;
   photos: any = {};
   statementChange: any;
+  skill: any;
 
   edit: any = {};
   mode: any;
@@ -142,7 +143,7 @@ export class ManageQuestionsComponent {
     });
     let data: any = {
       level_id: this.filterForm.value.level ? this.filterForm.value.level : this.edit.oldStatement.level_id,
-      skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.edit.oldStatement.skill_id,
+      skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
     };
     if(this.filterForm.value.block !== ""){
       data.block_id = this.filterForm.value.block
@@ -234,10 +235,11 @@ export class ManageQuestionsComponent {
   }
 
   openEditModal(old: any, type: any) {
-    console.log(old.skill_id)
     this.chargeSkills();
     this.chargeLevels();
     this.edit.type = type;
+    if( this.filterForm.value.skill !== "" ) { this.skill = this.filterForm.value.skill; };
+    console.log(this.skill)
     switch (type) {
       case "statement":
         this.edit.oldStatement = old;
@@ -371,40 +373,39 @@ export class ManageQuestionsComponent {
         });
         break;
       case "question":
+        changes = {};
         changes.id = this.edit.oldQuestion.id;
         if(statement && statement !== null && statement !== undefined && statement !== ""){
           changes.statement_id = statement;
-        };
+        } else { changes.statement_id = null};
         if(block && block !== null && block !== undefined && block !== "" && block !== this.edit.oldQuestion.block_id){
           changes.block_id = block;
-        };
+        } else { changes.block_id = null};
         if(puntuation && puntuation !== null && puntuation !== undefined && puntuation !== "" && puntuation !== this.edit.oldQuestion.puntuation){
           changes.puntuation = puntuation;
-        };
+        } else { changes.puntuation = null};
         if(question && question !== null && question !== undefined && question !== "" && question !== this.edit.oldQuestion.content){
           changes.question = question;
-        };
+        } else { changes.question = null};
         if(this.photos.question && this.photos.question !== null && this.photos.question !== undefined && this.photos.question !== ""){
           changes.photo = this.photos.question;
-        };
+        } else { changes.photo = null};
         console.log(changes);
-        /*this.http.put<any>('http://localhost:4000/api/questions/edit', changes, {headers: httpHeaders}).subscribe({
+        this.http.put<any>('http://localhost:4000/api/questions/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
             this.charge = false;
             alert('Pregunta editada');
-    
             this.closeEditModal();
           },
           error: (err) => {
             alert('No se pudo editar' + err);
             this.charge = false;
           },
-        });*/
+        });
         break;
       case "answers":
         changes = {};
-        console.log(changes)
         let correct: any = this.questionForm.value.correctResponse;
         changes.responseA = {};
         changes.responseB = {};
@@ -500,7 +501,6 @@ export class ManageQuestionsComponent {
             this.chargeStatements();
             this.charge = false;
             alert('Respuesta editada');
-    
             this.closeEditModal();
           },
           error: (err) => {

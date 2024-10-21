@@ -23,7 +23,6 @@ export class HeaderComponent {
 
   ngOnInit(){
     this.verify();
-    
   };
 
   verify(){

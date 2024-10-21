@@ -95,7 +95,7 @@ export class ManageQuestionsComponent {
       },
     });
   };
-  
+
   chargeSkills(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -108,7 +108,7 @@ export class ManageQuestionsComponent {
       next: (res) => {
         this.skills = res;
         this.filterForm.patchValue({
-          block: ''  
+          block: ''
         });;
       },
       error: (err) => {
@@ -141,8 +141,8 @@ export class ManageQuestionsComponent {
       'authorization': auth
     });
     let data: any = {
-      level_id: this.filterForm.value.level,
-      skill_id: this.filterForm.value.skill,
+      level_id: this.filterForm.value.level ? this.filterForm.value.level : this.edit.oldStatement.level_id,
+      skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.edit.oldStatement.skill_id,
     };
     if(this.filterForm.value.block !== ""){
       data.block_id = this.filterForm.value.block
@@ -155,7 +155,7 @@ export class ManageQuestionsComponent {
           alert('Cargar fallo' + err);
         },
       });
-    } else { 
+    } else {
 
       this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
         next: ( res ) => {
@@ -169,7 +169,7 @@ export class ManageQuestionsComponent {
                 error: (err) => { alert('Cargar fallo' + err); },
               });
             };
-          });  
+          });
         },
         error: ( err ) => {alert('Cargar fallo' + err);},
         complete: () => {
@@ -231,13 +231,12 @@ export class ManageQuestionsComponent {
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'block';
-    
   }
 
   openEditModal(old: any, type: any) {
+    console.log(old.skill_id)
     this.chargeSkills();
     this.chargeLevels();
-
     this.edit.type = type;
     switch (type) {
       case "statement":
@@ -320,7 +319,7 @@ export class ManageQuestionsComponent {
       'authorization': auth
     });
     let changes: any = {};
-    let level: any = this.questionForm.value.level; 
+    let level: any = this.questionForm.value.level;
     let skill: any = this.questionForm.value.skill;
     let puntuation: any = this.questionForm.value.puntuation;
     let statement: any = this.questionForm.value.statement;
@@ -336,42 +335,43 @@ export class ManageQuestionsComponent {
 
     switch (this.edit.type) {
       case "statement":
-
+        changes.id = this.edit.oldStatement.id;
         if(level && level !== null && level !== undefined && level !== "" && level !== this.edit.oldStatement.level_id){
           changes.level_id = level;
-        };
+        } else {changes.level_id = null;};
         if(skill && skill !== null && skill !== undefined && skill !== "" && skill !== this.edit.oldStatement.skill_id){
           changes.skill_id = skill;
-        };
+        } else {changes.skill_id = null;};
         if(puntuation && puntuation !== null && puntuation !== undefined && puntuation !== "" && puntuation !== this.edit.oldStatement.score){
           changes.score = puntuation;
-        };
+        } else {changes.score = null;};
         if(statement && statement !== null && statement !== undefined && statement !== "" && statement !== this.edit.oldStatement.content){
           changes.content = statement;
-        };
+        } else {changes.content = null;};
         if(text && text !== null && text !== undefined && text !== "" && text !== this.edit.oldStatement.text){
           changes.text = text;
-        };
+        } else {changes.text = null;};
         if(this.photos.statement && this.photos.statement !== null && this.photos.statement !== undefined && this.photos.statement !== ""){
           changes.photo = this.photos.statement;
-        };
+        } else {changes.photo = null;};
         console.log(changes);
-        /*this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
+        this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
-            this.chargeStatements();
+            console.log(res)
             this.charge = false;
-            alert('Enunciado editada');
+            alert('Enunciado editado');
             this.closeEditModal();
             changes = {};
+            this.chargeStatements();
           },
           error: (err) => {
             alert('No se pudo editar' + err);
             this.charge = false;
           },
-        });*/
+        });
         break;
       case "question":
-
+        changes.id = this.edit.oldQuestion.id;
         if(statement && statement !== null && statement !== undefined && statement !== ""){
           changes.statement_id = statement;
         };

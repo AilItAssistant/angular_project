@@ -76,7 +76,7 @@ export class ManageQuestionsComponent {
 
   ngOnInit() {
     this.chargeLevels();
-  }
+  };
 
   chargeLevels() {
     let auth: any = localStorage.getItem('token');
@@ -87,8 +87,8 @@ export class ManageQuestionsComponent {
       next: (res) => {
         this.levels = res;
         this.filterForm.patchValue({
-          skill: '', 
-          block: ''  
+          skill: '',
+          block: ''
         });
       },
       error: (err) => {
@@ -178,7 +178,6 @@ export class ManageQuestionsComponent {
             let data: any = { statement_id: statement.id };
             this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
               next: ( res ) => {
-                console.log(res)
                 if ( res !== undefined ) statement.questions.push(res);
               },
               error: (err) => { alert('Cargar fallo' + err); }
@@ -193,53 +192,23 @@ export class ManageQuestionsComponent {
     console.log(this.statements)
   };
 
-  deleteQuestion() {
-    let selectQuestion: object = {
-      exam: this.exam,
-      question: this.question,
-    };
-
-    this.charge = true;
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    this.http
-      .put<any>('http://localhost:4000/api/exams', selectQuestion, {headers: httpHeaders})
-      .subscribe({
-        next: (res) => {
-          this.exams = res;
-          this.charge = false;
-          alert('Pregunta borrada');
-          let deleteModal: any;
-          deleteModal = document.getElementById('deleteModal');
-          deleteModal.style.display = 'none';
-        },
-        error: (err) => {
-          alert('No se pudo borrar');
-          this.charge = false;
-        },
-      });
-  }
-
   closeDeleteModal() {
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'none';
-  }
+  };
 
   openDeleteModal(exam: any, question: any) {
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'block';
-  }
+  };
 
   openEditModal(old: any, type: any) {
     this.chargeSkills();
     this.chargeLevels();
     this.edit.type = type;
     if( this.filterForm.value.skill !== "" ) { this.skill = this.filterForm.value.skill; };
-    console.log(this.skill)
     switch (type) {
       case "statement":
         this.edit.oldStatement = old;
@@ -300,8 +269,6 @@ export class ManageQuestionsComponent {
         this.edit.oldAnswers = old;
         break;
     };
-    console.log(this.edit)
-    console.log(this.questionForm.value)
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display = 'block';
@@ -315,7 +282,7 @@ export class ManageQuestionsComponent {
   };
 
   editQuestions() {
-    //this.charge = true;
+    this.charge = true;
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -405,7 +372,6 @@ export class ManageQuestionsComponent {
         });
         break;
       case "answers":
-        console.log(this.edit.oldAnswers);
         changes = {};
         let correct: any = this.questionForm.value.correctResponse;
         changes.responseA = {};
@@ -429,46 +395,82 @@ export class ManageQuestionsComponent {
             case "A":
               if(separatedAnswers.answerA.is_correct !== 1){
                 changes.responseA.is_correct = 1;
+                changes.responseA.content = null;
+                changes.responseA.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "A"){
+                    changes.responseA.id = ans.id;
+                  }
+                });
               };
               break;
             case "B":
               if(separatedAnswers.answerB.is_correct !== 1){
                 changes.responseB.is_correct = 1;
+                changes.responseB.content = null;
+                changes.responseB.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "B"){
+                    changes.responseB.id = ans.id;
+                  }
+                });
               }
               break;
             case "C":
               if(separatedAnswers.answerC.is_correct !== 1){
                 changes.responseC.is_correct = 1;
+                changes.responseC.content = null;
+                changes.responseC.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "C"){
+                    changes.responseC.id = ans.id;
+                  }
+                });
               }
               break;
             case "D":
               if(separatedAnswers.answerD && separatedAnswers.answerD.is_correct !== 1){
                 changes.responseD.is_correct = 1;
+                changes.responseD.content = null;
+                changes.responseD.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "D"){
+                    changes.responseD.id = ans.id;
+                  }
+                });
               }
               break;
             case "E":
               if(separatedAnswers.answerE &&separatedAnswers.answerE.is_correct !== 1){
                 changes.responseE.is_correct = 1;
+                changes.responseE.content = null;
+                changes.responseE.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "E"){
+                    changes.responseE.id = ans.id;
+                  }
+                });
               }
               break;
             case "F":
               if(separatedAnswers.answerF &&separatedAnswers.answerF.is_correct !== 1){
                 changes.responseF.is_correct = 1;
+                changes.responseF.content = null;
+                changes.responseF.photo = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "F"){
+                    changes.responseF.id = ans.id;
+                  }
+                });
               }
               break;
           };
         };
 
-        this.edit.oldAnswers.forEach( (ans: any) => {
-          if(ans.letter === "A"){
-            changes.responseA.id = ans.id;
-          }
-        });
-
-
-
         if(responseA && responseA !== null && responseA !== undefined && responseA !== "" && responseA !== separatedAnswers.answerA.content){
-          changes.responseA.text = responseA;
+          changes.responseA.content = responseA;
+          changes.responseA.photo = null;
+          if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) {changes.responseA.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "A"){
               changes.responseA.id = ans.id;
@@ -476,7 +478,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(responseB && responseB !== null && responseB !== undefined && responseB !== "" && responseB !== separatedAnswers.answerB.content){
-          changes.responseB.text = responseB;
+          changes.responseB.content = responseB;
+          changes.responseB.photo = null;
+          if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) {changes.responseB.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "B"){
               changes.responseB.id = ans.id;
@@ -484,7 +488,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(responseC && responseC !== null && responseC !== undefined && responseC !== "" && responseC !== separatedAnswers.answerC.content){
-          changes.responseC.text = responseC;
+          changes.responseC.content = responseC;
+          changes.responseC.photo = null;
+          if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) {changes.responseC.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "C"){
               changes.responseC.id = ans.id;
@@ -492,7 +498,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(responseD && responseD !== null && responseD !== undefined && responseD !== "" && responseD !== separatedAnswers.answerD.content){
-          changes.responseD.text = responseD;
+          changes.responseD.content = responseD;
+          changes.responseD.photo = null;
+          if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) {changes.responseD.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "D"){
               changes.responseD.id = ans.id;
@@ -500,7 +508,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(responseE && responseE !== null && responseE !== undefined && responseE !== "" && responseE !== separatedAnswers.answerE.content){
-          changes.responseE.text = responseE;
+          changes.responseE.content = responseE;
+          changes.responseE.photo = null;
+          if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) {changes.responseE.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "E"){
               changes.responseE.id = ans.id;
@@ -508,7 +518,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(responseF && responseF !== null && responseF !== undefined && responseF !== "" && responseF !== separatedAnswers.answerF.content){
-          changes.responseF.text = responseF;
+          changes.responseF.content = responseF;
+          changes.responseF.photo = null;
+          if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) {changes.responseF.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "F"){
               changes.responseF.id = ans.id;
@@ -517,7 +529,9 @@ export class ManageQuestionsComponent {
         };
 
         if(this.photos.A && this.photos.A !== null && this.photos.A !== undefined && this.photos.A !== ""){
-          changes.photo = this.photos.A;
+          changes.responseA.photo = this.photos.A;
+          changes.responseA.content = null;
+          if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) {changes.responseA.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "A"){
               changes.responseA.id = ans.id;
@@ -525,7 +539,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(this.photos.B && this.photos.B !== null && this.photos.B !== undefined && this.photos.B !== ""){
-          changes.photo = this.photos.B;
+          changes.responseB.photo = this.photos.B;
+          changes.responseB.content = null;
+          if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) {changes.responseB.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "B"){
               changes.responseB.id = ans.id;
@@ -533,7 +549,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(this.photos.C && this.photos.C !== null && this.photos.C !== undefined && this.photos.C !== ""){
-          changes.photo = this.photos.C;
+          changes.responseC.photo = this.photos.C;
+          changes.responseC.content = null;
+          if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) {changes.responseC.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "C"){
               changes.responseC.id = ans.id;
@@ -541,7 +559,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(this.photos.D && this.photos.D !== null && this.photos.D !== undefined && this.photos.D !== ""){
-          changes.photo = this.photos.D;
+          changes.responseD.photo = this.photos.D;
+          changes.responseD.content = null;
+          if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) {changes.responseD.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "D"){
               changes.responseD.id = ans.id;
@@ -549,7 +569,9 @@ export class ManageQuestionsComponent {
           });
         };
         if(this.photos.E && this.photos.E !== null && this.photos.E !== undefined && this.photos.E !== ""){
-          changes.photo = this.photos.E;
+          changes.responseE.photo = this.photos.E;
+          changes.responseE.content = null;
+          if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) {changes.responseE.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "E"){
               changes.responseE.id = ans.id;
@@ -557,28 +579,33 @@ export class ManageQuestionsComponent {
           });
         };
         if(this.photos.F && this.photos.F !== null && this.photos.F !== undefined && this.photos.F !== ""){
-          changes.photo = this.photos.F;
+          changes.responseF.photo = this.photos.F;
+          changes.responseF.content = null;
+          if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) {changes.responseF.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "F"){
               changes.responseF.id = ans.id;
             }
           });
         };
-        console.log(changes);
-        /*for (let change of changes) {
-          this.http.put<any>('http://localhost:4000/api/answers/edit', change, {headers: httpHeaders}).subscribe({
-            next: (res) => {
-              this.chargeStatements();
-              this.charge = false;
-              alert('Respuesta editada');
-              this.closeEditModal();
-            },
-            error: (err) => {
-              alert('No se pudo editar' + err);
-              this.charge = false;
-            },
-          });
-        }*/
+        for (let change in changes) {
+          if(Object.keys(changes[change]).length !== 0 ){
+            console.log(changes[change]);
+            let edit: any = changes[change];
+            this.http.put<any>('http://localhost:4000/api/answers/edit', edit, {headers: httpHeaders}).subscribe({
+              next: (res) => {
+                this.chargeStatements();
+                this.charge = false;
+                alert('Respuesta editada');
+                this.closeEditModal();
+              },
+              error: (err) => {
+                alert('No se pudo editar' + err);
+                this.charge = false;
+              },
+            });
+          }
+          };
         break;
     };
   };
@@ -652,5 +679,62 @@ export class ManageQuestionsComponent {
       });
     };
   };
+
+  statusChange(input: any, type: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let status: any = {};
+    switch (type) {
+      case "answer":
+        console.log(input);
+        status = {
+          id: input.id,
+          status: input.status
+        };
+        this.http.put<any>('http://localhost:4000/api/answers/status', status, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+          },
+        });
+        break;
+      case "question":
+        console.log(input.id);
+        status = {
+          id: input.id,
+          status: input.status
+        };
+        this.http.put<any>('http://localhost:4000/api/questions/status', status, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+          },
+        });
+        break;
+      case "statement":
+        console.log(input.id);
+        status = {
+          id: input.id,
+          status: input.status
+        };
+        this.http.put<any>('http://localhost:4000/api/statements/status', status, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo editar' + err);
+          },
+        });
+        break;
+    };
+  };
+
+  deleteQuestion(){};
 
 }

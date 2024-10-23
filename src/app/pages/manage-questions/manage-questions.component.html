@@ -60,7 +60,7 @@
               <div class="col-4 text-end">
                 <button class="btn btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
                 <button class="btn btn-secondary ms-3" (click)="statusChange(statement, 'statement')">Desactivar</button>
-                <button class="btn btn-danger ms-3">Eliminar</button>
+                <button class="btn btn-danger ms-3" (click)="openDeleteModal(statement, 'statement')">Eliminar</button>
             </div>
             </div>
           </div>
@@ -88,7 +88,7 @@
                   <div class="col-4 text-end">
                     <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
                     <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
-                    <button class="btn btn-danger ms-3">Eliminar</button>
+                    <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
                 </div>
                 </div>
               </div>
@@ -120,7 +120,7 @@
                             <p class="text-danger">Inactivo</p>
                           }
                         <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
-                        <button class="btn btn-danger">Eliminar</button>
+                        <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                           @if(answer.is_correct){
                             <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                             @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
@@ -158,6 +158,9 @@
           }
         </div>
         <div class="modal-body">
+          <p>¿Seguro que quiere eliminar @if(delete.type === "statement"){
+            <span>el enunciado?</span>} @else if(delete.type === "question"){
+              <span>la pregunta?</span>} @else if(delete.type === "answer"){<span>la respuesta?</span>}</p>
         </div>
         @if (!charge){
           <div class="modal-footer">

@@ -27,6 +27,7 @@ export class ManageQuestionsComponent {
   statementChange: any;
   skill: any;
 
+  delete:any = {};
   edit: any = {};
   mode: any;
 
@@ -198,10 +199,12 @@ export class ManageQuestionsComponent {
     deleteModal.style.display = 'none';
   };
 
-  openDeleteModal(exam: any, question: any) {
+  openDeleteModal(data: any, type: any) {
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'block';
+    this.delete.id = data.id;
+    this.delete.type = type;
   };
 
   openEditModal(old: any, type: any) {
@@ -735,6 +738,57 @@ export class ManageQuestionsComponent {
     };
   };
 
-  deleteQuestion(){};
+  deleteQuestion(){
+    this.charge = true;
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let id: any = {id: this.delete.id};
+    switch (this.delete.type) {
+      case "statement":
+        this.http.put<any>('http://localhost:4000/api/statements/delete', id, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.charge = false;
+            this.chargeStatements();
+            alert('Enunciado borrado');
+            this.closeDeleteModal();
+          },
+          error: (err) => {
+            alert('No se pudo borrar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+      case "question":
+        this.http.put<any>('http://localhost:4000/api/questions/delete', id, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.charge = false;
+            this.chargeStatements();
+            alert('Pregunta borrada');
+            this.closeDeleteModal();
+          },
+          error: (err) => {
+            alert('No se pudo borrar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+        case "answer":
+          this.http.put<any>('http://localhost:4000/api/answers/delete', id, {headers: httpHeaders}).subscribe({
+            next: (res) => {
+              this.charge = false;
+              this.chargeStatements();
+              alert('Respuesta borrada');
+              this.closeDeleteModal();
+            },
+            error: (err) => {
+              alert('No se pudo borrar' + err);
+              this.charge = false;
+            },
+          });
+        break;
+    }
+  };
 
 }

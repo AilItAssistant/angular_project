@@ -33,13 +33,13 @@ export class AddQuestionsComponent {
   validatedStatement: boolean = false;
   photos: any = {};
   idSatement: any;
-  
+
   modalForm = new FormGroup({
     statement: new FormControl(""),
     skill: new FormControl(""),
     level: new FormControl(""),
   });
-  
+
   questionForm = new FormGroup({
     level: new FormControl(""),
     skill: new FormControl(""),
@@ -62,7 +62,7 @@ export class AddQuestionsComponent {
     correctResponse: new FormControl(""),
     photoQuestion: new FormControl(),
   });
-  
+
   statementForm = new FormGroup({
     level: new FormControl(""),
     skill: new FormControl(""),
@@ -214,11 +214,12 @@ export class AddQuestionsComponent {
       });
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          /**/this.selectStatement(this.idSatement);
+          if(this.statementSelected)this.selectStatement(this.idSatement);
           let form: any = document.getElementById("questionForm");
           form.reset();
           this.questionForm.patchValue({
-            responsesMode: ''  
+            responsesMode: '',
+            level: ''
           });
         },
         error: (err) => {
@@ -275,7 +276,7 @@ export class AddQuestionsComponent {
     statementModal = document.getElementById('statementModal');
     statementModal.style.display="block";
   };
-  
+
   chargeStatements(){
     if( this.modalForm.value.skill !== "" && this.modalForm.value.level !== "" ){
       let search: any = {
@@ -330,10 +331,9 @@ export class AddQuestionsComponent {
             next: ( res ) => {
               console.log(res)
               if ( res !== undefined ) {
-                this.selectedStatement.questions.push(res); 
+                this.selectedStatement.questions.push(res);
                 console.log(this.selectedStatement);
               }
-              
             },
             error: (err) => { alert('Cargar fallo' + err); }
           });
@@ -404,7 +404,7 @@ export class AddQuestionsComponent {
       puntuation === '' ||
       level === '' ||
       skill === '' //||
-      //photo === '' 
+      //photo === ''
     ) {
       alert( 'Debe de rellenar todos los campos del enunciado' );
       this.validatedStatement = false;

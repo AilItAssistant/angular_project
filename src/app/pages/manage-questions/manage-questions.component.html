@@ -34,113 +34,180 @@
         </div>
       }
       @if(filterForm.value.level && filterForm.value.skill){
-        <div class="col-1 mt-4">
-          <button class="btn btn-success mt-3" (click)="chargeStatements()">Buscar</button>
-          <button class="btn btn-success mt-3" (click)="infoResult()">Info</button>
+        <div class="col-2 mt-4">
+          <button class="btn btn-success mt-3 me-2" (click)="chargeStatements()">Buscar</button>
+          <button class="btn btn-success mt-3 ms-2" (click)="cleanFilter()">Limpiar</button>
         </div>
       }
     </div>
   </div>
-</form>
-<div class="text-center card-group mb-5 mt-3 container">
-    @for(statement of statements; track statement.id){
-      <div class="mx-auto">
-        <div class="card m-2" style="width: 80rem;">
-          <div class="card-header">
-            <div class="row mt-3">
-              <div class="col-1 mt-2">
-                @if (statement.status === "active") {
-                    <p class="text-success">Activo</p>
-                } @else {
-                    <p class="text-danger">Inactivo</p>
-                }
-              </div>
-              <p class="col-3">Puntuación: {{statement.score}}</p>
-              <h4 class="col">Enunciado</h4>
-              <div class="col-4 text-end">
-                <button class="btn btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
-                <button class="btn btn-secondary ms-3" (click)="statusChange(statement, 'statement')">Desactivar</button>
-                <button class="btn btn-danger ms-3" (click)="openDeleteModal(statement, 'statement')">Eliminar</button>
-            </div>
-            </div>
-          </div>
-          <div class="card-body text-center">
-            <p>Enunciado: {{statement.content}}</p>
-            <p>Texto: {{statement.text}}</p>
-            @if(statement.photo_id !== null){
-              <p>Imagen del enunciado:</p>
-              <img [src]="statement.photo_id" style="max-width: 40rem; max-height: 35rem;">
+</form>@if(mode === "questions"){
+  @for(question of questions; track question.id){
+    <div class="card m-2">
+      <div class="card-header">
+        <div class="row mt-3">
+          <div class="col-1 mt-2">
+            @if (question.status === "active") {
+                <p class="text-success">Activo</p>
+            } @else {
+                <p class="text-danger">Inactivo</p>
             }
           </div>
-          @for(question of statement.questions[0]; track question.id){
-            <div class="card m-2">
-              <div class="card-header">
-                <div class="row mt-3">
-                  <div class="col-1 mt-2">
-                    @if (question.status === "active") {
-                        <p class="text-success">Activo</p>
-                    } @else {
-                        <p class="text-danger">Inactivo</p>
-                    }
-                  </div>
-                  <p class="col-3">Puntuación: {{question.puntuation}}</p>
-                  <h4 class="col">Pregunta</h4>
-                  <div class="col-4 text-end">
-                    <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
-                    <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
-                    <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
-                </div>
-                </div>
-              </div>
-              <div class="card-body text-center list-group list-group p-3">
-                <div class="text-center my-3">
-                  <p>Pregunta: {{question.content}}</p>
-                  @if(question.base64_data !== null){
-                    <p>Imagen de la pregunta:</p>
-                    <img [src]="question.base64_data" style="max-width: 30rem; max-height: 25rem;">
-                  }
-                </div>
-                <div class="card m-2">
-                  @if(question.answers !== [] && question.answers !== null && question.answers !== undefined) {
-                    <div class="card-header">
-                      <div class="row">
-                        <div class="col-3"></div>
-                        <h4 class="col">Respuestas</h4>
-                        <div class="col-4 text-end">
-                          <button class="btn btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
-                      </div>
-                      </div>
-                    </div>
-                    <div class="card-body text-center row">
-                      @for(answer of question.answers; track answer.id){
-                        <div class="col-3">
-                          @if (answer.status === "active") {
-                            <p class="text-success">Activo</p>
-                          } @else {
-                            <p class="text-danger">Inactivo</p>
-                          }
-                        <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
-                        <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
-                          @if(answer.is_correct){
-                            <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
-                            @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                          } @else{
-                              <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
-                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                            }
-                            @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
-                          </div>
-                      }
-                    </div>
-                  }
-                </div>
-              </div>
-            </div>
-        }
+          <p class="col-3">Puntuación: {{question.puntuation}}</p>
+          <h4 class="col">Pregunta</h4>
+          <div class="col-4 text-end">
+            <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
+            <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
+            <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
+        </div>
         </div>
       </div>
-    }
-  </div>
+      <div class="card-body text-center list-group list-group p-3">
+        <div class="text-center my-3">
+          <p>Pregunta: {{question.content}}</p>
+          @if(question.base64_data !== null){
+            <p>Imagen de la pregunta:</p>
+            <img [src]="question.base64_data" style="max-width: 30rem; max-height: 25rem;">
+          }
+        </div>
+        <div class="card m-2">
+          @if(question.answers !== [] && question.answers !== null && question.answers !== undefined) {
+            <div class="card-header">
+              <div class="row">
+                <div class="col-3"></div>
+                <h4 class="col">Respuestas</h4>
+                <div class="col-4 text-end">
+                  <button class="btn btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
+              </div>
+              </div>
+            </div>
+            <div class="card-body text-center row">
+              @for(answer of question.answers; track answer.id){
+                <div class="col-3">
+                  @if (answer.status === "active") {
+                    <p class="text-success">Activo</p>
+                  } @else {
+                    <p class="text-danger">Inactivo</p>
+                  }
+                <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
+                <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
+                  @if(answer.is_correct){
+                    <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                  } @else{
+                      <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
+                      @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                    }
+                    @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
+                  </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+} @else if(mode === "statements"){
+  <div class="text-center card-group mb-5 mt-3 container">
+      @for(statement of statements; track statement.id){
+        <div class="mx-auto">
+          <div class="card m-2" style="width: 80rem;">
+            <div class="card-header">
+              <div class="row mt-3">
+                <div class="col-1 mt-2">
+                  @if (statement.status === "active") {
+                      <p class="text-success">Activo</p>
+                  } @else {
+                      <p class="text-danger">Inactivo</p>
+                  }
+                </div>
+                <p class="col-3">Puntuación: {{statement.score}}</p>
+                <h4 class="col">Enunciado</h4>
+                <div class="col-4 text-end">
+                  <button class="btn btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
+                  <button class="btn btn-secondary ms-3" (click)="statusChange(statement, 'statement')">Desactivar</button>
+                  <button class="btn btn-danger ms-3" (click)="openDeleteModal(statement, 'statement')">Eliminar</button>
+              </div>
+              </div>
+            </div>
+            <div class="card-body text-center">
+              <p>Enunciado: {{statement.content}}</p>
+              <p>Texto: {{statement.text}}</p>
+              @if(statement.photo_id !== null){
+                <p>Imagen del enunciado:</p>
+                <img [src]="statement.photo_id" style="max-width: 40rem; max-height: 35rem;">
+              }
+            </div>
+            @for(question of statement.questions[0]; track question.id){
+              <div class="card m-2">
+                <div class="card-header">
+                  <div class="row mt-3">
+                    <div class="col-1 mt-2">
+                      @if (question.status === "active") {
+                          <p class="text-success">Activo</p>
+                      } @else {
+                          <p class="text-danger">Inactivo</p>
+                      }
+                    </div>
+                    <p class="col-3">Puntuación: {{question.puntuation}}</p>
+                    <h4 class="col">Pregunta</h4>
+                    <div class="col-4 text-end">
+                      <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
+                      <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
+                      <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
+                  </div>
+                  </div>
+                </div>
+                <div class="card-body text-center list-group list-group p-3">
+                  <div class="text-center my-3">
+                    <p>Pregunta: {{question.content}}</p>
+                    @if(question.base64_data !== null){
+                      <p>Imagen de la pregunta:</p>
+                      <img [src]="question.base64_data" style="max-width: 30rem; max-height: 25rem;">
+                    }
+                  </div>
+                  <div class="card m-2">
+                    @if(question.answers !== [] && question.answers !== null && question.answers !== undefined) {
+                      <div class="card-header">
+                        <div class="row">
+                          <div class="col-3"></div>
+                          <h4 class="col">Respuestas</h4>
+                          <div class="col-4 text-end">
+                            <button class="btn btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
+                        </div>
+                        </div>
+                      </div>
+                      <div class="card-body text-center row">
+                        @for(answer of question.answers; track answer.id){
+                          <div class="col-3">
+                            @if (answer.status === "active") {
+                              <p class="text-success">Activo</p>
+                            } @else {
+                              <p class="text-danger">Inactivo</p>
+                            }
+                          <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
+                          <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
+                            @if(answer.is_correct){
+                              <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                            } @else{
+                                <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
+                                @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                              }
+                              @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
+                            </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                </div>
+              </div>
+          }
+          </div>
+        </div>
+      }
+    </div>
+}
 
 <!-- Delete modal -->
 

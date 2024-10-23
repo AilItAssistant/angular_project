@@ -147,18 +147,19 @@ export class ManageQuestionsComponent {
       skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
     };
     if(this.filterForm.value.block !== ""){
+      this.mode = "questions";
       data.block_id = this.filterForm.value.block
-      this.http.post<any>('http://localhost:4000/api/statements/levelSkillBlock', data, {headers: httpHeaders}).subscribe({
+      this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswersByBlockId', data, {headers: httpHeaders}).subscribe({
         next: (res) => {
-          this.questions = res[0];
-          this.mode = "questions";
+          console.log(res)
+          this.questions = res;
         },
         error: (err) => {
           alert('Cargar fallo' + err);
         },
       });
     } else {
-
+      this.mode = "statements";
       this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
         next: ( res ) => {
           this.statements = res;
@@ -189,8 +190,12 @@ export class ManageQuestionsComponent {
     };
   };
 
-  infoResult(){
-    console.log(this.statements)
+  cleanFilter(){
+  this.filterForm = new FormGroup({
+    level: new FormControl(''),
+    block: new FormControl(''),
+    skill: new FormControl(''),
+  });
   };
 
   closeDeleteModal() {

@@ -279,7 +279,7 @@
                   <option [value]="skill.id">{{skill.name}}</option>
                 }
               </select>
-              <p class="mt-2">Puntuacion</p>
+              <p class="mt-2">Puntuación</p>
               <select class="form-select" formControlName="puntuation" id="puntuation">
                 <option value=1>1</option>
                 <option value=2>2</option>
@@ -355,15 +355,19 @@
 
             } @else if(edit.type === "answers") {
               @for(answer of edit.oldAnswers; track answer.id){
-                <p>{{answer.letter}}</p>
+                <h4>{{answer.letter}}</h4>
                 @if(answer.content !== undefined && answer.content !== 'undefined' && answer.content !== null){
                   <div class="input-group mb-1">
                     <span class="input-group-text" id="Response">Respuesta {{answer.letter}}</span>
                     <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
                   </div>
-                } @else if (answer.base64_data) {
+                }
+                @if (answer.base64_data) {
                   <label for="formFile" class="form-label">Foto de la respuesta</label>
                   <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, answer.letter)">
+                }
+                @if(answer.reponse){
+                  
                 }
               }
               <p>Respuesta correcta</p>

@@ -331,15 +331,17 @@ export class ManageQuestionsComponent {
         if(this.photos.statement && this.photos.statement !== null && this.photos.statement !== undefined && this.photos.statement !== ""){
           changes.photo = this.photos.statement;
         } else {changes.photo = null;};
-        console.log(changes);
         this.http.put<any>('http://localhost:4000/api/statements/edit', changes, {headers: httpHeaders}).subscribe({
           next: (res) => {
-            console.log(res)
             this.charge = false;
             alert('Enunciado editado');
             this.closeEditModal();
             changes = {};
             this.chargeStatements();
+            this.questionFormRestart();
+            this.edit = {};
+            this.photos = {};
+            console.log(this.photos.statement)
           },
           error: (err) => {
             alert('No se pudo editar' + err);
@@ -372,6 +374,9 @@ export class ManageQuestionsComponent {
             this.charge = false;
             alert('Pregunta editada');
             this.closeEditModal();
+            this.questionFormRestart();
+            this.edit = {};
+            this.photos = {};
           },
           error: (err) => {
             alert('No se pudo editar' + err);
@@ -606,6 +611,9 @@ export class ManageQuestionsComponent {
                 this.charge = false;
                 alert('Respuesta editada');
                 this.closeEditModal();
+                this.questionFormRestart();
+                this.edit = {};
+                this.photos = {};
               },
               error: (err) => {
                 alert('No se pudo editar' + err);

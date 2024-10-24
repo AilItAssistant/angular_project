@@ -52,7 +52,7 @@
                     <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
                 }
             <div class="mb-3">
-                @if ( statementForm.value.skill ) { 
+                @if ( statementForm.value.skill ) {
                     <label for="formFile" class="form-label">Foto del enunciado</label>
                     <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
                 }
@@ -129,7 +129,7 @@
                                 </div>
                             }
                         </div>
-                    </div> 
+                    </div>
                 </div>
             <button class="btn btn-info mt-4" (click)="writeStatement()">Quitar enunciado seleccionado</button>
         }
@@ -147,7 +147,7 @@
         }
     </form>
     <form [formGroup] = "questionForm" id="questionForm">
-       <h3 class="text-center my-5"><strong>Añadir pregunta</strong></h3>
+        <h3 class="text-center my-5"><strong>Añadir pregunta</strong></h3>
         <div class="row text-center">
             @if( !selectedStatement || selectedStatement === "" ){
                 <div class="col">
@@ -191,6 +191,7 @@
                     <select class="form-select" formControlName="responsesMode" id="response">
                         <option value="phrase">Respuestas basadas en frases</option>
                         <option value="photo">Respuestas basadas en fotografías</option>
+                        <option value="multiple">Respuestas múltiples</option>
                     </select>
                 </div>
                 <div class="col-5 mt-4">
@@ -210,71 +211,205 @@
             @if( questionForm.value.responsesMode ){
                 <div class="row text-center my-5">
                     <div class="col-6">
-                        <button type="button" class="btn btn-info" (click)="addResponse()" [disabled]="numberResponses >= 6">Añadir respuesta</button>
+                        <button type="button" class="btn btn-info" (click)="addResponse()" [disabled]="numberResponses >= 9">Añadir respuesta</button>
                     </div>
                     <div class="col-6">
                         <button type="button" class="btn btn-info" (click)="removeResponse()" [disabled]="numberResponses <= 3">Quitar respuesta</button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ResponseA">Respuesta A</span>
-                            @if( questionForm.value.responsesMode === "photo" ){
-                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event, 'A')">
-                            } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
-                            }
-                        </div>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ResponseC">Respuesta C</span>
-                            @if( questionForm.value.responsesMode === "photo" ){
-                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoC" (change)="questionPhotoConvert($event, 'C')">
-                            } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                            }
-                        </div>
-                        @if(numberResponses >= 5){
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="ResponseD">Respuesta E</span>
-                                @if( questionForm.value.responsesMode === "photo" ){
-                                    <input class="form-control" type="file" id="questionPhoto" formControlName="photoE" (change)="questionPhotoConvert($event, 'E')">
-                                } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                    <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                                }
-                            </div>
+                <div class="row text-center">
+                    <div class="input-group mb-3 col-2">
+                        <span class="input-group-text" id="ResponseA">Respuesta A</span>
+                        @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                            <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event, 'A')">
+                        }
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                        }
+                        @if( questionForm.value.responsesMode === "multiple" ){
+                            <select class="form-select" formControlName="linkA" id="linkA">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=null>Falsa</option>
+                            </select>
                         }
                     </div>
-                    <div class="col">
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="ResponseB">Respuesta B</span>
-                            @if( questionForm.value.responsesMode === "photo" ){
-                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoB" (change)="questionPhotoConvert($event, 'B')">
-                            } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                            }
-                        </div>
-                        @if(numberResponses >= 4){
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="ResponseC">Respuesta D</span>
-                                @if( questionForm.value.responsesMode === "photo" ){
-                                    <input class="form-control" type="file" id="questionPhoto" formControlName="photoD" (change)="questionPhotoConvert($event, 'D')">
-                                } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                    <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                                }
-                            </div>
+                    <div class="input-group mb-3 col-2">
+                        <span class="input-group-text" id="ResponseB">Respuesta B</span>
+                        @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                            <input class="form-control" type="file" id="questionPhoto" formControlName="photoB" (change)="questionPhotoConvert($event, 'B')">
                         }
-                        @if(numberResponses >= 6){
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" id="ResponseE">Respuesta F</span>
-                                @if( questionForm.value.responsesMode === "photo" ){
-                                    <input class="form-control" type="file" id="questionPhoto" formControlName="photoF" (change)="questionPhotoConvert($event, 'F')">
-                                } @else if( questionForm.value.responsesMode === "phrase" ) {
-                                    <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
-                                }
-                            </div>
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                        }
+                        @if( questionForm.value.responsesMode === "multiple" ){
+                            <select class="form-select" formControlName="linkB" id="linkB">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=null>Falsa</option>
+                            </select>
                         }
                     </div>
+                    <div class="input-group mb-3 col-2">
+                        <span class="input-group-text" id="ResponseC">Respuesta C</span>
+                        @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                            <input class="form-control" type="file" id="questionPhoto" formControlName="photoC" (change)="questionPhotoConvert($event, 'C')">
+                        }
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                        }
+                        @if( questionForm.value.responsesMode === "multiple" ){
+                            <select class="form-select" formControlName="linkC" id="linkC">
+                                <option value=1>1</option>
+                                <option value=2>2</option>
+                                <option value=3>3</option>
+                                <option value=4>4</option>
+                                <option value=5>5</option>
+                                <option value=6>6</option>
+                                <option value=null>Falsa</option>
+                            </select>
+                        }
+                    </div>
+                    @if(numberResponses >= 4){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseD">Respuesta D</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoD" (change)="questionPhotoConvert($event, 'D')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkD" id="linkD">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
+                    @if(numberResponses >= 5){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseE">Respuesta E</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoE" (change)="questionPhotoConvert($event, 'E')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkE" id="linkE">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
+                    @if(numberResponses >= 6){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseF">Respuesta F</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoF" (change)="questionPhotoConvert($event, 'F')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkF" id="linkF">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
+                    @if(numberResponses >= 7){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseG">Respuesta G</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoG" (change)="questionPhotoConvert($event, 'G')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseG" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkG" id="linkG">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
+                    @if(numberResponses >= 8){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseH">Respuesta H</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoH" (change)="questionPhotoConvert($event, 'H')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseH" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkH" id="linkH">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
+                    @if(numberResponses >= 9){
+                        <div class="input-group mb-3 col-3">
+                            <span class="input-group-text" id="ResponseI">Respuesta I</span>
+                            @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
+                                <input class="form-control" type="file" id="questionPhoto" formControlName="photoI" (change)="questionPhotoConvert($event, 'I')">
+                            }
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                                <input type="text" class="form-control" formControlName="responseI" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            }
+                            @if( questionForm.value.responsesMode === "multiple" ){
+                                <select class="form-select" formControlName="linkI" id="linkI">
+                                    <option value=1>1</option>
+                                    <option value=2>2</option>
+                                    <option value=3>3</option>
+                                    <option value=4>4</option>
+                                    <option value=5>5</option>
+                                    <option value=6>6</option>
+                                    <option value=null>Falsa</option>
+                                </select>
+                            }
+                        </div>
+                    }
                 </div>
                 <div class="row">
                     <div class="col col-lg-2 text-center">
@@ -291,7 +426,6 @@
                 </div>
             }
         }
-        
     </form>
 
     @if( questionForm.value.skill || selectedStatement ){
@@ -304,57 +438,56 @@
 
     <!-- Select statement modal -->
 
-  <div class="modal" id="statementModal">
+<div class="modal" id="statementModal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Selecciona enunciado exixtente</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeStatementModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
-        </div>
-        <div class="modal-body">
-            <form [formGroup] = "modalForm">
-                <p>Elige un nivel</p>
-                <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" (change)="chargeSkillsStatement('modal')" (change)="chargeStatements()">
-                    @for(level of levels; track level.id){
-                        <option [value]="level.id">{{level.name}}</option>
-                    }
-                </select>
-                <p>Elige una destreza</p>
-                <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeStatements()">
-                    @for(skill of skillsStatement; track skill.id){
-                        <option [value]="skill.id">{{skill.name}}</option>
-                    }
-                </select>
-                @if( modalForm.value.skill && modalForm.value.level ){
-                    <p>Elige un enunciado</p>
-                    <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
-                        @for(statement of statementSelected; track statement.id){
-                            <option [value]="statement.id">{{statement.content}}</option>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Selecciona enunciado exixtente</h1>
+                @if(!charge){
+                    <button type="button" class="btn-close" (click)="closeStatementModal()"></button>
+                } @else {
+                    <div class="spinner-border text-secondary mx-auto" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                }
+            </div>
+            <div class="modal-body">
+                <form [formGroup] = "modalForm">
+                    <p>Elige un nivel</p>
+                    <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" (change)="chargeSkillsStatement('modal')" (change)="chargeStatements()">
+                        @for(level of levels; track level.id){
+                            <option [value]="level.id">{{level.name}}</option>
                         }
                     </select>
-                }
-        </form>
+                    <p>Elige una destreza</p>
+                    <select class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="chargeStatements()">
+                        @for(skill of skillsStatement; track skill.id){
+                            <option [value]="skill.id">{{skill.name}}</option>
+                        }
+                    </select>
+                    @if( modalForm.value.skill && modalForm.value.level ){
+                        <p>Elige un enunciado</p>
+                        <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
+                            @for(statement of statementSelected; track statement.id){
+                                <option [value]="statement.id">{{statement.content}}</option>
+                            }
+                        </select>
+                    }
+                </form>
+            </div>
+            @if (!charge){
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeStatementModal()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="selectStatement('')" [disabled]="modalForm.value.statement === ''">Seleccionar</button>
+                </div>
+            } @else {
+                <div class="spinner-border text-primary mx-auto mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
         </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeStatementModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="selectStatement('')" [disabled]="modalForm.value.statement === ''">Seleccionar</button>
-          </div>
-        } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
-        }
-      </div>
     </div>
-  </div>
-
 </div>
 
+</div>
 <app-footer></app-footer>

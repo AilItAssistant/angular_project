@@ -49,16 +49,31 @@ export class AddQuestionsComponent {
     puntuation: new FormControl(""),
     responseA: new FormControl(""),
     photoA: new FormControl(),
+    linkA:new FormControl(),
     responseB: new FormControl(""),
     photoB: new FormControl(),
+    linkB:new FormControl(),
     responseC: new FormControl(""),
     photoC: new FormControl(),
+    linkC: new FormControl(),
     responseD: new FormControl(""),
     photoD: new FormControl(),
+    linkD: new FormControl(),
     responseE: new FormControl(""),
     photoE: new FormControl(),
+    linkE: new FormControl(),
     responseF: new FormControl(""),
     photoF: new FormControl(),
+    linkF: new FormControl(),
+    responseG: new FormControl(""),
+    photoG: new FormControl(),
+    linkG: new FormControl(),
+    responseH: new FormControl(""),
+    photoH: new FormControl(),
+    linkH: new FormControl(),
+    responseI: new FormControl(""),
+    photoI: new FormControl(),
+    linkI: new FormControl(),
     correctResponse: new FormControl(""),
     photoQuestion: new FormControl(),
   });
@@ -98,7 +113,7 @@ export class AddQuestionsComponent {
   };
 
   addResponse(){
-    if(this.numberResponses < 6){
+    if(this.numberResponses < 9){
       this.numberResponses++;
     };
   };
@@ -146,6 +161,27 @@ export class AddQuestionsComponent {
             is_correct: false
           })
         };
+        if(this.photos.photoG !== "" && this.photos.photoG !== null && this.photos.photoG !== undefined){
+          responses.push({
+            photo: this.photos.photoG,
+            letter: "G",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoH !== "" && this.photos.photoH !== null && this.photos.photoH !== undefined){
+          responses.push({
+            photo: this.photos.photoH,
+            letter: "H",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoI !== "" && this.photos.photoI !== null && this.photos.photoI !== undefined){
+          responses.push({
+            photo: this.photos.photoI,
+            letter: "I",
+            is_correct: false
+          })
+        };
       } else if ( this.questionForm.value.responsesMode === "phrase" ) {
         responses = [
           {
@@ -185,12 +221,113 @@ export class AddQuestionsComponent {
             is_correct: false
           })
         };
-      };
-      responses.forEach((element: any) => {
-        if(this.questionForm.value.correctResponse === element.letter){
-          element.is_correct = true
+        if(this.questionForm.value.responseG !== "" && this.questionForm.value.responseG !== null){
+          responses.push({
+            content: this.questionForm.value.responseG,
+            letter: "G",
+            is_correct: false
+          })
         };
-      });
+        if(this.questionForm.value.responseH !== "" && this.questionForm.value.responseH !== null){
+          responses.push({
+            content: this.questionForm.value.responseH,
+            letter: "H",
+            is_correct: false
+          })
+        };
+        if(this.questionForm.value.responseI !== "" && this.questionForm.value.responseI !== null){
+          responses.push({
+            content: this.questionForm.value.responseI,
+            letter: "I",
+            is_correct: false
+          })
+        };
+      } else if ( this.questionForm.value.responsesMode === "multiple" ){
+        responses = [
+          {
+            photo: this.photos.photoA,
+            content: this.questionForm.value.responseA,
+            letter: "A",
+            is_correct: false,
+            response: this.questionForm.value.linkA,
+          },
+          {
+            photo: this.photos.photoB,
+            content: this.questionForm.value.responseB,
+            letter: "B",
+            is_correct: false,
+            response: this.questionForm.value.linkB,
+          },
+          {
+            photo: this.photos.photoC,
+            content: this.questionForm.value.responseC,
+            response: this.questionForm.value.linkC,
+            letter: "C",
+            is_correct: false
+          },
+        ];
+        if(this.photos.photoD !== "" && this.photos.photoD !== null && this.photos.photoD !== undefined || this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
+          responses.push({
+            photo: this.photos.photoD,
+            content: this.questionForm.value.responseD,
+            response: this.questionForm.value.linkD,
+            letter: "D",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoE !== "" && this.photos.photoE !== null && this.photos.photoE !== undefined || this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
+          responses.push({
+            photo: this.photos.photoE,
+            content: this.questionForm.value.responseE,
+            response: this.questionForm.value.linkE,
+            letter: "E",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoF !== "" && this.photos.photoF !== null && this.photos.photoF !== undefined || this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
+          responses.push({
+            photo: this.photos.photoF,
+            content: this.questionForm.value.responseF,
+            response: this.questionForm.value.linkF,
+            letter: "F",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoG !== "" && this.photos.photoG !== null && this.photos.photoG !== undefined || this.questionForm.value.responseG !== "" && this.questionForm.value.responseG !== null){
+          responses.push({
+            photo: this.photos.photoG,
+            content: this.questionForm.value.responseG,
+            response: this.questionForm.value.linkG,
+            letter: "G",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoH !== "" && this.photos.photoH !== null && this.photos.photoH !== undefined || this.questionForm.value.responseH !== "" && this.questionForm.value.responseH !== null){
+          responses.push({
+            photo: this.photos.photoH,
+            content: this.questionForm.value.responseH,
+            response: this.questionForm.value.linkH,
+            letter: "H",
+            is_correct: false
+          })
+        };
+        if(this.photos.photoI !== "" && this.photos.photoI !== null && this.photos.photoI !== undefined || this.questionForm.value.responseI !== "" && this.questionForm.value.responseI !== null){
+          responses.push({
+            photo: this.photos.photoI,
+            content: this.questionForm.value.responseI,
+            response: this.questionForm.value.linkI,
+            letter: "I",
+            is_correct: false
+          })
+        };
+      };
+      if( this.questionForm.value.responsesMode === "photo" || this.questionForm.value.responsesMode === "phrase" ){
+        responses.forEach((element: any) => {
+          if(this.questionForm.value.correctResponse === element.letter){
+            element.is_correct = true
+          };
+        });
+      };
       let add: any = {
         question: this.questionForm.value.question,
         responses: responses,
@@ -221,6 +358,7 @@ export class AddQuestionsComponent {
             responsesMode: '',
             level: ''
           });
+          this.photos = {};
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -257,6 +395,7 @@ export class AddQuestionsComponent {
             text: '',
             statementPhoto: '',
           });
+          this.statementPhoto = "";
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -365,24 +504,33 @@ export class AddQuestionsComponent {
     fr.onload = () => {
       this.questionPhoto = fr.result as string;
       switch(letter){
-        case "A": 
+        case "A":
           this.photos.photoA = fr.result as string;
           break;
-        case "B": 
+        case "B":
           this.photos.photoB = fr.result as string;
           break;
-        case "C": 
+        case "C":
           this.photos.photoC = fr.result as string;
           break;
-        case "D": 
+        case "D":
           this.photos.photoD = fr.result as string;
           break;
-        case "E": 
+        case "E":
           this.photos.photoE = fr.result as string;
           break;
-        case "F": 
+        case "F":
           this.photos.photoF = fr.result as string;
           break;
+          case "G":
+            this.photos.photoG = fr.result as string;
+            break;
+          case "H":
+            this.photos.photoH = fr.result as string;
+            break;
+          case "I":
+            this.photos.photoI = fr.result as string;
+            break;
         case 'question':
           this.photos.photoQuestion = fr.result as string;
           break;

@@ -91,15 +91,21 @@
                   }
                 <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
                 <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
-                  @if(answer.is_correct){
+                  @if(answer.is_correct && answer.response === null){
                     <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                     @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                  } @else{
-                      <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
-                      @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                    }
-                    @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
-                  </div>
+                  }
+                  @if(!answer.is_correct && answer.response === null){
+                    <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                  }
+                  @if(answer.response !== null) {
+                    <p class="list-group"> <span class="fs-3">{{answer.letter}}.</span></p>
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                    <p>Se relaciona con el mensaje: {{answer.response}}</p>
+                  }
+                  @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
+                </div>
               }
             </div>
           }
@@ -187,15 +193,21 @@
                             }
                           <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
                           <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
-                            @if(answer.is_correct){
+                            @if(answer.is_correct === "1" && answer.response === null){
                               <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                            } @else{
-                                <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
-                                @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                              }
-                              @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
-                            </div>
+                            }
+                            @if (answer.is_correct === "0" && answer.response === null){
+                              <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                            }
+                            @if(answer.response !== null) {
+                              <p class="list-group"> <span class="fs-3">{{answer.letter}}.</span></p>
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
+                              <p>Se relaciona con el mensaje: {{answer.response}}</p>
+                            }
+                            @if(answer.photo_id !== null){<img [src]="answer.base64_data" style="max-width: 20rem; max-height: 15rem;">}
+                          </div>
                         }
                       </div>
                     }
@@ -359,26 +371,37 @@
                 @if(answer.content !== undefined && answer.content !== 'undefined' && answer.content !== null){
                   <div class="input-group mb-1">
                     <span class="input-group-text" id="Response">Respuesta {{answer.letter}}</span>
-                    <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                    <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                   </div>
                 }
                 @if (answer.base64_data) {
-                  <label for="formFile" class="form-label">Foto de la respuesta</label>
-                  <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, answer.letter)">
+                  <span class="input-group-file" [id]="'PhotoSpan'+answer.letter" for="'Photo'+answer.letter">Foto {{answer.letter}}</span>
+                  <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)">
                 }
-                @if(answer.reponse){
-                  
+                @if(answer.response || answer.response === null && edit.oldAnswers.length > 6){
+                  <p class="mt-2">Relacion {{answer.letter}} con mensajes de audio:</p>
+                  <select class="form-select" [formControlName]='"link"+answer.letter' id="puntuation">
+                    <option value=1>1</option>
+                    <option value=2>2</option>
+                    <option value=3>3</option>
+                    <option value=4>4</option>
+                    <option value=5>5</option>
+                    <option value=6>6</option>
+                    <option value=false>Falsa</option>
+                  </select>
                 }
               }
-              <p>Respuesta correcta</p>
-              <select class="form-select" formControlName="correctResponse" id="response">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-                <option value="D">D</option>
-                <option value="E">E</option>
-                <option value="F">F</option>
-              </select>
+              @if(edit.oldAnswers.length < 6 && edit.oldAnswers.length > 0){
+                <p>Respuesta correcta</p>
+                <select class="form-select" formControlName="correctResponse" id="response">
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                  <option value="E">E</option>
+                  <option value="F">F</option>
+                </select>
+              }
             }
           </form>
         </div>

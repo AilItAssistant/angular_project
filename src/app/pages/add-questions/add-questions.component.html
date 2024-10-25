@@ -54,7 +54,7 @@
             <div class="mb-3">
                 @if ( statementForm.value.skill ) {
                     <label for="formFile" class="form-label">Foto del enunciado</label>
-                    <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
+                    <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (click)="statementPhotoConvert($event)">
                 }
             </div>
         } @else {
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="card-body text-center">
-                                <p>Enunciado: {{selectedStatement.content}}</p>
+                                <p>Enunciado: {{selectedStatement.statement_content}}</p>
                                 <p>Texto: {{selectedStatement.text}}</p>
                                 @if(selectedStatement.photo_id !== null){
                                     <p>Imagen del enunciado:</p>
@@ -223,7 +223,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event, 'A')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                        @if( questionForm.value.responsesMode === "phrase" ) {
                             <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -234,7 +234,7 @@
                                 <option value=4>4</option>
                                 <option value=5>5</option>
                                 <option value=6>6</option>
-                                <option value=null>Falsa</option>
+                                <option value=false>Falsa</option>
                             </select>
                         }
                     </div>
@@ -243,7 +243,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoB" (change)="questionPhotoConvert($event, 'B')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                        @if( questionForm.value.responsesMode === "phrase" ) {
                             <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -254,7 +254,7 @@
                                 <option value=4>4</option>
                                 <option value=5>5</option>
                                 <option value=6>6</option>
-                                <option value=null>Falsa</option>
+                                <option value=false>Falsa</option>
                             </select>
                         }
                     </div>
@@ -263,7 +263,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoC" (change)="questionPhotoConvert($event, 'C')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                        @if( questionForm.value.responsesMode === "phrase" ) {
                             <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -274,7 +274,7 @@
                                 <option value=4>4</option>
                                 <option value=5>5</option>
                                 <option value=6>6</option>
-                                <option value=null>Falsa</option>
+                                <option value=false>Falsa</option>
                             </select>
                         }
                     </div>
@@ -284,7 +284,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoD" (change)="questionPhotoConvert($event, 'D')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -295,7 +295,7 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
@@ -306,7 +306,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoE" (change)="questionPhotoConvert($event, 'E')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -317,7 +317,7 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
@@ -328,7 +328,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoF" (change)="questionPhotoConvert($event, 'F')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -339,7 +339,7 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
@@ -350,7 +350,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoG" (change)="questionPhotoConvert($event, 'G')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseG" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -361,7 +361,7 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
@@ -372,7 +372,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoH" (change)="questionPhotoConvert($event, 'H')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseH" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -383,7 +383,7 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
@@ -394,7 +394,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoI" (change)="questionPhotoConvert($event, 'I')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "multiple" ) {
+                            @if( questionForm.value.responsesMode === "phrase" ) {
                                 <input type="text" class="form-control" formControlName="responseI" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -405,25 +405,27 @@
                                     <option value=4>4</option>
                                     <option value=5>5</option>
                                     <option value=6>6</option>
-                                    <option value=null>Falsa</option>
+                                    <option value=false>Falsa</option>
                                 </select>
                             }
                         </div>
                     }
                 </div>
-                <div class="row">
-                    <div class="col col-lg-2 text-center">
-                        <p>Respuesta correcta</p>
-                        <select class="form-select" formControlName="correctResponse" id="response">
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D">D</option>
-                            <option value="E">E</option>
-                            <option value="F">F</option>
-                        </select>
+                @if(questionForm.value.responsesMode !== "multiple"){
+                    <div class="row">
+                        <div class="col col-lg-2 text-center">
+                            <p>Respuesta correcta</p>
+                            <select class="form-select" formControlName="correctResponse" id="response">
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
+                }
             }
         }
     </form>

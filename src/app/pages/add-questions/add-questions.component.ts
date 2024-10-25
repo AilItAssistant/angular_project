@@ -246,21 +246,21 @@ export class AddQuestionsComponent {
         responses = [
           {
             photo: this.photos.photoA,
-            content: this.questionForm.value.responseA,
+            content: "Mensaje:____",
             letter: "A",
             is_correct: false,
             response: this.questionForm.value.linkA,
           },
           {
             photo: this.photos.photoB,
-            content: this.questionForm.value.responseB,
+            content: "Mensaje:____",
             letter: "B",
             is_correct: false,
             response: this.questionForm.value.linkB,
           },
           {
             photo: this.photos.photoC,
-            content: this.questionForm.value.responseC,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkC,
             letter: "C",
             is_correct: false
@@ -269,7 +269,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoD !== "" && this.photos.photoD !== null && this.photos.photoD !== undefined || this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
           responses.push({
             photo: this.photos.photoD,
-            content: this.questionForm.value.responseD,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkD,
             letter: "D",
             is_correct: false
@@ -278,7 +278,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoE !== "" && this.photos.photoE !== null && this.photos.photoE !== undefined || this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
           responses.push({
             photo: this.photos.photoE,
-            content: this.questionForm.value.responseE,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkE,
             letter: "E",
             is_correct: false
@@ -287,7 +287,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoF !== "" && this.photos.photoF !== null && this.photos.photoF !== undefined || this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
           responses.push({
             photo: this.photos.photoF,
-            content: this.questionForm.value.responseF,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkF,
             letter: "F",
             is_correct: false
@@ -296,7 +296,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoG !== "" && this.photos.photoG !== null && this.photos.photoG !== undefined || this.questionForm.value.responseG !== "" && this.questionForm.value.responseG !== null){
           responses.push({
             photo: this.photos.photoG,
-            content: this.questionForm.value.responseG,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkG,
             letter: "G",
             is_correct: false
@@ -305,7 +305,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoH !== "" && this.photos.photoH !== null && this.photos.photoH !== undefined || this.questionForm.value.responseH !== "" && this.questionForm.value.responseH !== null){
           responses.push({
             photo: this.photos.photoH,
-            content: this.questionForm.value.responseH,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkH,
             letter: "H",
             is_correct: false
@@ -314,7 +314,7 @@ export class AddQuestionsComponent {
         if(this.photos.photoI !== "" && this.photos.photoI !== null && this.photos.photoI !== undefined || this.questionForm.value.responseI !== "" && this.questionForm.value.responseI !== null){
           responses.push({
             photo: this.photos.photoI,
-            content: this.questionForm.value.responseI,
+            content: "Mensaje:____",
             response: this.questionForm.value.linkI,
             letter: "I",
             is_correct: false
@@ -376,12 +376,13 @@ export class AddQuestionsComponent {
         statement: this.statementForm.value.statement,
         puntuation: this.statementForm.value.puntuation,
         text: this.statementForm.value.text,
-        photo: this.statementPhoto
+        photo: this.statementPhoto ? this.statementPhoto : null,
       };
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
+      console.log(add)
       this.http.post<any>('http://localhost:4000/api/statements/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           let form: any = document.getElementById("questionForm");
@@ -452,6 +453,7 @@ export class AddQuestionsComponent {
     let data: any = {}
     this.http.get<any>(`http://localhost:4000/api/statements/${this.idSatement}`, {headers: httpHeaders}).subscribe({
       next: ( res ) => {
+        console.log(res[0])
         this.selectedStatement = res[0];
         this.statement = true;
         this.selectedStatement.questions = [];

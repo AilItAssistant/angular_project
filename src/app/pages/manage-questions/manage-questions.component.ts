@@ -41,6 +41,18 @@ export class ManageQuestionsComponent {
     responseD: new FormControl(''),
     responseE: new FormControl(''),
     responseF: new FormControl(''),
+    responseG: new FormControl(''),
+    responseH: new FormControl(''),
+    responseI: new FormControl(''),
+    linkA: new FormControl(''),
+    linkB: new FormControl(''),
+    linkC: new FormControl(''),
+    linkD: new FormControl(''),
+    linkE: new FormControl(''),
+    linkF: new FormControl(''),
+    linkG: new FormControl(''),
+    linkH: new FormControl(''),
+    linkI: new FormControl(''),
     skill: new FormControl(''),
     text: new FormControl(''),
     puntuation: new FormControl(''),
@@ -59,6 +71,18 @@ export class ManageQuestionsComponent {
       responseD: new FormControl(''),
       responseE: new FormControl(''),
       responseF: new FormControl(''),
+      responseG: new FormControl(''),
+      responseH: new FormControl(''),
+      responseI: new FormControl(''),
+      linkA: new FormControl(''),
+      linkB: new FormControl(''),
+      linkC: new FormControl(''),
+      linkD: new FormControl(''),
+      linkE: new FormControl(''),
+      linkF: new FormControl(''),
+      linkG: new FormControl(''),
+      linkH: new FormControl(''),
+      linkI: new FormControl(''),
       skill: new FormControl(''),
       text: new FormControl(''),
       puntuation: new FormControl(''),
@@ -213,6 +237,7 @@ export class ManageQuestionsComponent {
   };
 
   openEditModal(old: any, type: any) {
+    console.log(old)
     this.chargeSkills();
     this.chargeLevels();
     this.edit.type = type;
@@ -234,6 +259,18 @@ export class ManageQuestionsComponent {
           responseD: new FormControl(''),
           responseE: new FormControl(''),
           responseF: new FormControl(''),
+          responseG: new FormControl(''),
+          responseH: new FormControl(''),
+          responseI: new FormControl(''),
+          linkA: new FormControl(''),
+          linkB: new FormControl(''),
+          linkC: new FormControl(''),
+          linkD: new FormControl(''),
+          linkE: new FormControl(''),
+          linkF: new FormControl(''),
+          linkG: new FormControl(''),
+          linkH: new FormControl(''),
+          linkI: new FormControl(''),
           correctResponse: new FormControl('')
         });
         break;
@@ -253,6 +290,18 @@ export class ManageQuestionsComponent {
           responseD: new FormControl(''),
           responseE: new FormControl(''),
           responseF: new FormControl(''),
+          responseG: new FormControl(''),
+          responseH: new FormControl(''),
+          responseI: new FormControl(''),
+          linkA: new FormControl(''),
+          linkB: new FormControl(''),
+          linkC: new FormControl(''),
+          linkD: new FormControl(''),
+          linkE: new FormControl(''),
+          linkF: new FormControl(''),
+          linkG: new FormControl(''),
+          linkH: new FormControl(''),
+          linkI: new FormControl(''),
           correctResponse: new FormControl('')
         });
         break;
@@ -271,9 +320,20 @@ export class ManageQuestionsComponent {
           responseD: new FormControl(old[3] && old[3].content !== 'undefined' && old[3].content !== undefined ? old[3].content : ''),
           responseE: new FormControl(old[4] && old[4].content !== 'undefined' && old[4].content !== undefined ? old[4].content : ''),
           responseF: new FormControl(old[5] && old[5].content !== 'undefined' && old[5].content !== undefined ? old[5].content : ''),
+          responseG: new FormControl(old[6] && old[6].content !== 'undefined' && old[6].content !== undefined ? old[6].content : ''),
+          responseH: new FormControl(old[7] && old[7].content !== 'undefined' && old[7].content !== undefined ? old[7].content : ''),
+          responseI: new FormControl(old[8] && old[8].content !== 'undefined' && old[8].content !== undefined ? old[8].content : ''),
+          linkA: new FormControl(old[0] && old[0].response !== 'undefined' && old[0].response !== undefined ? old[0].response : ''),
+          linkB: new FormControl(old[1] && old[1].response !== 'undefined' && old[1].response !== undefined ? old[1].response : ''),
+          linkC: new FormControl(old[2] && old[2].response !== 'undefined' && old[2].response !== undefined ? old[2].response : ''),
+          linkD: new FormControl(old[3] && old[3].response !== 'undefined' && old[3].response !== undefined ? old[3].response : ''),
+          linkE: new FormControl(old[4] && old[4].response !== 'undefined' && old[4].response !== undefined ? old[4].response : ''),
+          linkF: new FormControl(old[5] && old[5].response !== 'undefined' && old[5].response !== undefined ? old[5].response : ''),
+          linkG: new FormControl(old[6] && old[6].response !== 'undefined' && old[6].response !== undefined ? old[6].response : ''),
+          linkH: new FormControl(old[7] && old[7].response !== 'undefined' && old[7].response !== undefined ? old[7].response : ''),
+          linkI: new FormControl(old[8] && old[8].response !== 'undefined' && old[8].response !== undefined ? old[8].response : ''),
           correctResponse: new FormControl('')
         });
-
         this.edit.oldAnswers = old;
         break;
     };
@@ -309,6 +369,9 @@ export class ManageQuestionsComponent {
     let responseD: any = this.questionForm.value.responseD;
     let responseE: any = this.questionForm.value.responseE;
     let responseF: any = this.questionForm.value.responseF;
+    let responseG: any = this.questionForm.value.responseG;
+    let responseH: any = this.questionForm.value.responseH;
+    let responseI: any = this.questionForm.value.responseI;
 
     switch (this.edit.type) {
       case "statement":
@@ -393,6 +456,9 @@ export class ManageQuestionsComponent {
         changes.responseD = {};
         changes.responseE = {};
         changes.responseF = {};
+        changes.responseG = {};
+        changes.responseH = {};
+        changes.responseI = {};
         let separatedAnswers: any = {};
 
         this.edit.oldAnswers.forEach((answer: any) => {
@@ -402,6 +468,9 @@ export class ManageQuestionsComponent {
           if(answer.letter === "D"){separatedAnswers.answerD = answer};
           if(answer.letter === "E"){separatedAnswers.answerE = answer};
           if(answer.letter === "F"){separatedAnswers.answerF = answer};
+          if(answer.letter === "G"){separatedAnswers.answerG = answer};
+          if(answer.letter === "H"){separatedAnswers.answerH = answer};
+          if(answer.letter === "I"){separatedAnswers.answerI = answer};
         });
         if(correct && correct !== undefined && correct !== null){
           switch (correct) {
@@ -410,6 +479,7 @@ export class ManageQuestionsComponent {
                 changes.responseA.is_correct = 1;
                 changes.responseA.content = null;
                 changes.responseA.photo = null;
+                changes.responseA.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "A"){
                     changes.responseA.id = ans.id;
@@ -422,6 +492,7 @@ export class ManageQuestionsComponent {
                 changes.responseB.is_correct = 1;
                 changes.responseB.content = null;
                 changes.responseB.photo = null;
+                changes.responseB.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "B"){
                     changes.responseB.id = ans.id;
@@ -434,6 +505,7 @@ export class ManageQuestionsComponent {
                 changes.responseC.is_correct = 1;
                 changes.responseC.content = null;
                 changes.responseC.photo = null;
+                changes.responseC.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "C"){
                     changes.responseC.id = ans.id;
@@ -446,6 +518,7 @@ export class ManageQuestionsComponent {
                 changes.responseD.is_correct = 1;
                 changes.responseD.content = null;
                 changes.responseD.photo = null;
+                changes.responseD.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "D"){
                     changes.responseD.id = ans.id;
@@ -458,6 +531,7 @@ export class ManageQuestionsComponent {
                 changes.responseE.is_correct = 1;
                 changes.responseE.content = null;
                 changes.responseE.photo = null;
+                changes.responsee.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "E"){
                     changes.responseE.id = ans.id;
@@ -470,9 +544,49 @@ export class ManageQuestionsComponent {
                 changes.responseF.is_correct = 1;
                 changes.responseF.content = null;
                 changes.responseF.photo = null;
+                changes.responseF.link = null;
                 this.edit.oldAnswers.forEach( (ans: any) => {
                   if(ans.letter === "F"){
                     changes.responseF.id = ans.id;
+                  }
+                });
+              }
+              break;
+            case "G":
+              if(separatedAnswers.answerG &&separatedAnswers.answerG.is_correct !== 1){
+                changes.responseG.is_correct = 1;
+                changes.responseG.content = null;
+                changes.responseG.photo = null;
+                changes.responseG.link = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "G"){
+                    changes.responseF.id = ans.id;
+                  }
+                });
+              }
+              break;
+            case "H":
+              if(separatedAnswers.answerH &&separatedAnswers.answerH.is_correct !== 1){
+                changes.responseH.is_correct = 1;
+                changes.responseH.content = null;
+                changes.responseH.photo = null;
+                changes.responseH.link = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "H"){
+                    changes.responseH.id = ans.id;
+                  }
+                });
+              }
+              break;
+            case "I":
+              if(separatedAnswers.answerI &&separatedAnswers.answerI.is_correct !== 1){
+                changes.responseI.is_correct = 1;
+                changes.responseI.content = null;
+                changes.responseI.photo = null;
+                changes.responseI.link = null;
+                this.edit.oldAnswers.forEach( (ans: any) => {
+                  if(ans.letter === "I"){
+                    changes.responseI.id = ans.id;
                   }
                 });
               }
@@ -483,6 +597,7 @@ export class ManageQuestionsComponent {
         if(responseA && responseA !== null && responseA !== undefined && responseA !== "" && responseA !== separatedAnswers.answerA.content){
           changes.responseA.content = responseA;
           changes.responseA.photo = null;
+          changes.responseA.link = null;
           if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) {changes.responseA.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "A"){
@@ -493,6 +608,7 @@ export class ManageQuestionsComponent {
         if(responseB && responseB !== null && responseB !== undefined && responseB !== "" && responseB !== separatedAnswers.answerB.content){
           changes.responseB.content = responseB;
           changes.responseB.photo = null;
+          changes.responseB.link = null;
           if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) {changes.responseB.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "B"){
@@ -503,6 +619,7 @@ export class ManageQuestionsComponent {
         if(responseC && responseC !== null && responseC !== undefined && responseC !== "" && responseC !== separatedAnswers.answerC.content){
           changes.responseC.content = responseC;
           changes.responseC.photo = null;
+          changes.responseC.link = null;
           if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) {changes.responseC.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "C"){
@@ -513,6 +630,7 @@ export class ManageQuestionsComponent {
         if(responseD && responseD !== null && responseD !== undefined && responseD !== "" && responseD !== separatedAnswers.answerD.content){
           changes.responseD.content = responseD;
           changes.responseD.photo = null;
+          changes.responseD.link = null;
           if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) {changes.responseD.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "D"){
@@ -523,6 +641,7 @@ export class ManageQuestionsComponent {
         if(responseE && responseE !== null && responseE !== undefined && responseE !== "" && responseE !== separatedAnswers.answerE.content){
           changes.responseE.content = responseE;
           changes.responseE.photo = null;
+          changes.responseE.link = null;
           if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) {changes.responseE.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "E"){
@@ -533,6 +652,7 @@ export class ManageQuestionsComponent {
         if(responseF && responseF !== null && responseF !== undefined && responseF !== "" && responseF !== separatedAnswers.answerF.content){
           changes.responseF.content = responseF;
           changes.responseF.photo = null;
+          changes.responseF.link = null;
           if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) {changes.responseF.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "F"){
@@ -540,11 +660,45 @@ export class ManageQuestionsComponent {
             }
           });
         };
+        if(responseG && responseG !== null && responseG !== undefined && responseG !== "" && responseG !== separatedAnswers.answerG.content){
+          changes.responseG.content = responseG;
+          changes.responseG.photo = null;
+          changes.responseG.link = null;
+          if(changes.responseG.is_correct !== 0 && changes.responseG.is_correct !== 1) {changes.responseG.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "G"){
+              changes.responseG.id = ans.id;
+            }
+          });
+        };
+        if(responseH && responseH !== null && responseH !== undefined && responseH !== "" && responseH !== separatedAnswers.answerH.content){
+          changes.responseH.content = responseH;
+          changes.responseH.photo = null;
+          changes.responseH.link = null;
+          if(changes.responseH.is_correct !== 0 && changes.responseH.is_correct !== 1) {changes.responseH.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "H"){
+              changes.responseH.id = ans.id;
+            }
+          });
+        };
+        if(responseI && responseI !== null && responseI !== undefined && responseI !== "" && responseI !== separatedAnswers.answerI.content){
+          changes.responseI.content = responseI;
+          changes.responseI.photo = null;
+          changes.responseI.link = null;
+          if(changes.responseI.is_correct !== 0 && changes.responseI.is_correct !== 1) {changes.responseI.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "I"){
+              changes.responseI.id = ans.id;
+            }
+          });
+        };
 
         if(this.photos.A && this.photos.A !== null && this.photos.A !== undefined && this.photos.A !== ""){
           changes.responseA.photo = this.photos.A;
-          changes.responseA.content = null;
+          changes.responseA.link = null;
           if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) {changes.responseA.is_correct = null};
+          if(!changes.responseA.content && changes.responseA.content === undefined) {changes.responseA.content = null;};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "A"){
               changes.responseA.id = ans.id;
@@ -553,8 +707,9 @@ export class ManageQuestionsComponent {
         };
         if(this.photos.B && this.photos.B !== null && this.photos.B !== undefined && this.photos.B !== ""){
           changes.responseB.photo = this.photos.B;
-          changes.responseB.content = null;
+          changes.responseB.link = null;
           if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) {changes.responseB.is_correct = null};
+          if(!changes.responseB.content && changes.responseB.content === undefined) {changes.responseB.content = null;};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "B"){
               changes.responseB.id = ans.id;
@@ -563,7 +718,8 @@ export class ManageQuestionsComponent {
         };
         if(this.photos.C && this.photos.C !== null && this.photos.C !== undefined && this.photos.C !== ""){
           changes.responseC.photo = this.photos.C;
-          changes.responseC.content = null;
+          changes.responseC.link = null;
+          if(!changes.responseC.content && changes.responseC.content === undefined) {changes.responseC.content = null;};
           if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) {changes.responseC.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "C"){
@@ -573,7 +729,8 @@ export class ManageQuestionsComponent {
         };
         if(this.photos.D && this.photos.D !== null && this.photos.D !== undefined && this.photos.D !== ""){
           changes.responseD.photo = this.photos.D;
-          changes.responseD.content = null;
+          changes.responseDlink = null;
+          if(!changes.responseD.content && changes.responseD.content === undefined) {changes.responseD.content = null;};
           if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) {changes.responseD.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "D"){
@@ -583,7 +740,8 @@ export class ManageQuestionsComponent {
         };
         if(this.photos.E && this.photos.E !== null && this.photos.E !== undefined && this.photos.E !== ""){
           changes.responseE.photo = this.photos.E;
-          changes.responseE.content = null;
+          changes.responseE.link = null;
+          if(!changes.responseE.content && changes.responseE.content === undefined) {changes.responseE.content = null;};
           if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) {changes.responseE.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "E"){
@@ -593,11 +751,145 @@ export class ManageQuestionsComponent {
         };
         if(this.photos.F && this.photos.F !== null && this.photos.F !== undefined && this.photos.F !== ""){
           changes.responseF.photo = this.photos.F;
-          changes.responseF.content = null;
+          changes.responseF.link = null;
+          if(!changes.responseF.content && changes.responseF.content === undefined) {changes.responseF.content = null;};
           if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) {changes.responseF.is_correct = null};
           this.edit.oldAnswers.forEach( (ans: any) => {
             if(ans.letter === "F"){
               changes.responseF.id = ans.id;
+            }
+          });
+        };
+        if(this.photos.G && this.photos.G !== null && this.photos.G !== undefined && this.photos.G !== ""){
+          changes.responseG.photo = this.photos.G;
+          changes.responseG.link = null;
+          if(!changes.responseG.content && changes.responseG.content === undefined) {changes.responseG.content = null;};
+          if(changes.responseG.is_correct !== 0 && changes.responseG.is_correct !== 1) {changes.responseG.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "G"){
+              changes.responseG.id = ans.id;
+            }
+          });
+        };
+        if(this.photos.H && this.photos.H !== null && this.photos.H !== undefined && this.photos.H !== ""){
+          changes.responseH.photo = this.photos.H;
+          changes.responseH.link = null;
+          if(!changes.responseH.content && changes.responseH.content === undefined) {changes.responseH.content = null;};
+          if(changes.responseH.is_correct !== 0 && changes.responseH.is_correct !== 1) {changes.responseH.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "H"){
+              changes.responseH.id = ans.id;
+            }
+          });
+        };
+        if(this.photos.I && this.photos.I !== null && this.photos.I !== undefined && this.photos.I !== ""){
+          changes.responseI.photo = this.photos.I;
+          changes.responseI.link = null;
+          if(!changes.responseI.content && changes.responseI.content === undefined) {changes.responseI.content = null;};
+          if(changes.responseI.is_correct !== 0 && changes.responseI.is_correct !== 1) {changes.responseI.is_correct = null};
+          this.edit.oldAnswers.forEach( (ans: any) => {
+            if(ans.letter === "I"){
+              changes.responseI.id = ans.id;
+            }
+          });
+        };
+
+        if( this.questionForm.value.linkA && this.questionForm.value.linkA !== separatedAnswers.answerA.response ) {
+          changes.responseA.link = this.questionForm.value.linkA;
+          if(!changes.responseA.photo) { changes.responseA.photo === null };
+          if(!changes.responseA.content && changes.responseA.content === undefined) {changes.responseA.content = null;};
+          if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) { changes.responseA.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "A" ){
+              changes.responseA.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkB && this.questionForm.value.linkB !== separatedAnswers.answerB.response ) {
+          changes.responseB.link = this.questionForm.value.linkB;
+          if(!changes.responseB.photo) { changes.responseB.photo === null };
+          if(!changes.responseB || changes.responseB === undefined) { changes.responseB.content = null; };
+          if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) { changes.responseB.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "B" ){
+              changes.responseB.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkC && this.questionForm.value.linkC !== separatedAnswers.answerC.response ) {
+          changes.responseC.link = this.questionForm.value.linkC;
+          if(!changes.responseC.photo) { changes.responseC.photo === null };
+          if(!changes.responseC || changes.responseC === undefined) { changes.responseC.content = null; };
+          if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) { changes.responseC.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "C" ){
+              changes.responseC.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkD && this.questionForm.value.linkD !== separatedAnswers.answerD.response ) {
+          changes.responseD.link = this.questionForm.value.linkD;
+          if(!changes.responseD.photo) { changes.responseD.photo === null };
+          if(!changes.responseD || changes.responseD === undefined) { changes.responseD.content = null; };
+          if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) { changes.responseD.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "D" ){
+              changes.responseD.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkE && this.questionForm.value.linkE !== separatedAnswers.answerE.response ) {
+          changes.responseE.link = this.questionForm.value.linkE;
+          if(!changes.responseE.photo) { changes.responseE.photo === null };
+          if(!changes.responseE || changes.responseE === undefined) { changes.responseE.content = null; };
+          if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) { changes.responseE.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "E" ){
+              changes.responseE.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkF && this.questionForm.value.linkF !== separatedAnswers.answerF.response ) {
+          changes.responseF.link = this.questionForm.value.linkF;
+          if(!changes.responseF.photo) { changes.responseF.photo === null };
+          if(!changes.responseF || changes.responseF === undefined) { changes.responseF.content = null; };
+          if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) { changes.responseF.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "F" ){
+              changes.responseF.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkG && this.questionForm.value.linkG !== separatedAnswers.answerG.response ) {
+          changes.responseG.link = this.questionForm.value.linkG;
+          if(!changes.responseG.photo) { changes.responseG.photo === null };
+          if(!changes.responseG || changes.responseG === undefined) { changes.responseG.content = null; };
+          if(changes.responseG.is_correct !== 0 && changes.responseG.is_correct !== 1) { changes.responseG.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "G" ){
+              changes.responseG.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkH && this.questionForm.value.linkH !== separatedAnswers.answerH.response ) {
+          changes.responseH.link = this.questionForm.value.linkH;
+          if(!changes.responseH.photo) { changes.responseH.photo === null };
+          if(!changes.responseH || changes.responseH === undefined) { changes.responseH.content = null; };
+          if(changes.responseH.is_correct !== 0 && changes.responseH.is_correct !== 1) { changes.responseH.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "H" ){
+              changes.responseH.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.linkI && this.questionForm.value.linkI !== separatedAnswers.answerI.response ) {
+          changes.responseI.link = this.questionForm.value.linkI;
+          if(!changes.responseI.photo) { changes.responseI.photo === null };
+          if(!changes.responseI || changes.responseI === undefined) { changes.responseI.content = null; };
+          if(changes.responseI.is_correct !== 0 && changes.responseI.is_correct !== 1) { changes.responseI.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "I" ){
+              changes.responseI.id = ans.id;
             }
           });
         };

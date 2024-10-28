@@ -45,7 +45,6 @@ export class ExamsComponent {
   };
 
   generateExam(){
-    
     let level: any = this.selectExam.value.level;
   };
 
@@ -79,11 +78,11 @@ export class ExamsComponent {
           style: 'header',
         },
       ],
-      footer: function(currentPage: any) { 
+      footer: function(currentPage: any) {
         return [
           {
             text: currentPage.toString(),
-            alignment: 'center'   
+            alignment: 'center'
           }
         ]
       },
@@ -205,7 +204,7 @@ export class ExamsComponent {
           70-90% = Notable \n
           90-100% = Sobresaliente `,
         style: 'instructions',
-        pageBreak: 'after'        
+        pageBreak: 'after'
       },
     ];
     pdf.content.push(firstPage);
@@ -830,13 +829,25 @@ export class ExamsComponent {
       }
     ];
     pdf.content.push(readQuestion2);
-      
+
     //pdfMake.createPdf(pdf).open();
     pdfMake.createPdf(pdf).download("test.pdf");
   };
 
   downloadResponses(){
-
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let level: any = { level_id: this.selectExam.value.level }
+    this.http.post<any>('http://localhost:4000/api/exams/generate', level, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
 }

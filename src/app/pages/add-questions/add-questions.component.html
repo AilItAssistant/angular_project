@@ -54,7 +54,7 @@
             <div class="mb-3">
                 @if ( statementForm.value.skill ) {
                     <label for="formFile" class="form-label">Foto del enunciado</label>
-                    <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (click)="statementPhotoConvert($event)">
+                    <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
                 }
             </div>
         } @else {

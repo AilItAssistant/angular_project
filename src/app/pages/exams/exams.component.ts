@@ -5,8 +5,6 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
-import { style } from '@angular/animations';
-import { text } from 'stream/consumers';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({

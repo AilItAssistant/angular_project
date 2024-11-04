@@ -36,20 +36,24 @@ export class ManageStructureComponent {
     searchSkill: new FormControl(""),
     searchLevelSkill: new FormControl(""),
     searchBlock: new FormControl(""),
-    searchSkillBlock: new FormControl("")
+    searchSkillBlock: new FormControl(""),
+    blockScore: new FormControl(""),
+    blockType: new FormControl(""),
   });
-  
+
   editForm = new FormGroup({
     secondId: new FormControl(""),
     name: new FormControl(""),
     status: new FormControl(""),
+    blockScore: new FormControl(""),
+    blockType: new FormControl(""),
   });
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadLevels();
-    this.loadSkills();
+    //this.loadLevels();
+    //this.loadSkills();
     this.loadBlocks();
   };
 
@@ -78,7 +82,10 @@ export class ManageStructureComponent {
         break;
       case "add_block:":
         id = document.getElementById('block');
-        if ( data.name === "" || data.name === null || data.name === undefined || data.skillId === "" || data.skillId === null || data.skillId === undefined ){
+        if (
+          data.name === "" || data.name === null || data.name === undefined &&
+          data.skillId === "" || data.skillId == null || data.skillId === undefined
+          && data.score === "" || data.score == null || data.score === undefined ){
           this.val = false;
           id.style.display="is-invalid";
         } else {
@@ -96,7 +103,12 @@ export class ManageStructureComponent {
         }
         break;
       case "blocks":
-        if ( data.name === "" || data.name === null || data.name === undefined ) {
+        if (
+          data.name === "" || data.name === undefined &&
+          data.skillId === "" || data.skillId === undefined
+          && data.score === "" || data.score === undefined
+          && data.blockType === "" || data.blockType === undefined
+        ) {
           this.val = false;
         }
         break;
@@ -141,6 +153,7 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocks = res.blocks;
+        console.log(this.blocks);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -169,7 +182,9 @@ export class ManageStructureComponent {
     this.editForm = new FormGroup({
       secondId: new FormControl(level.id),
       name: new FormControl(level.name),
-      status: new FormControl(level.status)
+      status: new FormControl(level.status),
+      blockScore: new FormControl(""),
+      blockType: new FormControl(""),
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -187,6 +202,8 @@ export class ManageStructureComponent {
       secondId: new FormControl(skill.level_id),
       name: new FormControl(skill.name),
       status: new FormControl(skill.status),
+      blockScore: new FormControl(""),
+      blockType: new FormControl(""),
     });
 
     let editModal: any;
@@ -205,6 +222,8 @@ export class ManageStructureComponent {
       secondId: new FormControl(block.skill_id),
       name: new FormControl(block.name),
       status: new FormControl(block.status),
+      blockScore: new FormControl(""),
+      blockType: new FormControl(""),
     });
 
     let editModal: any;
@@ -299,6 +318,8 @@ export class ManageStructureComponent {
       name: this.structureForm.value.block,
       skillId: this.structureForm.value.skillBlock,
       status: status,
+      score: this.structureForm.value.blockScore,
+      type: this.structureForm.value.blockType,
     }
     let type: any = "add_block"
     this.validation(add, type);
@@ -404,19 +425,24 @@ export class ManageStructureComponent {
 
   modify(){
     let changes: any = {
-      name: this.editForm.value.name,
-      status: this.editForm.value.status,
-      action: this.editVariables.action,
+      name: this.editForm.value.name === this.editVariables.name ? this.editForm.value.name : null,
+      status: this.editForm.value.status === this.editVariables.status ? this.editForm.value.status : null,
+      action: this.editVariables.action === this.editVariables.action ? this.editVariables.action : null,
       id: this.editVariables.id,
       secondId: this.editForm.value.secondId
+    };
+    if(changes.secondId === "") changes.secondId = null;
+    if(this.editVariables.type === "blocks") {
+      changes.type = this.editForm.value.blockType === this.editVariables.blockType ? this.editForm.value.blockType : null;
+      changes.score = this.editForm.value.blockScore === this.editVariables.blockScore ? this.editForm.value.blockScore : null;
     };
     this.validation(changes, this.editVariables.type);
     if ( this.val ) {
       this.charge = true;
       let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
+      let httpHeaders: any = new HttpHeaders({
+        'authorization': auth
+      });
       this.http.put<any>(`http://localhost:4000/api/${this.editVariables.type}/edit`, changes, {headers: httpHeaders}).subscribe({
         next: (res) => {
           console.log(res)
@@ -475,7 +501,7 @@ export class ManageStructureComponent {
 
   delete(){
     this.charge = true;
-    let del: any = {}; 
+    let del: any = {};
     del.id = this.deleteVariables.id;
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -555,7 +581,6 @@ export class ManageStructureComponent {
               alert('Cargar fallo' + err);
             },
           });
-          
         };
         break;
     };

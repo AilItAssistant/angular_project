@@ -52,6 +52,10 @@ export class ManageStructureComponent {
     statement: new FormControl(""),
   });
 
+  blocksToExams = new FormGroup({
+    
+  });
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
@@ -59,6 +63,22 @@ export class ManageStructureComponent {
     this.loadSkills();
     this.loadBlocks();
     this.loadQuestionType();
+    this.loadBlocksToExam();
+  };
+
+  loadBlocksToExam(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels/activeLevelsSkillsBlocks', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   loadQuestionType(){

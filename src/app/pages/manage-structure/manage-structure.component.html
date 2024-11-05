@@ -1,59 +1,59 @@
 <app-header></app-header>
 
 <form [formGroup] = "structureForm" id="structureForm">
-
     <div class="container-fluid my-5">
-        <div class="row">
-            <h3 class=" col-6 my-3">Niveles</h3>
-            <div class="col-3"><input type="text" formControlName="searchLevel" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
-            <div class="col-1">
-                <button class="btn btn-primary mt-3" (click)="search('levels')">Buscar</button>
+        <div><!--LEVELS-->
+            <div class="row">
+                <h3 class=" col-6 my-3">Niveles</h3>
+                <div class="col-3"><input type="text" formControlName="searchLevel" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
+                <div class="col-1">
+                    <button class="btn btn-primary mt-3" (click)="search('levels')">Buscar</button>
+                </div>
+                <div class="col-2">
+                    @if ( structureForm.value.searchLevel !== "" ){
+                    <button class="btn btn-danger mt-3" (click)="cleanSearch('levels')">Deshacer búsqueda</button>
+                    }
+                </div>
             </div>
-            <div class="col-2">
-                @if ( structureForm.value.searchLevel !== "" ){
-                <button class="btn btn-danger mt-3" (click)="cleanSearch('levels')">Deshacer búsqueda</button>
+            <ul class="list-group">
+                @for(level of levels; track level.id){
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col ms-5 mt-2">
+                                {{level.name}}
+                            </div>
+                            <div class="col col-lg-1 mt-2">
+                                @if (level.status === "active") {
+                                    <p class="text-success">Activo</p>
+                                } @else {
+                                    <p class="text-danger">Inactivo</p>
+                                }
+                            </div>
+                            <div class="col text-end">
+                                <button class="btn btn-primary ms-5" (click)="openEditLevelModal(level)">Modificar</button>
+                                <button class="btn btn-secondary ms-3" (click)="desactivateLevel(level)">Desactivar</button>
+                                <button class="btn btn-danger ms-3" (click)="deleteLevel(level)">Eliminar</button>
+                            </div>
+                        </div>
+                    </li>
                 }
+            </ul>
+            <div class="row my-4">
+                <div class="col-1"></div>
+                <div class="col-1 text-end mt-1"><p>Nivel:</p></div>
+                <div class="col-3"><input type="text" class="form-control" formControlName="level" id="level"></div>
+                <div class="col-1 text-start"><button class="btn btn-success" (click)="addLevel()">Añadir</button></div>
+                <div class="col-1"></div>
+                <div class="col-1 text-end mt-1"><p>Estado</p></div>
+                <div class="col-2">
+                        <select id="statusLevel" class="form-select" formControlName="statusLevel">
+                            <option value="active">Activo</option>
+                            <option value="inactive">Inactivo</option>
+                    </select>
+                </div>
+                <div class="col-2"></div>
             </div>
         </div>
-        <ul class="list-group">
-            @for(level of levels; track level.id){
-                <li class="list-group-item">
-                    <div class="row">
-                        <div class="col ms-5 mt-2">
-                            {{level.name}}
-                        </div>
-                        <div class="col col-lg-1 mt-2">
-                            @if (level.status === "active") {
-                                <p class="text-success">Activo</p>
-                            } @else {
-                                <p class="text-danger">Inactivo</p>
-                            }
-                        </div>
-                        <div class="col text-end">
-                            <button class="btn btn-primary ms-5" (click)="openEditLevelModal(level)">Modificar</button>
-                            <button class="btn btn-secondary ms-3" (click)="desactivateLevel(level)">Desactivar</button>
-                            <button class="btn btn-danger ms-3" (click)="deleteLevel(level)">Eliminar</button>
-                        </div>
-                    </div>
-                </li>
-            }
-        </ul>
-        <div class="row my-4">
-            <div class="col-1"></div>
-            <div class="col-1 text-end mt-1"><p>Nivel:</p></div>
-            <div class="col-3"><input type="text" class="form-control" formControlName="level" id="level"></div>
-            <div class="col-1 text-start"><button class="btn btn-success" (click)="addLevel()">Añadir</button></div>
-            <div class="col-1"></div>
-            <div class="col-1 text-end mt-1"><p>Estado</p></div>
-            <div class="col-2">
-                    <select id="statusLevel" class="form-select" formControlName="statusLevel">
-                        <option value="active">Activo</option>
-                        <option value="inactive">Inactivo</option>
-                </select>
-            </div>
-            <div class="col-2"></div>
-        </div>
-
         <div><!--SKILLS-->
             <div class="row mt-5">
                 <h3 class=" col-4 my-3">Destrezas</h3>
@@ -237,6 +237,29 @@
         </div>
     </div>
 </form>
+<div>
+    <form [formGroup] = "blocksToExams" id="blocksToExams">
+        <div class="container-fluid my-5">
+            <ul class="list-group">
+                @for(level of levels; track level.id){
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-3">
+                                ewrqerwq
+                            </div>
+                            <div class="col-3 col-lg-1 mt-2">
+                                werqrweq
+                            </div>
+                            <div class="col-3 text-end">
+                                qwwerwqr
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </form>
+</div>
 <div class="mb-5"></div>
 
 <!-- Edit modal -->

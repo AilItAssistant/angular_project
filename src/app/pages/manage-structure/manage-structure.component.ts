@@ -22,6 +22,7 @@ export class ManageStructureComponent {
   blocks: any = [];
   skills: any = [];
   levels: any = [];
+  questionsTypes: any = [];
 
   structureForm = new FormGroup({
     level: new FormControl(""),
@@ -52,9 +53,26 @@ export class ManageStructureComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    //this.loadLevels();
-    //this.loadSkills();
+    this.loadLevels();
+    this.loadSkills();
     this.loadBlocks();
+    this.loadQuestionType();
+  };
+
+  loadQuestionType(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/types', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.questionsTypes = res;
+        console.log(this.questionsTypes);
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   validation ( data: any, type: any ) {
@@ -105,9 +123,9 @@ export class ManageStructureComponent {
       case "blocks":
         if (
           data.name === "" || data.name === undefined &&
-          data.skillId === "" || data.skillId === undefined
+          data.secondId === "" || data.secondId === undefined
           && data.score === "" || data.score === undefined
-          && data.blockType === "" || data.blockType === undefined
+          && data.type === "" || data.type === undefined
         ) {
           this.val = false;
         }
@@ -153,7 +171,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocks = res.blocks;
-        console.log(this.blocks);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -222,8 +239,8 @@ export class ManageStructureComponent {
       secondId: new FormControl(block.skill_id),
       name: new FormControl(block.name),
       status: new FormControl(block.status),
-      blockScore: new FormControl(""),
-      blockType: new FormControl(""),
+      blockScore: new FormControl(block.max_score),
+      blockType: new FormControl(block.question_type_id),
     });
 
     let editModal: any;
@@ -319,15 +336,15 @@ export class ManageStructureComponent {
       skillId: this.structureForm.value.skillBlock,
       status: status,
       score: this.structureForm.value.blockScore,
-      type: this.structureForm.value.blockType,
     }
-    let type: any = "add_block"
-    this.validation(add, type);
+    if( this.structureForm.value.blockType !== "" ) { add.type = this.structureForm.value.blockType } else { add.type = null };
+    this.validation(add, "add_block");
     if ( this.val ) {
       let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
+      console.log(add)
       this.http.post<any>('http://localhost:4000/api/blocks/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           let form: any = document.getElementById("structureForm");
@@ -425,16 +442,17 @@ export class ManageStructureComponent {
 
   modify(){
     let changes: any = {
-      name: this.editForm.value.name === this.editVariables.name ? this.editForm.value.name : null,
-      status: this.editForm.value.status === this.editVariables.status ? this.editForm.value.status : null,
-      action: this.editVariables.action === this.editVariables.action ? this.editVariables.action : null,
+      name: this.editForm.value.name === this.editVariables.structure.name ? null : this.editForm.value.name,
+      status: this.editForm.value.status === this.editVariables.structure.status ? null : this.editForm.value.status,
+      action: this.editVariables.action === this.editVariables.action ? null : this.editVariables.action,
       id: this.editVariables.id,
       secondId: this.editForm.value.secondId
     };
     if(changes.secondId === "") changes.secondId = null;
     if(this.editVariables.type === "blocks") {
-      changes.type = this.editForm.value.blockType === this.editVariables.blockType ? this.editForm.value.blockType : null;
-      changes.score = this.editForm.value.blockScore === this.editVariables.blockScore ? this.editForm.value.blockScore : null;
+      changes.type = this.editForm.value.blockType === this.editVariables.structure.question_type_id ? null : this.editForm.value.blockType;
+      changes.score = this.editForm.value.blockScore === this.editVariables.structure.max_score ? null : this.editForm.value.blockScore;
+      if(this.editForm.value.secondId === this.editVariables.structure.skill_id) changes.secondId = null;
     };
     this.validation(changes, this.editVariables.type);
     if ( this.val ) {
@@ -460,6 +478,7 @@ export class ManageStructureComponent {
         },
         error: (err) => {
           alert('Cargar fallo' + err);
+          this.charge = false;
         },
       });
     } else {

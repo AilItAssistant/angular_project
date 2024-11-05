@@ -181,21 +181,21 @@
             }
         </ul>
         <div class="row my-4">
-            <div class="col-1 text-end mt-1"><p>Bloque:</p></div>
-            <div class="col-2"><input type="text" class="form-control" formControlName="block" id="block"></div>
-            <div class="col-1 text-end mt-1"><p>Tipo de pregunta:</p></div>
-            <div class="col-1">
+            <div class="col-1"></div>
+            <div class="col-2">
+                <p>Bloque:</p>
+                <input type="text" class="form-control" formControlName="block" id="block">
+            </div>
+            <div class="col-2">
+                <p>Tipo de pregunta:</p>
                 <select id="blockType" class="form-select" formControlName="blockType">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                    <option value="10">20</option>
-                    <option value="10">25</option>
+                    @for(type of questionsTypes; track type.id){
+                        <option [value]="type.id">{{type.name}}</option>
+                    }
                 </select>
             </div>
-            <div class="col-1 text-end mt-1"><p>Puntuación:</p></div>
             <div class="col-1">
+                <p>Puntuación:</p>
                 <select id="blockScore" class="form-select" formControlName="blockScore">
                     <option value="1">1</option>
                     <option value="2">2</option>
@@ -205,22 +205,23 @@
                     <option value="10">25</option>
                 </select>
             </div>
-            <div class="col-1 text-end mt-1"><p>Destreza:</p></div>
-            <div class="col-1">
+            <div class="col-2">
+                <p>Destreza:</p>
                 <select id="skillBlock" class="form-select" formControlName="skillBlock">
                     @for(skill of skills; track skill.id){
                         <option [value]="skill.id">{{skill.name}}</option>
                     }
                 </select>
             </div>
-            <div class="col-1 text-end mt-1"><p>Estado:</p></div>
             <div class="col-1">
+                <p>Estado:</p>
                 <select id="statusBlock" class="form-select" formControlName="statusBlock">
                     <option value="active">Activo</option>
                     <option value="inactive">Inactivo</option>
                 </select>
             </div>
-            <div class="col-1 text-start"><button class="btn btn-success" (click)="addBlock()">Añadir</button></div>
+            <div class="col-2 mt-4 text-center"><button class="btn btn-success mt-3" (click)="addBlock()">Añadir</button></div>
+            <div class="col-1"></div>
         </div>
     </div>
 </form>
@@ -265,19 +266,13 @@
                                 <option [value]="skill.id">{{skill.name}}</option>
                             }
                         </select>
-                        <div class="col-1 text-end mt-1"><p>Tipo de pregunta:</p></div>
-                        <div class="col-1">
-                            <select id="blockType" class="form-select" formControlName="blockType">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="10">20</option>
-                                <option value="10">25</option>
-                            </select>
-                        </div>
-                        <div class="col-1 text-end mt-1"><p>Puntuación:</p></div>
-                        <div class="col-1">
+                        <p>Tipo de pregunta:</p>
+                        <select id="blockType" class="form-select" formControlName="blockType">
+                            @for(type of questionsTypes; track type.id){
+                                <option [value]="type.id">{{type.name}}</option>
+                            }
+                        </select>
+                        <p>Puntuación:</p>
                             <select id="blockScore" class="form-select" formControlName="blockScore">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -286,7 +281,6 @@
                                 <option value="10">20</option>
                                 <option value="10">25</option>
                             </select>
-                        </div>
                     }
                     <p class="mt-3">Elige un status</p>
                     <select class="form-select mb-3" formControlName="status" aria-label="Select-status">

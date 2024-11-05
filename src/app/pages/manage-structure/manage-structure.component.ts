@@ -40,6 +40,7 @@ export class ManageStructureComponent {
     searchSkillBlock: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
+    statement: new FormControl(""),
   });
 
   editForm = new FormGroup({
@@ -48,6 +49,7 @@ export class ManageStructureComponent {
     status: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
+    statement: new FormControl(""),
   });
 
   constructor(private http: HttpClient) {}
@@ -67,7 +69,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/types', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.questionsTypes = res;
-        console.log(this.questionsTypes);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -116,7 +117,10 @@ export class ManageStructureComponent {
         }
         break;
       case "skills":
-        if ( data.name === "" || data.name === null || data.name === undefined ) {
+        if ( data.name === "" || data.name === undefined &&
+          data.statement === "" || data.statement === undefined
+          && data.secondId === "" || data.secondId === undefined
+        ) {
           this.val = false;
         }
         break;
@@ -202,6 +206,7 @@ export class ManageStructureComponent {
       status: new FormControl(level.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
+      statement: new FormControl(""),
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -221,6 +226,7 @@ export class ManageStructureComponent {
       status: new FormControl(skill.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
+      statement: new FormControl(skill.statement),
     });
 
     let editModal: any;
@@ -241,6 +247,7 @@ export class ManageStructureComponent {
       status: new FormControl(block.status),
       blockScore: new FormControl(block.max_score),
       blockType: new FormControl(block.question_type_id),
+      statement: new FormControl(""),
     });
 
     let editModal: any;
@@ -297,8 +304,8 @@ export class ManageStructureComponent {
       name: this.structureForm.value.skill,
       status: status,
     }
-    let type: any = "add_skill";
-    this.validation(add, type);
+    if ( this.structureForm.value.statement !== "" ) { add.statement = this.structureForm.value.statement } else {add.statement = null };
+    this.validation(add, "add_skill");
     if ( this.val ) {
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
@@ -312,7 +319,8 @@ export class ManageStructureComponent {
           this.structureForm.reset({
             skill: "",
             statusSkill: "",
-            levelSkill: ""
+            levelSkill: "",
+            statement: ""
           });
         },
         error: (err) => {
@@ -369,7 +377,7 @@ export class ManageStructureComponent {
     let change: any;
     if ( level.status === "active" ) {
       change = "inactive"
-    } else if ( level.status === "inactive" ) {
+    } else {
       change = "active"
     }
     let status: any = {
@@ -394,7 +402,7 @@ export class ManageStructureComponent {
     let change: any;
     if ( block.status === "active" ) {
       change = "inactive"
-    } else if ( block.status === "inactive" ) {
+    } else {
       change = "active"
     }
     let status: any = {
@@ -419,7 +427,7 @@ export class ManageStructureComponent {
     let change: any;
     if ( skill.status === "active" ) {
       change = "inactive"
-    } else if ( skill.status === "inactive" ) {
+    } else {
       change = "active"
     }
     let status: any = {
@@ -441,6 +449,7 @@ export class ManageStructureComponent {
   };
 
   modify(){
+    console.log(this.editVariables.structure)
     let changes: any = {
       name: this.editForm.value.name === this.editVariables.structure.name ? null : this.editForm.value.name,
       status: this.editForm.value.status === this.editVariables.structure.status ? null : this.editForm.value.status,
@@ -454,6 +463,11 @@ export class ManageStructureComponent {
       changes.score = this.editForm.value.blockScore === this.editVariables.structure.max_score ? null : this.editForm.value.blockScore;
       if(this.editForm.value.secondId === this.editVariables.structure.skill_id) changes.secondId = null;
     };
+    if(this.editVariables.type === "skills") {
+      if(this.editForm.value.secondId === this.editVariables.structure.level_id) changes.secondId = null;
+      if(this.editForm.value.statement === this.editVariables.structure.statement) {changes.statement = null} else {changes.statement = this.editForm.value.statement};
+    };
+    console.log(changes)
     this.validation(changes, this.editVariables.type);
     if ( this.val ) {
       this.charge = true;

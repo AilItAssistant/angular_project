@@ -23,6 +23,7 @@ export class ManageStructureComponent {
   skills: any = [];
   levels: any = [];
   questionsTypes: any = [];
+  blocksExams: any = [];
 
   structureForm = new FormGroup({
     level: new FormControl(""),
@@ -53,15 +54,18 @@ export class ManageStructureComponent {
   });
 
   blocksToExams = new FormGroup({
-    
+    qwerty: new FormControl(true),
   });
+  // crear doble array y utilizar los arrays id de block para enlazar y bucar como añadirlos al control
 
   constructor(private http: HttpClient) {}
 
+  test(){console.log(this.blocksToExams.value.qwerty)}
+
   ngOnInit() {
-    this.loadLevels();
-    this.loadSkills();
-    this.loadBlocks();
+    //this.loadLevels();
+    //this.loadSkills();
+    //this.loadBlocks();
     this.loadQuestionType();
     this.loadBlocksToExam();
   };
@@ -73,6 +77,7 @@ export class ManageStructureComponent {
     });
     this.http.get<any>('http://localhost:4000/api/levels/activeLevelsSkillsBlocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
+        this.blocksExams = res;
         console.log(res);
       },
       error: (err) => {

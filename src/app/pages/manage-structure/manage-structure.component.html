@@ -239,20 +239,39 @@
 </form>
 <div>
     <form [formGroup] = "blocksToExams" id="blocksToExams">
-        <div class="container-fluid my-5">
-            <ul class="list-group">
-                @for(level of levels; track level.id){
+        <div class="container">
+            <h2 class="my-5">Gestión de bloques por niveles</h2>
+            <ul class="list-group ">
+                @for(level of blocksExams; track level.id){
                     <li class="list-group-item">
-                        <div class="row">
-                            <div class="col-3">
-                                ewrqerwq
+                        <div class="row ms-2 my-4">
+                            <div class="col-3 h4">
+                                {{level.name}}
                             </div>
-                            <div class="col-3 col-lg-1 mt-2">
-                                werqrweq
-                            </div>
-                            <div class="col-3 text-end">
-                                qwwerwqr
-                            </div>
+                            @for(skill of level.skills; track skill.id){
+                                <li class="list-group-item">
+                                    <div class="row ms-4 my-3">
+                                        <div class="col-3 h5">
+                                            {{skill.name}}
+                                        </div>
+                                    </div>
+                                        @for(block of skill.blocks; track block.id){
+                                            <li class="list-group-item">
+                                                <div class="row ms-5 my-2">
+                                                    <div class="col-4 h6">
+                                                        {{block.name}}
+                                                    </div>
+                                                    <div class="col-7"></div>
+                                                    <div class="col-1">
+                                                        <div class="text-end form-check form-switch">
+                                                            <input class="form-check-input" formControlName="qwerty" (change)="test()" type="checkbox" role="switch" id="examSwitch">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                </li>
+                            }
                         </div>
                     </li>
                 }

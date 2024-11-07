@@ -1096,4 +1096,50 @@ export class ManageQuestionsComponent {
     }
   };
 
+  deletePhoto(id: any, type: any){
+    console.log(id);
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    switch (type) {
+      case "statement":
+        let statementId: any = { id: id };
+        this.http.put<any>('http://localhost:4000/api/statements/deleteImage', statementId, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo borrar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+      case "question":
+        let questionId: any = {id: id};
+        this.http.put<any>('http://localhost:4000/api/questions/deleteImage', questionId, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo borrar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+      case "answer":
+        let answerId: any = {id: id};
+        this.http.put<any>('http://localhost:4000/api/answers/deleteImage', questionId, {headers: httpHeaders}).subscribe({
+          next: (res) => {
+            this.chargeStatements();
+          },
+          error: (err) => {
+            alert('No se pudo borrar' + err);
+            this.charge = false;
+          },
+        });
+        break;
+    }
+  };
+
 };

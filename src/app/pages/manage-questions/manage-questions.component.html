@@ -70,6 +70,7 @@
           @if(question.base64_data !== null){
             <p>Imagen de la pregunta:</p>
             <img [src]="question.base64_data" style="max-width: 30rem; max-height: 25rem;">
+            <button class="btn btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
           }
         </div>
         <div class="card m-2">
@@ -106,7 +107,10 @@
                     @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
                     <p>Se relaciona con el mensaje: {{answer.response}}</p>
                   }
-                  @if(answer.photo_id !== null){<img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">}
+                  @if(answer.photo_id !== null){
+                    <img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">
+                    <button class="btn btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button>
+                  }
                 </div>
               }
             </div>
@@ -144,6 +148,7 @@
               @if(statement.photo_id !== null){
                 <p>Imagen del enunciado:</p>
                 <img [src]="statement.photo_id" style="max-width: 40rem; max-height: 35rem;">
+                <button class="btn btn-danger" (click)="deletePhoto(statement.id, 'statement')">Borrar imagen</button>
               }
             </div>
             @for(question of statement.questions[0]; track question.id){
@@ -172,6 +177,7 @@
                     @if(question.base64_data !== null){
                       <p>Imagen de la pregunta:</p>
                       <img [src]="question.base64_data" style="max-width: 30rem; max-height: 25rem;">
+                      <button class="btn btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
                     }
                   </div>
                   <div class="card m-2">
@@ -208,7 +214,10 @@
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
                               <p>Se relaciona con el mensaje: {{answer.response}}</p>
                             }
-                            @if(answer.photo_id !== null){<img [src]="answer.base64_data" style="max-width: 20rem; max-height: 15rem;">}
+                            @if(answer.photo_id !== null){
+                              <img [src]="answer.base64_data" style="max-width: 20rem; max-height: 15rem;">
+                              <button class="btn btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button>
+                            }
                           </div>
                         }
                       </div>
@@ -309,7 +318,7 @@
               <p class="mt-2">Editar texto del enunciado</p>
               <textarea class="form-control" formControlName="text" id="text"></textarea>
               <label for="formFile" class="form-label">Foto del enunciado</label>
-              <input class="form-control" type="file" id="statementPhoto" (change)="photoConvert($event, 'statement')">
+              <input class="form-control" type="file" id="statementPhoto" (change)="photoConvert($event, 'statement')"> <!--HERE-->
 
             } @else if(edit.type === "question") {
               <div class="text-center">
@@ -365,7 +374,7 @@
               <p class="mt-2">Editar pregunta</p>
               <textarea class="form-control" formControlName="question" id="question"></textarea>
               <label for="formFile" class="form-label">Foto de la pregunta</label>
-              <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, 'question')">
+              <input class="form-control" type="file" id="questionPhoto" (change)="photoConvert($event, 'question')">  <!--HERE-->
 
             } @else if(edit.type === "answers") {
               @for(answer of edit.oldAnswers; track answer.id){
@@ -378,7 +387,7 @@
                 }
                 @if (answer.base64_data) {
                   <span class="input-group-file" [id]="'PhotoSpan'+answer.letter" for="'Photo'+answer.letter">Foto {{answer.letter}}</span>
-                  <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)">
+                  <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)"> <!--HERE-->
                 }
                 @if(answer.response || answer.response === null && edit.oldAnswers.length > 6){
                   <p class="mt-2">Relacion {{answer.letter}} con mensajes de audio:</p>

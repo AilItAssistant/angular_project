@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <form [formGroup] = "structureForm" id="structureForm">
-    <div class="container-fluid my-5">
+    <div class="container my-5"> <!--si no entra se cambia a container-fuid-->
         <div><!--LEVELS-->
             <div class="row">
                 <h3 class=" col-6 my-3">Niveles</h3>
@@ -96,9 +96,9 @@
                                 }
                             </div>
                             <div class="col-3 text-end">
-                                <button class="btn btn-primary ms-5" (click)="openEditSkillModal(skill)">Modificar</button>
-                                <button class="btn btn-secondary ms-3" (click)="desactivateSkill(skill)">Desactivar</button>
-                                <button class="btn btn-danger ms-3" (click)="deleteSkill(skill)">Eliminar</button>
+                                <button class="btn btn-primary ms-3" (click)="openEditSkillModal(skill)">Modificar</button>
+                                <button class="btn btn-secondary ms-1" (click)="desactivateSkill(skill)">Desactivar</button>
+                                <button class="btn btn-danger ms-1" (click)="deleteSkill(skill)">Eliminar</button>
                             </div>
                         </div>
                     </li>

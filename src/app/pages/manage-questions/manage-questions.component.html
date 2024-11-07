@@ -33,7 +33,7 @@
           </select>
         </div>
       }
-      @if(filterForm.value.level && filterForm.value.skill){
+      @if(filterForm.value.level && filterForm.value.skill && filterForm.value.block){
         <div class="col-2 mt-4">
           <button class="btn btn-success mt-3 me-2" (click)="chargeStatements()">Buscar</button>
           <button class="btn btn-success mt-3 ms-2" (click)="cleanFilter()">Limpiar</button>
@@ -41,7 +41,9 @@
       }
     </div>
   </div>
-</form>@if(mode === "questions"){
+</form>
+
+<!--@if(mode === "questions"){-->
   @for(question of questions; track question.id){
     <div class="card m-2">
       <div class="card-header">
@@ -113,7 +115,7 @@
       </div>
     </div>
   }
-} @else if(mode === "statements"){
+<!--} @else if(mode === "statements"){-->
   <div class="text-center card-group mb-5 mt-3 container">
       @for(statement of statements; track statement.id){
         <div class="mx-auto">
@@ -219,7 +221,7 @@
         </div>
       }
     </div>
-}
+  <!--}-->
 
 <!-- Delete modal -->
 

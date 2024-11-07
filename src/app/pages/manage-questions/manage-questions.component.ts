@@ -170,7 +170,7 @@ export class ManageQuestionsComponent {
       level_id: this.filterForm.value.level ? this.filterForm.value.level : this.edit.oldStatement.level_id,
       skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
     };
-    if(this.filterForm.value.block !== ""){
+    //if(this.filterForm.value.block !== ""){
       this.mode = "questions";
       data.block_id = this.filterForm.value.block
       this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswersByBlockId', data, {headers: httpHeaders}).subscribe({
@@ -182,7 +182,7 @@ export class ManageQuestionsComponent {
           alert('Cargar fallo' + err);
         },
       });
-    } else {
+    //} else {
       this.mode = "statements";
       this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
         next: ( res ) => {
@@ -211,7 +211,7 @@ export class ManageQuestionsComponent {
           });
         }
       });
-    };
+    //};
   };
 
   cleanFilter(){
@@ -1096,4 +1096,4 @@ export class ManageQuestionsComponent {
     }
   };
 
-}
+};

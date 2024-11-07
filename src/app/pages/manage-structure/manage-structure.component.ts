@@ -60,7 +60,7 @@ export class ManageStructureComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.loadLevels();
+    //this.loadLevels();
     this.loadSkills();
     this.loadBlocks();
     this.loadQuestionType();
@@ -675,6 +675,10 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/selected', block, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocksToExam();
+  
+
+
+
       },
       error: (err) => {
         alert('Cargar fallo' + err);

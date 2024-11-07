@@ -259,7 +259,11 @@
                                         <li class="list-group-item">
                                             <div class="row ms-5 my-2">
                                                 <div class="col-4 h6">
-                                                    {{block.name}}
+                                                    @if(block.is_selected === 1){
+                                                        <p class="text-success">{{block.name}}</p>
+                                                    } @else if(block.is_selected === 0) {
+                                                        <p class="text-danger">{{block.name}}</p>
+                                                    }
                                                 </div>
                                                 <div class="col-7"></div>
                                                 <div class="col-1">
@@ -267,7 +271,7 @@
                                                         @if(block.is_selected === 1){
                                                             <input [id]="block.id" class="form-check-input" formControlName="select" (change)="selectChange(block.id)" type="checkbox" role="switch" id="examSwitch">
                                                         } @else if(block.is_selected === 0) {
-                                                            <input [id]="block.id" class="form-check-input" formControlName="notSelect" (change)="selectChange(block.id)" type="checkbox" role="switch" id="examSwitch">
+                                                            <input [id]="block.id" class="form-check-input" formControlName="select" (change)="selectChange(block.id)" type="checkbox" role="switch" id="examSwitch">
                                                         }
                                                     </div>
                                                 </div>

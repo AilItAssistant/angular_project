@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { identity } from 'rxjs';
+import {FormControl, FormGroup, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
@@ -54,18 +53,16 @@ export class ManageStructureComponent {
   });
 
   blocksToExams = new FormGroup({
-    qwerty: new FormControl(true),
+    select: new FormControl(true),
+    notSelect: new FormControl(false),
   });
-  // crear doble array y utilizar los arrays id de block para enlazar y bucar como añadirlos al control
 
   constructor(private http: HttpClient) {}
 
-  test(){console.log(this.blocksToExams.value.qwerty)}
-
   ngOnInit() {
-    //this.loadLevels();
-    //this.loadSkills();
-    //this.loadBlocks();
+    this.loadLevels();
+    this.loadSkills();
+    this.loadBlocks();
     this.loadQuestionType();
     this.loadBlocksToExam();
   };
@@ -668,4 +665,20 @@ export class ManageStructureComponent {
         break;
     }
   };
-}
+
+  selectChange(id: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let block: any = { id: id }
+    this.http.put<any>('http://localhost:4000/api/blocks/selected', block, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadBlocksToExam();
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+};

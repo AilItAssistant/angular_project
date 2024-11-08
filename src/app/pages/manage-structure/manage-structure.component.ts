@@ -40,7 +40,6 @@ export class ManageStructureComponent {
     searchSkillBlock: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
-    statement: new FormControl(""),
   });
 
   editForm = new FormGroup({
@@ -49,7 +48,6 @@ export class ManageStructureComponent {
     status: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
-    statement: new FormControl(""),
   });
 
   blocksToExams = new FormGroup({
@@ -60,7 +58,7 @@ export class ManageStructureComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    //this.loadLevels();
+    this.loadLevels();
     this.loadSkills();
     this.loadBlocks();
     this.loadQuestionType();
@@ -140,8 +138,7 @@ export class ManageStructureComponent {
         break;
       case "skills":
         if ( data.name === "" || data.name === undefined &&
-          data.statement === "" || data.statement === undefined
-          && data.secondId === "" || data.secondId === undefined
+          data.secondId === "" || data.secondId === undefined
         ) {
           this.val = false;
         }
@@ -228,7 +225,6 @@ export class ManageStructureComponent {
       status: new FormControl(level.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
-      statement: new FormControl(""),
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -248,7 +244,6 @@ export class ManageStructureComponent {
       status: new FormControl(skill.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
-      statement: new FormControl(skill.statement),
     });
 
     let editModal: any;
@@ -269,7 +264,6 @@ export class ManageStructureComponent {
       status: new FormControl(block.status),
       blockScore: new FormControl(block.max_score),
       blockType: new FormControl(block.question_type_id),
-      statement: new FormControl(""),
     });
 
     let editModal: any;
@@ -320,13 +314,12 @@ export class ManageStructureComponent {
       status = "active";
     }else {
       status = this.structureForm.value.statusSkill;
-    }
+    };
     let add: any = {
       levelId: this.structureForm.value.levelSkill,
       name: this.structureForm.value.skill,
       status: status,
-    }
-    if ( this.structureForm.value.statement !== "" ) { add.statement = this.structureForm.value.statement } else {add.statement = null };
+    };
     this.validation(add, "add_skill");
     if ( this.val ) {
       let auth: any = localStorage.getItem('token');
@@ -342,7 +335,6 @@ export class ManageStructureComponent {
             skill: "",
             statusSkill: "",
             levelSkill: "",
-            statement: ""
           });
         },
         error: (err) => {
@@ -487,7 +479,6 @@ export class ManageStructureComponent {
     };
     if(this.editVariables.type === "skills") {
       if(this.editForm.value.secondId === this.editVariables.structure.level_id) changes.secondId = null;
-      if(this.editForm.value.statement === this.editVariables.structure.statement) {changes.statement = null} else {changes.statement = this.editForm.value.statement};
     };
     console.log(changes)
     this.validation(changes, this.editVariables.type);
@@ -675,10 +666,6 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/selected', block, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocksToExam();
-  
-
-
-
       },
       error: (err) => {
         alert('Cargar fallo' + err);

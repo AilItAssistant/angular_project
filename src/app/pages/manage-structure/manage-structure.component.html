@@ -79,23 +79,20 @@
                 @for(skill of skills; track skill.id){
                     <li class="list-group-item">
                         <div class="row">
-                            <div class="col-2 ms-5 mt-2">
+                            <div class="col-3 ms-5 mt-2">
                                 {{skill.name}}
                             </div>
-                            <div class="col-1 mt-2">
+                            <div class="col-2 mt-2">
                                 {{skill.level_name}}
                             </div>
-                            <div class="col-4">
-                                {{skill.statement}}
-                            </div>
-                            <div class="col-1 col-lg-1 mt-2">
+                            <div class="col-2 col-lg-1 mt-2">
                                 @if (skill.status === "active") {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
                                 }
                             </div>
-                            <div class="col-3 text-end">
+                            <div class="col-4 text-end">
                                 <button class="btn btn-primary ms-3" (click)="openEditSkillModal(skill)">Modificar</button>
                                 <button class="btn btn-secondary ms-1" (click)="desactivateSkill(skill)">Desactivar</button>
                                 <button class="btn btn-danger ms-1" (click)="deleteSkill(skill)">Eliminar</button>
@@ -105,7 +102,8 @@
                 }
             </ul>
             <div class="row my-4">
-                <div class="col-3">
+                <div class="col-1"></div>
+                <div class="col-4">
                     <label for="skill" class="form-label">Destreza</label>
                     <input type="text" class="form-control" formControlName="skill" id="skill">
                 </div>
@@ -117,10 +115,6 @@
                         }
                     </select>
                 </div>
-                <div class="mb-3 col-3">
-                    <label for="statement" class="form-label">Enunciado</label>
-                    <textarea class="form-control" id="statement" rows="1" formControlName="statement"></textarea>
-                </div>
                 <div class="col-2">
                     <label for="statusSkill" class="form-label">Estado</label>
                     <select id="statusSkill" class="form-select" formControlName="statusSkill">
@@ -129,6 +123,7 @@
                     </select>
                 </div>
                 <div class="col-2 text-center mt-4"><button class="btn btn-success" (click)="addSkill()">Añadir</button></div>
+                <div class="col-1"></div>
             </div>
         </div>
         <div> <!--BLOCKS-->
@@ -321,8 +316,6 @@
                                 <option [value]="level.id">{{level.name}}</option>
                             }
                         </select>
-                        <label for="statement" class="form-label">Enunciado</label>
-                        <textarea class="form-control" id="statement" rows="4" formControlName="statement"></textarea>
                     } @else if (editVariables.type === "blocks"){
                         <p class="mt-3">Elige una destreza</p>
                         <select id="mBlockSkill" class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">

@@ -21,8 +21,11 @@ export class ManageStructureComponent {
   blocks: any = [];
   skills: any = [];
   levels: any = [];
+  activeLevels: any = [];
   questionsTypes: any = [];
   blocksExams: any = [];
+  unionsSkills: any = [];
+  skillToUnion: any = [];
 
   structureForm = new FormGroup({
     level: new FormControl(""),
@@ -55,14 +58,70 @@ export class ManageStructureComponent {
     notSelect: new FormControl(false),
   });
 
+  skillsUnions = new FormGroup({
+    name: new FormControl(""),
+    statement: new FormControl(""),
+    skill1: new FormControl(""),
+    skill2: new FormControl(""),
+    level:new FormControl("")
+  });
+
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadLevels();
+    this.loadActiveLevels();
     this.loadSkills();
     this.loadBlocks();
     this.loadQuestionType();
     this.loadBlocksToExam();
+    this.loadSkillsUnions();
+  };
+
+  loadActiveLevels(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.activeLevels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadSkillToUnions(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let level: any = { id: this.skillsUnions.value.level };
+    this.http.post<any>('http://localhost:4000/api/skills/skillsLevel', level, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.skillToUnion = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadSkillsUnions(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/skills_unions', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.unionsSkills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   loadBlocksToExam(){
@@ -666,6 +725,84 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/selected', block, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocksToExam();
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  statusUnion(id: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let union: any = {id: id};
+    this.http.put<any>('http://localhost:4000/api/skills_unions/status', union, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteUnionModal(data: any){
+    this.deleteVariables.id = data.id;
+    this.deleteVariables.name = data.name;
+    this.deleteVariables.status = data.status;
+    this.deleteVariables.statement = data.statement;
+    this.deleteVariables.skill_name_1 = data.skill_name_1;
+    this.deleteVariables.skill_name_2 = data.skill_name_2;
+    this.deleteVariables.type = "union";
+    this.deleteVariables.level = data.level_name;
+    let deleteModal: any;
+    deleteModal = document.getElementById('deleteModal');
+    deleteModal.style.display="block";
+  };
+
+  deleteUnion(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let union: any = { id: this.deleteVariables.id };
+    this.http.put<any>(`http://localhost:4000/api/skills_unions/delete`, union, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+        this.closeDeleteModal();
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addSkillUnion(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      name: "",
+      statement: "",
+      skill_id_1: "",
+      skill_id_2: "",
+      level: "",
+    };
+    this.http.post<any>('http://localhost:4000/api/levels/add', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadLevels();
+        let form: any = document.getElementById("skillsUnions");
+        form.reset();
+        this.skillsUnions.reset({
+          name: "",
+          statement: "",
+          skill1: "",
+          skill2: "",
+          level:""
+        });
       },
       error: (err) => {
         alert('Cargar fallo' + err);

@@ -2,7 +2,8 @@
 
 <form [formGroup] = "structureForm" id="structureForm">
     <div class="container my-5"> <!--si no entra se cambia a container-fuid-->
-        <div><!--LEVELS-->
+        <!--LEVELS-->
+        <div>
             <div class="row">
                 <h3 class=" col-6 my-3">Niveles</h3>
                 <div class="col-3"><input type="text" formControlName="searchLevel" class="form-control mt-3" placeholder="Busqueda por nombre"></div>
@@ -54,7 +55,8 @@
                 <div class="col-2"></div>
             </div>
         </div>
-        <div><!--SKILLS-->
+        <!--SKILLS-->
+        <div>
             <div class="row mt-5">
                 <h3 class=" col-4 my-3">Destrezas</h3>
                 <div class="col-2">
@@ -126,7 +128,8 @@
                 <div class="col-1"></div>
             </div>
         </div>
-        <div> <!--BLOCKS-->
+        <!--BLOCKS-->
+        <div>
             <div class="row mt-5">
                 <h3 class=" col-4 my-3">Bloques</h3>
                 <div class="col-2">
@@ -232,6 +235,7 @@
         </div>
     </div>
 </form>
+<!--MANAGE BLOCKS-->
 <div>
     <form [formGroup] = "blocksToExams" id="blocksToExams">
         <div class="container">
@@ -279,6 +283,90 @@
                     </li>
                 }
             </ul>
+        </div>
+    </form>
+</div>
+<!-- UNIONS SKILLS -->
+<div class="container my-5">
+    <h2>Unión de destrezas</h2>
+    <ul class="list-group my-4 ">
+        @for(unionSkill of unionsSkills; track unionSkill.id){
+            <div class="row">
+                <li class="list-group-item col-1 rounded-start">
+                    {{unionSkill.name}}
+                </li>
+                <li class="list-group-item col-3">
+                    {{unionSkill.statement}}
+                </li>
+                <li class="list-group-item col-1">
+                    {{unionSkill.level_name}}
+                </li>
+                <li class="list-group-item col-1">
+                    {{unionSkill.skill_name_1}}
+                </li>
+                <li class="list-group-item col-1">
+                    {{unionSkill.skill_name_2}}
+                </li>
+                <li class="col-1 list-group-item">
+                    @if (unionSkill.status === "active") {
+                        <p class="text-success">Activo</p>
+                    } @else {
+                        <p class="text-danger">Inactivo</p>
+                    }
+                </li>
+                <li class="col-4 text-center list-group-item rounded-end">
+                    <button class="btn btn-primary m-auto me-3">Modificar</button>
+                    <button class="btn btn-secondary m-auto" (click)="statusUnion(unionSkill.id)">Desactivar</button>
+                    <button class="btn btn-danger m-auto ms-3" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
+                </li>
+            </div>
+        }
+    </ul>
+    <form [formGroup] = "skillsUnions" id="skillsUnions">
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <p>Nombre de la unión:</p>
+                <input type="text" class="form-control" formControlName="name" id="name">
+            </div>
+            <div class="col-6">
+                <label for="statementUnion" class="form-label">Enunciado para la unión:</label>
+                <textarea class="form-control" formControlName="statement" id="statementUnion" rows="2"></textarea>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-3">
+                <p>Nivel de la unión:</p>
+                <select id="level" class="form-select" formControlName="level" (change)="loadSkillToUnions()">
+                    @for(level of activeLevels; track level.id){
+                        <option [value]="level.id">{{level.name}}</option>
+                    }
+                </select>
+            </div>
+            @if(skillsUnions.value.level){
+                <div class="col-3">
+                    <p>Destreza 1:</p>
+                    <select id="skill1" class="form-select" formControlName="skill1">
+                        @for(skill of skillToUnion; track skill.id){
+                            <option [value]="skill.id">{{skill.name}}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-3">
+                    <p>Destreza 2:</p>
+                    <select id="skill2" class="form-select" formControlName="skill2">
+                        @for(skill of skillToUnion; track skill.id){
+                            <option [value]="skill.id">{{skill.name}}</option>
+                        }
+                    </select>
+                </div>
+            }
+            <div class="col-1">
+                <div class="col-2 mt-4 text-center"><button class="btn btn-success mt-3" (click)="addSkillUnion()">Añadir</button></div>
+            </div>
+            <div class="col-1"></div>
         </div>
     </form>
 </div>
@@ -372,6 +460,8 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este destreza?</h1>
                 } @else if ( deleteVariables.type === "block" ) {
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este bloque?</h1>
+                } @else if ( deleteVariables.type === "union" ) {
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar esta unión de destrezas?</h1>
                 }
             @if(!charge){
                 <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
@@ -381,19 +471,33 @@
                 </div>
             }
             </div>
-            <div class="modal-body text-center">
-                <p>Nombre: {{deleteVariables.name}}</p>
-                <p>Estado: {{deleteVariables.status}}</p>
-                @if(deleteVariables.type === "skills"){
-                    <p>Nivel: {{deleteVariables.level}}</p>
-                }@else if(deleteVariables.type === "blocks"){
-                    <p>Destreza: {{deleteVariables.skill}}</p>
-                }
-            </div>
+            @if( deleteVariables.type === "union" ){
+                <div class="m-5">
+                    <p>Nombre: {{deleteVariables.name}}</p>
+                    <p>Enunciado: {{deleteVariables.statement}}</p>
+                    <p>Nivel: {{deleteVariables.level_name}}</p>
+                    <p>Destreza número 1: {{deleteVariables.skill_name_1}}</p>
+                    <p>Destreza número 2: {{deleteVariables.skill_name_2}}</p>
+                </div>
+            } @else{
+                <div class="modal-body text-center">
+                    <p>Nombre: {{deleteVariables.name}}</p>
+                    <p>Estado: {{deleteVariables.status}}</p>
+                    @if(deleteVariables.type === "skills"){
+                        <p>Nivel: {{deleteVariables.level}}</p>
+                    }@else if(deleteVariables.type === "blocks"){
+                        <p>Destreza: {{deleteVariables.skill}}</p>
+                    }
+                </div>
+            }
             @if (!charge){
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
-                    <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+                    @if(deleteVariables.type === "union") {
+                        <button type="button" class="btn btn-primary" (click)="deleteUnion()">Delete</button>
+                    } @else {
+                        <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+                    }
                 </div>
             } @else {
                 <div class="spinner-border text-primary mx-auto mb-3" role="status">

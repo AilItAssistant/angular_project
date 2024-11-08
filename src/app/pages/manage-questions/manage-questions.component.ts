@@ -1129,7 +1129,7 @@ export class ManageQuestionsComponent {
         break;
       case "answer":
         let answerId: any = {id: id};
-        this.http.put<any>('http://localhost:4000/api/answers/deleteImage', questionId, {headers: httpHeaders}).subscribe({
+        this.http.put<any>('http://localhost:4000/api/answers/deleteImage', answerId, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
           },

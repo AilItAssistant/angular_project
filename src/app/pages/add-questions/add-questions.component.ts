@@ -470,11 +470,12 @@ export class AddQuestionsComponent {
           let data: any = { statement_id: this.selectedStatement.id };
           this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
             next: ( res ) => {
-              console.log(res)
               if ( res !== undefined ) {
                 this.selectedStatement.questions.push(res);
-                console.log(this.selectedStatement);
-              }
+                console.log(this.selectedStatement.skill_id);
+                this.chargeBlocksQuestions(this.selectedStatement.skill_id);
+                this.closeStatementModal();
+              };
             },
             error: (err) => { alert('Cargar fallo' + err); }
           });
@@ -633,7 +634,7 @@ export class AddQuestionsComponent {
   };
 
   chargeBlocksQuestions(id: any){
-    let skill: any = {}; 
+    let skill: any = {};
     if ( id === '') {
       skill.skill_id = this.questionForm.value.skill;
     } else if ( id !== '' ) {

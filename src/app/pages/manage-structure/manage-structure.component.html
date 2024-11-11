@@ -291,35 +291,60 @@
     <h2>Unión de destrezas</h2>
     <ul class="list-group my-4 ">
         @for(unionSkill of unionsSkills; track unionSkill.id){
-            <div class="row">
-                <li class="list-group-item col-1 rounded-start">
-                    {{unionSkill.name}}
-                </li>
-                <li class="list-group-item col-3">
-                    {{unionSkill.statement}}
-                </li>
-                <li class="list-group-item col-1">
-                    {{unionSkill.level_name}}
-                </li>
-                <li class="list-group-item col-1">
-                    {{unionSkill.skill_name_1}}
-                </li>
-                <li class="list-group-item col-1">
-                    {{unionSkill.skill_name_2}}
-                </li>
-                <li class="col-1 list-group-item">
-                    @if (unionSkill.status === "active") {
-                        <p class="text-success">Activo</p>
-                    } @else {
-                        <p class="text-danger">Inactivo</p>
-                    }
-                </li>
-                <li class="col-4 text-center list-group-item rounded-end">
-                    <button class="btn btn-primary m-auto me-3">Modificar</button>
-                    <button class="btn btn-secondary m-auto" (click)="statusUnion(unionSkill.id)">Desactivar</button>
-                    <button class="btn btn-danger m-auto ms-3" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
-                </li>
-            </div>
+            <li class="list-group-item">
+                <div class="row fw-bold text-center">
+                    <div class="col-1 rounded-start">
+                        Nombre de la unión
+                    </div>
+                    <div class="col-3">
+                        Enunciado
+                    </div>
+                    <div class="col-1">
+                        Nivel
+                    </div>
+                    <div class="col-1">
+                        Destreza 1
+                    </div>
+                    <div class="col-1">
+                        Destreza 2
+                    </div>
+                    <div class="col-1">
+                        Estado
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            </li>
+            <li class="list-group-item">
+                <div class="row text-center">
+                    <div class="col-1 rounded-start">
+                        {{unionSkill.name}}
+                    </div>
+                    <div class="col-3">
+                        {{unionSkill.statement}}
+                    </div>
+                    <div class="col-1">
+                        {{unionSkill.level_name}}
+                    </div>
+                    <div class="col-1">
+                        {{unionSkill.skill_name_1}}
+                    </div>
+                    <div class="col-1">
+                        {{unionSkill.skill_name_2}}
+                    </div>
+                    <div class="col-1 divst-group-item">
+                        @if (unionSkill.status === "active") {
+                            <p class="text-success">Activo</p>
+                        } @else {
+                            <p class="text-danger">Inactivo</p>
+                        }
+                    </div>
+                    <div class="col-4 text-center rounded-end">
+                        <button class="btn btn-primary m-auto me-3">Modificar</button>
+                        <button class="btn btn-secondary m-auto" (click)="statusUnion(unionSkill.id)">Desactivar</button>
+                        <button class="btn btn-danger m-auto ms-3" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
+                    </div>
+                </div>
+            </li>
         }
     </ul>
     <form [formGroup] = "skillsUnions" id="skillsUnions">

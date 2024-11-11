@@ -186,6 +186,7 @@ export class ManageQuestionsComponent {
       this.mode = "statements";
       this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
         next: ( res ) => {
+          console.log(res)
           this.statements = res;
           this.statements.forEach( ( statement: any ) => {
             statement.questions = [];

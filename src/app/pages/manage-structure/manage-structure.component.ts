@@ -51,6 +51,10 @@ export class ManageStructureComponent {
     status: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
+    skill1: new FormControl(""),
+    skill2: new FormControl(""),
+    level: new FormControl(""),
+    statement: new FormControl("")
   });
 
   blocksToExams = new FormGroup({
@@ -98,7 +102,13 @@ export class ManageStructureComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    let level: any = { id: this.skillsUnions.value.level };
+    let level: any;
+    if( !this.skillsUnions.value.level || this.skillsUnions.value.level === "" ||
+      this.skillsUnions.value.level === undefined || this.skillsUnions.value.level === null ){
+        level = { id: this.editForm.value.level };
+      } else {
+        level = { id: this.skillsUnions.value.level }
+      }
     this.http.post<any>('http://localhost:4000/api/skills/skillsLevel', level, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.skillToUnion = res;
@@ -116,6 +126,7 @@ export class ManageStructureComponent {
     });
     this.http.get<any>('http://localhost:4000/api/skills_unions', {headers: httpHeaders}).subscribe({
       next: (res) => {
+        console.log(res)
         this.unionsSkills = res;
       },
       error: (err) => {
@@ -132,7 +143,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/levels/activeLevelsSkillsBlocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocksExams = res;
-        console.log(res);
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -284,6 +294,10 @@ export class ManageStructureComponent {
       status: new FormControl(level.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
+      skill1: new FormControl(""),
+      skill2: new FormControl(""),
+      level: new FormControl(""),
+      statement: new FormControl("")
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -303,6 +317,10 @@ export class ManageStructureComponent {
       status: new FormControl(skill.status),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
+      skill1: new FormControl(""),
+      skill2: new FormControl(""),
+      level: new FormControl(""),
+      statement: new FormControl("")
     });
 
     let editModal: any;
@@ -323,6 +341,10 @@ export class ManageStructureComponent {
       status: new FormControl(block.status),
       blockScore: new FormControl(block.max_score),
       blockType: new FormControl(block.question_type_id),
+      skill1: new FormControl(""),
+      skill2: new FormControl(""),
+      level: new FormControl(""),
+      statement: new FormControl("")
     });
 
     let editModal: any;
@@ -539,6 +561,13 @@ export class ManageStructureComponent {
     if(this.editVariables.type === "skills") {
       if(this.editForm.value.secondId === this.editVariables.structure.level_id) changes.secondId = null;
     };
+    if(this.editVariables.type === "skills_unions"){
+      changes.statement = this.editForm.value.statement === this.editVariables.structure.statement ? null : this.editForm.value.statement;
+      changes.skill_id_1 = this.editForm.value.skill1 === this.editVariables.structure.skill_id_1 ? null : this.editForm.value.skill1;
+      changes.skill_id_2 = this.editForm.value.skill2 === this.editVariables.structure.skill_id_2 ? null : this.editForm.value.skill2;
+      changes.level_id = this.editForm.value.level === this.editVariables.structure.level_id ? null : this.editForm.value.level;
+
+    }
     console.log(changes)
     this.validation(changes, this.editVariables.type);
     if ( this.val ) {
@@ -557,6 +586,8 @@ export class ManageStructureComponent {
             this.loadSkills();
           }else if( this.editVariables.type === "blocks" ){
             this.loadBlocks();
+          }else if( this.editVariables.type === "skills_unions" ){
+            this.loadSkillsUnions();
           }
           this.charge = false;
           this.closeEditModal();
@@ -785,15 +816,16 @@ export class ManageStructureComponent {
       'authorization': auth
     });
     let add: any = {
-      name: "",
-      statement: "",
-      skill_id_1: "",
-      skill_id_2: "",
-      level: "",
+      name: this.skillsUnions.value.name,
+      statement: this.skillsUnions.value.statement,
+      skill_id_1: this.skillsUnions.value.skill1,
+      skill_id_2: this.skillsUnions.value.skill2,
+      level_id: this.skillsUnions.value.level,
     };
-    this.http.post<any>('http://localhost:4000/api/levels/add', add, {headers: httpHeaders}).subscribe({
+    console.log(add)
+    this.http.post<any>('http://localhost:4000/api/skills_unions/add', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.loadLevels();
+        this.loadSkillsUnions();
         let form: any = document.getElementById("skillsUnions");
         form.reset();
         this.skillsUnions.reset({
@@ -808,5 +840,28 @@ export class ManageStructureComponent {
         alert('Cargar fallo' + err);
       },
     });
+  };
+
+  openSkillsUnionEdit(skillUnion: any){
+    this.editVariables.type = "skills_unions";
+    this.editVariables.id = skillUnion.id;
+    this.editVariables.structure = skillUnion;
+    this.editVariables.action = "modify";
+    this.editForm = new FormGroup({
+      secondId: new FormControl(""),
+      name: new FormControl(skillUnion.name),
+      status: new FormControl(""),
+      blockScore: new FormControl(""),
+      blockType: new FormControl(""),
+      skill1: new FormControl(skillUnion.skill_id_1),
+      skill2: new FormControl(skillUnion.skill_id_2),
+      level: new FormControl(skillUnion.level_id),
+      statement: new FormControl(skillUnion.statement)
+    });
+    this.loadSkillToUnions();
+
+    let editModal: any;
+    editModal = document.getElementById('editModal');
+    editModal.style.display="block";
   };
 };

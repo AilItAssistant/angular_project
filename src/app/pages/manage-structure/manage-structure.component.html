@@ -17,6 +17,13 @@
                 </div>
             </div>
             <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row fw-bold">
+                        <div class="col ms-5 mt-2">Nombre</div>
+                        <div class="col col-lg-1 mt-2">Estado</div>
+                        <div class="col text-end"></div>
+                    </div>
+                </li>
                 @for(level of levels; track level.id){
                     <li class="list-group-item">
                         <div class="row">
@@ -78,6 +85,14 @@
                 </div>
             </div>
             <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row fw-bold">
+                        <div class="col-3 ms-5 mt-2">Nombre</div>
+                        <div class="col-2 mt-2">Nivel </div>
+                        <div class="col-2 col-lg-1 mt-2">Estado</div>
+                        <div class="col-4 text-end"></div>
+                    </div>
+                </li>
                 @for(skill of skills; track skill.id){
                     <li class="list-group-item">
                         <div class="row">
@@ -151,6 +166,27 @@
                 </div>
             </div>
             <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row text-center fw-bold">
+                        <div class="col-1 ms-4 mt-3">
+                            Nombre
+                        </div>
+                        <div class="col-1 mt-3">
+                            Destreza
+                        </div>
+                        <div class="col-1 mt-3">
+                            Puntuación del bloque
+                        </div>
+                        <div class="col-2 mt-3 mx-3">
+                            Tipo de preguntas
+                        </div>
+                        <div class="col-1 col-lg-1 mt-3 text-center">
+                            En exámen
+                        </div>
+                        <div class="col-2 col-lg-1 mt-3 mx-3">Estado</div>
+                        <div class="col-4 mt-3"></div>
+                    </div>
+                </li>
                 @for(block of blocks; track block.id){
                     <li class="list-group-item">
                         <div class="row text-center">
@@ -249,15 +285,15 @@
                             </div>
                             @for(skill of level.skills; track skill.id){
                                 <li class="list-group-item">
-                                    <div class="row ms-4 my-3">
+                                    <div class="row ms-4 my-2">
                                         <div class="col-3 h5">
                                             {{skill.name}}
                                         </div>
                                     </div>
                                     @for(block of skill.blocks; track block.id){
                                         <li class="list-group-item">
-                                            <div class="row ms-5 my-2">
-                                                <div class="col-4 h6">
+                                            <div class="row ms-5">
+                                                <div class="col-4 h6 mt-2">
                                                     @if(block.is_selected === 1){
                                                         <p class="text-success">{{block.name}}</p>
                                                     } @else if(block.is_selected === 0) {
@@ -290,33 +326,33 @@
 <div class="container my-5">
     <h2>Unión de destrezas</h2>
     <ul class="list-group my-4 ">
+        <li class="list-group-item">
+            <div class="row fw-bold text-center">
+                <div class="col-1">
+                    Nombre de la unión
+                </div>
+                <div class="col-3">
+                    Enunciado
+                </div>
+                <div class="col-1">
+                    Nivel
+                </div>
+                <div class="col-1">
+                    Destreza 1
+                </div>
+                <div class="col-1">
+                    Destreza 2
+                </div>
+                <div class="col-1">
+                    Estado
+                </div>
+                <div class="col-4"></div>
+            </div>
+        </li>
         @for(unionSkill of unionsSkills; track unionSkill.id){
             <li class="list-group-item">
-                <div class="row fw-bold text-center">
-                    <div class="col-1 rounded-start">
-                        Nombre de la unión
-                    </div>
-                    <div class="col-3">
-                        Enunciado
-                    </div>
-                    <div class="col-1">
-                        Nivel
-                    </div>
-                    <div class="col-1">
-                        Destreza 1
-                    </div>
-                    <div class="col-1">
-                        Destreza 2
-                    </div>
-                    <div class="col-1">
-                        Estado
-                    </div>
-                    <div class="col-4"></div>
-                </div>
-            </li>
-            <li class="list-group-item">
                 <div class="row text-center">
-                    <div class="col-1 rounded-start">
+                    <div class="col-1">
                         {{unionSkill.name}}
                     </div>
                     <div class="col-3">
@@ -331,7 +367,7 @@
                     <div class="col-1">
                         {{unionSkill.skill_name_2}}
                     </div>
-                    <div class="col-1 divst-group-item">
+                    <div class="col-1">
                         @if (unionSkill.status === "active") {
                             <p class="text-success">Activo</p>
                         } @else {
@@ -339,7 +375,7 @@
                         }
                     </div>
                     <div class="col-4 text-center rounded-end">
-                        <button class="btn btn-primary m-auto me-3">Modificar</button>
+                        <button class="btn btn-primary m-auto me-3" (click)="openSkillsUnionEdit(unionSkill)">Modificar</button>
                         <button class="btn btn-secondary m-auto" (click)="statusUnion(unionSkill.id)">Desactivar</button>
                         <button class="btn btn-danger m-auto ms-3" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
                     </div>
@@ -409,6 +445,8 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar destreza</h1>
                 } @else if ( editVariables.type === "blocks" ) {
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar bloque</h1>
+                } @else if ( editVariables.type === "skills_unions" ) {
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar bloque</h1>
                 }
                 @if(!charge){
                     <button type="button" class="btn-close" (click)="closeEditModal()"></button>
@@ -421,7 +459,7 @@
             <div class="modal-body">
                 <form [formGroup] = "editForm" id="editForm">
                     <p class="mt-1">Nombre</p>
-                    <input type="text" id="mName" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="mName" aria-describedby="mName">
+                    <input type="text" id="mName" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="Name" aria-describedby="mName">
                     @if(editVariables.type === "skills"){
                         <p class="mt-3">Elige un nivel</p>
                         <select id="mSkillLevel" class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
@@ -451,12 +489,35 @@
                                 <option value="10">20</option>
                                 <option value="10">25</option>
                             </select>
+                    } @else if (editVariables.type === "skills_unions") {
+                        <p>Nivel de la unión:</p>
+                        <select id="level" class="form-select" formControlName="level" (change)="loadSkillToUnions()">
+                            @for(level of activeLevels; track level.id){
+                                <option [value]="level.id">{{level.name}}</option>
+                            }
+                        </select>
+                        <label for="statementUnion" class="form-label">Enunciado para la unión:</label>
+                        <textarea class="form-control" formControlName="statement" id="statementUnion" rows="2"></textarea>
+                        <p>Destreza 1:</p>
+                        <select id="skill1" class="form-select" formControlName="skill1">
+                            @for(skill of skillToUnion; track skill.id){
+                                <option [value]="skill.id">{{skill.name}}</option>
+                            }
+                        </select>
+                        <p>Destreza 2:</p>
+                        <select id="skill2" class="form-select" formControlName="skill2">
+                            @for(skill of skillToUnion; track skill.id){
+                                <option [value]="skill.id">{{skill.name}}</option>
+                            }
+                        </select>
                     }
-                    <p class="mt-3">Elige un status</p>
-                    <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
-                        <option value="active" selected>Activo</option>
-                        <option value="inactive">Inactivo</option>
-                    </select>
+                    @if (editVariables.type !== "skills_unions") {
+                        <p class="mt-3">Elige un status</p>
+                        <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
+                            <option value="active" selected>Activo</option>
+                            <option value="inactive">Inactivo</option>
+                        </select>
+                    }
                 </form>
             </div>
             @if (!charge){

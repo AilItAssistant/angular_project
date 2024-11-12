@@ -225,7 +225,7 @@ export class ExamsComponent {
         next: (res) => {
           this.exam = res;
           console.log(res)
-          this.completeExam();
+          //this.completeExam();
         },
         error: (err) => {
           alert('Cargar fallo' + err);

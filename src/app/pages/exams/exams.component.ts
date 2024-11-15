@@ -36,7 +36,6 @@ export class ExamsComponent {
     });
     this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res)
         this.levels = res;
       },
       error: (err) => {
@@ -225,7 +224,7 @@ export class ExamsComponent {
         next: (res) => {
           this.exam = res;
           console.log(res)
-          //this.completeExam();
+          this.completeExam();
         },
         error: (err) => {
           alert('Cargar fallo' + err);
@@ -402,6 +401,118 @@ export class ExamsComponent {
     ];
     pdf.content.push(firstPage);
 
+
+
+    for(let ex = 0; this.exam.length > ex; ex++){
+      this.exam[ex]
+      let model: any = [];
+
+      if(this.exam[ex].content && this.exam[ex].content !== ""){
+        model.push([
+          {
+            columns: [
+              {
+                text: `${ex + 1}. ${this.exam[ex].content}`,
+                width: '85%',
+                style: 'statement'
+              },
+              {
+                text: `___/${this.exam[ex].score}`,
+                width: '15%',
+                style: 'puntuationStatement'
+              }
+            ]
+          },
+        ]);
+      };
+
+      if(this.exam[ex].type.text > 0){
+        model.push(
+          {
+            text: this.exam[ex].text,
+            style: 'text'
+          },
+        );
+      };
+
+      if(this.exam[ex].type.photo > 0 && this.exam[ex].photo){
+        model.push(
+          {
+            image: this.exam[ex].photo,
+            width: 420,
+            style: 'image',
+          },
+        );
+      };
+
+      if(this.exam[ex].type.question > 0){
+        /*for(let q: any = 0; this.exam[ex].questions.length > q; q + 2){
+          if(this.exam[ex].questions[q-1] && this.exam[ex].questions[q]){
+
+          }else if(){
+
+          };
+        };*/
+        /*model.push(
+          {
+            columns: [
+              {
+                stack: [
+                  {
+                    text: "1. " + this.exam.grammarEH.question.content,
+                    style: 'readStatement'
+                  },{
+                    text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarEH.question.answers[0].content,
+                    style: 'readAnswers'
+                  },{
+                    text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarEH.question.answers[1].content,
+                    style: 'readAnswers'
+                  },{
+                    text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarEH.question.answers[2].content,
+                    style: 'readAnswers'
+                  }
+                ]
+              },
+              {
+                stack: [
+                  {
+                    text: "2. " + this.exam.grammarGN.question.content,
+                    style: 'readStatement'
+                  },{
+                    text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarGN.question.answers[0].content,
+                    style: 'readAnswers'
+                  },{
+                    text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarGN.question.answers[1].content,
+                    style: 'readAnswers'
+                  },{
+                    text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarGN.question.answers[2].content,
+                    style: 'readAnswers'
+                  }
+                ]
+              }
+            ]
+          },
+        );*/
+      };
+
+      if(this.exam[ex].type.answer > 0 && this.exam[ex].type.answer < 6){
+      };
+
+      if(this.exam[ex].type.answer > 6){
+
+      };
+
+      pdf.content.push(model);
+    };
+
+
+
+
+
+
+
+
+/*
     //! Lexic and grammar
     let lexicGrammar: any = [
       {
@@ -723,7 +834,7 @@ export class ExamsComponent {
         pageBreak: 'after'
       }
     ];
-    pdf.content.push(lexicGrammar);
+    //pdf.content.push(lexicGrammar);
 
     //! Reading
     let reading: any = [
@@ -882,7 +993,7 @@ export class ExamsComponent {
         pageBreak: 'after'
       }
     ];
-    pdf.content.push(reading);
+    //pdf.content.push(reading);
 
     //! Writting
     let writting: any = [
@@ -914,7 +1025,7 @@ export class ExamsComponent {
         pageBreak: 'after'
       }
     ];
-    pdf.content.push(writting);
+    //pdf.content.push(writting);
 
     //! Audio
     let audioPhotos: any = [
@@ -1066,7 +1177,7 @@ export class ExamsComponent {
         pageBreak: "after"
       }
     ];
-    pdf.content.push(audioPhotos);
+    //pdf.content.push(audioPhotos);
 
     let audioQuestion: any = [
       {
@@ -1104,7 +1215,7 @@ export class ExamsComponent {
         style: 'readStatement'
       },
     ];
-    pdf.content.push(audioQuestion);
+    //pdf.content.push(audioQuestion);
 
     //! Oral
     let oralQuestion: any = [
@@ -1132,8 +1243,10 @@ export class ExamsComponent {
         style: 'image',
       }
     ];
-    pdf.content.push(oralQuestion);
+    //pdf.content.push(oralQuestion);
 
+  */
+    console.log(pdf)
     //pdfMake.createPdf(pdf).open();
     pdfMake.createPdf(pdf).download("test.pdf");
   };

@@ -223,7 +223,7 @@ export class ExamsComponent {
       this.http.post<any>('http://localhost:4000/api/exams/generate', level, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.exam = res;
-          console.log(res)
+          //console.log(res)
           this.completeExam();
         },
         error: (err) => {
@@ -324,7 +324,7 @@ export class ExamsComponent {
           fontSize: 11,
         },
         image: {
-          margin: [ 55, 10, 0, 0 ],
+          margin: [ 50, 10, 0, 0 ],
         },
         readQuestion: {
           margin: [ 55, 10, 0, 0 ],
@@ -340,7 +340,10 @@ export class ExamsComponent {
           fontSize: 9.5,
         },
         textPhoto: {
-          margin: [ 60, 10, 0, 20 ]
+          margin: [ 55, 10, 0, 20 ]
+        },
+        space: {
+          margin: [ 0, 20 ]
         },
       }
     };
@@ -401,13 +404,14 @@ export class ExamsComponent {
     ];
     pdf.content.push(firstPage);
 
-
-
     for(let ex = 0; this.exam.length > ex; ex++){
       this.exam[ex]
       let model: any = [];
+      let space: any = 0;
 
+      //*STATEMENT
       if(this.exam[ex].content && this.exam[ex].content !== ""){
+        space = space + 1;
         model.push([
           {
             columns: [
@@ -426,7 +430,9 @@ export class ExamsComponent {
         ]);
       };
 
+      //*TEXT
       if(this.exam[ex].type.text > 0){
+        space = space + 10;
         model.push(
           {
             text: this.exam[ex].text,
@@ -435,7 +441,9 @@ export class ExamsComponent {
         );
       };
 
+      //*STATEMENT PHOTO
       if(this.exam[ex].type.photo > 0 && this.exam[ex].photo){
+        space = space + 8;
         model.push(
           {
             image: this.exam[ex].photo,
@@ -445,810 +453,239 @@ export class ExamsComponent {
         );
       };
 
-      if(this.exam[ex].type.question > 0){
-        /*for(let q: any = 0; this.exam[ex].questions.length > q; q + 2){
-          if(this.exam[ex].questions[q-1] && this.exam[ex].questions[q]){
-
-          }else if(){
-
-          };
-        };*/
-        /*model.push(
-          {
-            columns: [
+      //*QUESTIONS
+      if(this.exam[ex].type.question > 0 && this.exam[ex].questions){
+        for(let q: any = 0; this.exam[ex].questions.length > q; q++){
+          if(this.exam[ex].questions[q + 1]){
+            let questionBase: any = [
               {
-                stack: [
-                  {
-                    text: "1. " + this.exam.grammarEH.question.content,
-                    style: 'readStatement'
-                  },{
-                    text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarEH.question.answers[0].content,
-                    style: 'readAnswers'
-                  },{
-                    text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarEH.question.answers[1].content,
-                    style: 'readAnswers'
-                  },{
-                    text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarEH.question.answers[2].content,
-                    style: 'readAnswers'
-                  }
-                ]
+                columns: [],
               },
+            ];
+            let question1: any = {
+              stack: [
+                {
+                  text: q + 1 + ". " + this.exam[ex].questions[q].content,
+                  style: 'readStatement'
+                },
+              ],
+            };
+            if(this.exam[ex].questions[q].answers){
+              for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
+                let answers1: any = {
+                  text: this.exam[ex].questions[q].answers[a].letter + ". " + this.exam[ex].questions[q].answers[a].content,
+                  style: 'readAnswers'
+                };
+                question1.stack.push(answers1);
+              };
+            };
+            questionBase[0].columns.push(question1)
+            let question2: any = {
+              stack: [
+                {
+                  text: q + 2 + ". " + this.exam[ex].questions[q + 1].content,
+                  style: 'readStatement'
+                },
+              ],
+            };
+            if(this.exam[ex].questions[q + 1].answers){
+              for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
+                let answers2: any = {
+                  text: this.exam[ex].questions[q + 1].answers[a].letter + ". " + this.exam[ex].questions[q + 1].answers[a].content,
+                  style: 'readAnswers'
+                };
+                question2.stack.push(answers2);
+              };
+            };
+            if(q === 14){
+              questionBase.push(
+                {
+                  text: '',
+                  pageBreak: 'after',
+                }
+              );
+            };
+            questionBase[0].columns.push(question2)
+            model.push(questionBase);
+            q++;
+            if(q === 15){
+              questionBase.push(
+                {
+                  text: '',
+                  style: "space",
+                }
+              );
+            };
+          }else{
+            let questionBase: any = [
               {
-                stack: [
-                  {
-                    text: "2. " + this.exam.grammarGN.question.content,
-                    style: 'readStatement'
-                  },{
-                    text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarGN.question.answers[0].content,
-                    style: 'readAnswers'
-                  },{
-                    text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarGN.question.answers[1].content,
-                    style: 'readAnswers'
-                  },{
-                    text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarGN.question.answers[2].content,
-                    style: 'readAnswers'
-                  }
-                ]
-              }
-            ]
-          },
-        );*/
+                columns: [],
+              },
+            ];
+            let question: any = {
+              stack: [
+                {
+                  text: q + 1 + ". " + this.exam[ex].questions[q].content,
+                  style: 'readStatement'
+                },
+              ],
+            };
+            if(this.exam[ex].questions[q].answers){
+              for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
+                let answers: any = {
+                  text: this.exam[ex].questions[q].answers[a].letter + ". " + this.exam[ex].questions[q].answers[a].content,
+                  style: 'readAnswers'
+                };
+                question.stack.push(answers);
+              };
+            };
+            questionBase[0].columns.push(question);
+            model.push(questionBase);
+          };
+          space = space + 2;
+        };
       };
 
-      if(this.exam[ex].type.answer > 0 && this.exam[ex].type.answer < 6){
+      //*PHOTO ANSWERS
+      if(this.exam[ex].type.answer > 6 && this.exam[ex].type.photo > 6){
+        for(let p: any = 0; this.exam[ex].answers.length > p; p++){
+          if(this.exam[ex].answers[p] && this.exam[ex].answers[p + 1] && this.exam[ex].answers[p + 2]) {
+            model.push(
+              [
+                {
+                  columns: [
+                    {
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },{
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p + 1].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p + 1].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },{
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p + 2].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p + 2].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            );
+            p = p + 3;
+          } else if(this.exam[ex].answers[p] && this.exam[ex].answers[p + 1] && !this.exam[ex].answers[p + 2]) {
+            model.push(
+              [
+                {
+                  columns: [
+                    {
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },{
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p + 1].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p + 1].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            );
+            p = p + 1;
+          }else if(this.exam[ex].answers[p] && !this.exam[ex].answers[p + 1] && !this.exam[ex].answers[p + 2]) {
+            model.push(
+              [
+                {
+                  columns: [
+                    {
+                      stack: [
+                        {
+                          image: this.exam[ex].answers[p].photo,
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: this.exam[ex].answers[p].content,
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            );
+          };
+          space = space + 3;
+        };
       };
 
-      if(this.exam[ex].type.answer > 6){
-
+      //*PHRASE ANSWERS
+      if(this.exam[ex].type.answer > 0 && this.exam[ex].type.answer < 6 && this.exam[ex].type.photo === 0 && this.exam[ex].answers){
+        for(let a: any = 0; this.exam[ex].answers.length > a; a++){
+          model.push(
+            {
+              text: this.exam[ex].answers[a].letter + ". " + this.exam[ex].answers[a].content,
+              style: 'readStatement'
+            },
+          );
+          space++;
+        };
       };
+
+      if(this.exam.length > ex && ex !== 0){
+        pdf.content.push(
+          {
+            text: '',
+            pageBreak: 'after',
+          }
+        );
+      };
+
+      console.log(space);
 
       pdf.content.push(model);
     };
 
-
-
-
-
-
-
-
-/*
-    //! Lexic and grammar
-    let lexicGrammar: any = [
-      {
-        columns: [
-          {
-            text: "1. Tests de gramática y léxico",
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/30`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "1. " + this.exam.grammarEH.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarEH.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarEH.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarEH.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "2. " + this.exam.grammarGN.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarGN.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarGN.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarGN.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "3. " + this.exam.grammarGS.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarGS.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarGS.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarGS.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "4. " + this.exam.grammarP.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarP.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarP.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarP.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "5. " + this.exam.grammarPG.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarPG.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarPG.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarPG.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "6. " + this.exam.grammarPI.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarPI.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarPI.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarPI.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "7. " + this.exam.grammarPP.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarPP.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarPP.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarPP.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "8. " + this.exam.grammarR.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarR.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarR.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarR.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "9. " + this.exam.grammarTH.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarTH.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarTH.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarTH.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "10. " + this.exam.grammarVG.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.grammarVG.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.grammarVG.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.grammarVG.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "11. " + this.exam.lexiconC.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.lexiconC.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.lexiconC.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.lexiconC.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "12. " + this.exam.lexiconDF.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.lexiconDF.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.lexiconDF.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.lexiconDF.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "13. " + this.exam.lexiconR.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.lexiconR.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.lexiconR.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.lexiconR.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "14. " + this.exam.lexiconTA.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.lexiconTA.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.lexiconTA.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.lexiconTA.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: "15. " + this.exam.lexiconVO.question.content,
-                style: 'readStatement'
-              },{
-                text: this.exam.grammarEH.question.answers[0].letter + ". " + this.exam.lexiconVO.question.answers[0].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[1].letter + ". " + this.exam.lexiconVO.question.answers[1].content,
-                style: 'readAnswers'
-              },{
-                text: this.exam.grammarEH.question.answers[2].letter + ". " + this.exam.lexiconVO.question.answers[2].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: "",
-              },{
-                text: "",
-              },{
-                text: "",
-              },{
-                text: "",
-              }
-            ]
-          },
-        ]
-      },
-      {
-        text: '',
-        pageBreak: 'after'
-      }
-    ];
-    //pdf.content.push(lexicGrammar);
-
-    //! Reading
-    let reading: any = [
-      {
-        columns: [
-          {
-            text: `2. ` + this.exam.reading.statement.content ,
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/${this.exam.reading.statement.score}`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        text: this.exam.reading.statement.text,
-        style: 'text'
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: `1. ` + this.exam.reading.statement.questions[0].content,
-                style: 'readStatement'
-              },
-              {
-                text: `A. ` + this.exam.reading.statement.questions[0].answers[0].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `B. ` + this.exam.reading.statement.questions[0].answers[1].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `C. ` + this.exam.reading.statement.questions[0].answers[2].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `D. ` + this.exam.reading.statement.questions[0].answers[3].content ? this.exam.reading.statement.questions[0].answers[3].content : "",
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: `2. ` + this.exam.reading.statement.questions[1].content,
-                style: 'readStatement'
-              },
-              {
-                text: `A. ` + this.exam.reading.statement.questions[1].answers[0].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `B. ` + this.exam.reading.statement.questions[1].answers[1].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `C. ` + this.exam.reading.statement.questions[1].answers[2].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `D. ` + this.exam.reading.statement.questions[1].answers[3].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-        ],
-        style: 'readQuestions'
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: `3. ` + this.exam.reading.statement.questions[2].content,
-                style: 'readStatement'
-              },
-              {
-                text: `A. ` + this.exam.reading.statement.questions[2].answers[0].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `B. ` + this.exam.reading.statement.questions[2].answers[1].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `C. ` + this.exam.reading.statement.questions[2].answers[2].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `D. ` + this.exam.reading.statement.questions[2].answers[3].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                text: `4. ` + this.exam.reading.statement.questions[3].content,
-                style: 'readStatement'
-              },
-              {
-                text: `A. ` + this.exam.reading.statement.questions[3].answers[0].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `B. ` + this.exam.reading.statement.questions[3].answers[1].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `C. ` + this.exam.reading.statement.questions[3].answers[2].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `D. ` + this.exam.reading.statement.questions[3].answers[3].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-        ],
-        style: 'readQuestions'
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                text: `5. ` + this.exam.reading.statement.questions[4].content,
-                style: 'readStatement'
-              },
-              {
-                text: `A. ` + this.exam.reading.statement.questions[4].answers[0].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `B. ` + this.exam.reading.statement.questions[4].answers[1].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `C. ` + this.exam.reading.statement.questions[4].answers[2].content,
-                style: 'readAnswers'
-              },
-              {
-                text: `D. ` + this.exam.reading.statement.questions[4].answers[3].content,
-                style: 'readAnswers'
-              }
-            ]
-          },
-        ],
-        style: 'readQuestion',
-        pageBreak: 'after'
-      }
-    ];
-    //pdf.content.push(reading);
-
-    //! Writting
-    let writting: any = [
-      {
-        columns: [
-          {
-            text: "3. " + this.exam.writting.statement.content,
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/${ this.exam.writting.statement.score}`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        text:  this.exam.writting.statement.text,
-        style: 'text'
-      },
-      {
-        image:  this.exam.writting.statement.photo,
-        width: 420,
-        style: 'image'
-      },
-      {
-        text: '',
-        pageBreak: 'after'
-      }
-    ];
-    //pdf.content.push(writting);
-
-    //! Audio
-    let audioPhotos: any = [
-      {
-        columns: [
-          {
-            text: "4. " + this.exam.audio.multiQuestion.question.content,
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/${ this.exam.audio.multiQuestion.question.puntuation}`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[0].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[1].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[2].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[3].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[4].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[5].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        columns: [
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[6].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[7].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          },
-          {
-            stack: [
-              {
-                image: this.exam.audio.multiQuestion.question.answers[8].photo !== undefined ? this.exam.audio.multiQuestion.question.answers[8].photo : this.exam.audio.multiQuestion.question.answers[7].photo,
-                width: 100,
-                style: 'image',
-              },
-              {
-                text: "Mensaje:____",
-                style: 'textPhoto'
-              }
-            ]
-          }
-        ]
-      },
-      {
-        text: "",
-        pageBreak: "after"
-      }
-    ];
-    //pdf.content.push(audioPhotos);
-
-    let audioQuestion: any = [
-      {
-        columns: [
-          {
-            text: "5. " + this.exam.audio.phraseQuestion.question.content,
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/${ this.exam.audio.phraseQuestion.question.puntuation}`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        text: this.exam.audio.phraseQuestion.question.answers[0].letter + ". " + this.exam.audio.phraseQuestion.question.answers[0].content,
-        style: 'readStatement'
-      },
-      {
-        text: this.exam.audio.phraseQuestion.question.answers[1].letter + ". " + this.exam.audio.phraseQuestion.question.answers[1].content,
-        style: 'readStatement'
-      },
-      {
-        text: this.exam.audio.phraseQuestion.question.answers[2].letter + ". " + this.exam.audio.phraseQuestion.question.answers[2].content,
-        style: 'readStatement'
-      },
-      {
-        text: this.exam.audio.phraseQuestion.question.answers[3].letter + ". " + this.exam.audio.phraseQuestion.question.answers[3].content,
-        style: 'readStatement'
-      },
-      {
-        text: this.exam.audio.phraseQuestion.question.answers[4].letter + ". " + this.exam.audio.phraseQuestion.question.answers[4].content,
-        style: 'readStatement'
-      },
-    ];
-    //pdf.content.push(audioQuestion);
-
-    //! Oral
-    let oralQuestion: any = [
-      {
-        columns: [
-          {
-            text: "6. " + this.exam.oral.statement.content,
-            width: '85%',
-            style: 'statement'
-          },
-          {
-            text: `___/${this.exam.oral.statement.score}`,
-            width: '15%',
-            style: 'puntuationStatement'
-          }
-        ]
-      },
-      {
-        text: this.exam.oral.statement.text,
-        style: 'text'
-      },
-      {
-        image: this.exam.oral.statement.photo,
-        width: 420,
-        style: 'image',
-      }
-    ];
-    //pdf.content.push(oralQuestion);
-
-  */
-    console.log(pdf)
     //pdfMake.createPdf(pdf).open();
     pdfMake.createPdf(pdf).download("test.pdf");
   };
-
-}
+};

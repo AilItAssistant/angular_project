@@ -223,7 +223,7 @@ export class ExamsComponent {
       this.http.post<any>('http://localhost:4000/api/exams/generate', level, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.exam = res;
-          //console.log(res)
+          console.log(res)
           this.completeExam();
         },
         error: (err) => {
@@ -233,6 +233,25 @@ export class ExamsComponent {
     };
   };
   completeExam(){
+
+    //TODO RESULT TEST
+    let pdfResult: any = {
+      pageSize: 'A4',
+      pageMargins: [ 40, 60, 40, 60 ],
+      content: [],
+      styles: {
+        statement: {
+          margin: [ 30, 35, 0, 15 ],
+          fontSize: 12,
+          bold: true
+        },
+        readAnswers: {
+          margin: [ 40, 0, 0, 0 ],
+          fontSize: 9.5,
+        },
+      }
+    };
+
     //TODO Data
     let standard: any = {
       level: "A1",
@@ -595,7 +614,7 @@ export class ExamsComponent {
                 },
               ],
             );
-            p = p + 3;
+            p = p + 2;
           } else if(this.exam[ex].answers[p] && this.exam[ex].answers[p + 1] && !this.exam[ex].answers[p + 2]) {
             model.push(
               [
@@ -671,21 +690,57 @@ export class ExamsComponent {
         };
       };
 
+      //*SPACES
       if(this.exam.length > ex && ex !== 0){
         pdf.content.push(
           {
             text: '',
             pageBreak: 'after',
-          }
+          },
         );
       };
 
-      console.log(space);
-
       pdf.content.push(model);
+
+      //*RESULTS
+      if(this.exam[ex].type.test_type === 1){
+        let statement: any = [
+          {
+            text: `${ex + 1}. `,
+            style: 'statement'
+          },
+          {columns: []}
+        ];
+
+        let column: any = 1;
+        for(let q: any = 0; this.exam[ex].questions.length > q; q++){
+          for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
+            if(this.exam[ex].questions[q].answers[a].is_correct === 1){
+              let columns: any = q + 1;
+
+              if(columns / 5 === 1 || columns / 5 === 2 || columns / 5 === 3 || columns / 5 === 4 || columns / 5 === 5 || columns / 5 === 6){
+                statement.push({columns:[]})
+                column++
+              };
+              statement[column].columns.push(
+                {
+                text: `${q + 1}. ${this.exam[ex].questions[q].answers[a].letter}`,
+                width: '20%',
+                style: 'readAnswers'
+                },
+              );
+            };
+          };
+        };
+        pdfResult.content.push(statement);
+      };
     };
 
+    //!GENERATE EXAM
     //pdfMake.createPdf(pdf).open();
     pdfMake.createPdf(pdf).download("test.pdf");
+
+    //!GENERATE RESULTS TO EXAM TESTS
+    pdfMake.createPdf(pdfResult).download("results.pdf");
   };
 };

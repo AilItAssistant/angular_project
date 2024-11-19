@@ -177,8 +177,11 @@
                         <div class="col-1 mt-3">
                             Puntuación del bloque
                         </div>
-                        <div class="col-2 mt-3 mx-3">
+                        <div class="col-1 mt-3 mx-3">
                             Tipo de preguntas
+                        </div>
+                        <div class="col-1 mt-3">
+                            Puntuación individual
                         </div>
                         <div class="col-1 col-lg-1 mt-3 text-center">
                             En exámen
@@ -199,8 +202,11 @@
                             <div class="col-1 mt-3">
                                 {{block.max_score}}
                             </div>
-                            <div class="col-2 mt-3 mx-3">
+                            <div class="col-1 mt-3 mx-3">
                                 {{block.question_type_name}}
+                            </div>
+                            <div class="col-1 mt-3">
+                                {{block.individual_score}}
                             </div>
                             <div class="col-1 col-lg-1 mt-3 text-center">
                                 @if (block.is_selected === 1) {
@@ -331,7 +337,7 @@
                 <div class="col-1">
                     Nombre de la unión
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     Enunciado
                 </div>
                 <div class="col-1">
@@ -342,6 +348,9 @@
                 </div>
                 <div class="col-1">
                     Destreza 2
+                </div>
+                <div class="col-1">
+                    Puntuación
                 </div>
                 <div class="col-1">
                     Estado
@@ -355,7 +364,7 @@
                     <div class="col-1">
                         {{unionSkill.name}}
                     </div>
-                    <div class="col-3">
+                    <div class="col-2">
                         {{unionSkill.statement}}
                     </div>
                     <div class="col-1">
@@ -366,6 +375,9 @@
                     </div>
                     <div class="col-1">
                         {{unionSkill.skill_name_2}}
+                    </div>
+                    <div class="col-1">
+                        {{unionSkill.max_puntuation}}
                     </div>
                     <div class="col-1">
                         @if (unionSkill.status === "active") {
@@ -459,7 +471,7 @@
             <div class="modal-body">
                 <form [formGroup] = "editForm" id="editForm">
                     <p class="mt-1">Nombre</p>
-                    <input type="text" id="mName" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="Name" aria-describedby="mName">
+                    <input type="text" id="mName" class="form-control" formControlName="name" placeholder="Nombre del nivel" aria-label="Name" aria-describedby="Name">
                     @if(editVariables.type === "skills"){
                         <p class="mt-3">Elige un nivel</p>
                         <select id="mSkillLevel" class="form-select mb-3" formControlName="secondId" aria-label="Select-secondId">
@@ -480,16 +492,27 @@
                                 <option [value]="type.id">{{type.name}}</option>
                             }
                         </select>
-                        <p>Puntuación:</p>
-                            <select id="blockScore" class="form-select" formControlName="blockScore">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="15">15</option>
-                                <option value="20">20</option>
-                                <option value="25">25</option>
-                            </select>
+                        <p>Puntuación del bloque</p>
+                        <select id="blockScore" class="form-select" formControlName="blockScore">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                        </select>
+                        <p>Puntuación individual</p>
+                        <select id="blockScore" class="form-select" formControlName="puntuation">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                        </select>
                     } @else if (editVariables.type === "skills_unions") {
                         <p>Nivel de la unión:</p>
                         <select id="level" class="form-select" formControlName="level" (change)="loadSkillToUnions()">
@@ -510,6 +533,17 @@
                             @for(skill of skillToUnion; track skill.id){
                                 <option [value]="skill.id">{{skill.name}}</option>
                             }
+                        </select>
+                        <p>Puntuación:</p>
+                        <select id="blockScore" class="form-select" formControlName="puntuation">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
                         </select>
                     }
                     @if (editVariables.type !== "skills_unions") {

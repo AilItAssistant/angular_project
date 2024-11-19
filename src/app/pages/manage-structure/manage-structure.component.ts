@@ -54,7 +54,8 @@ export class ManageStructureComponent {
     skill1: new FormControl(""),
     skill2: new FormControl(""),
     level: new FormControl(""),
-    statement: new FormControl("")
+    statement: new FormControl(""),
+    puntuation: new FormControl(""),
   });
 
   blocksToExams = new FormGroup({
@@ -297,7 +298,8 @@ export class ManageStructureComponent {
       skill1: new FormControl(""),
       skill2: new FormControl(""),
       level: new FormControl(""),
-      statement: new FormControl("")
+      statement: new FormControl(""),
+      puntuation: new FormControl(""),
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -320,7 +322,8 @@ export class ManageStructureComponent {
       skill1: new FormControl(""),
       skill2: new FormControl(""),
       level: new FormControl(""),
-      statement: new FormControl("")
+      statement: new FormControl(""),
+      puntuation: new FormControl(""),
     });
 
     let editModal: any;
@@ -344,7 +347,8 @@ export class ManageStructureComponent {
       skill1: new FormControl(""),
       skill2: new FormControl(""),
       level: new FormControl(""),
-      statement: new FormControl("")
+      statement: new FormControl(""),
+      puntuation: new FormControl(block.individual_score),
     });
 
     let editModal: any;
@@ -556,6 +560,7 @@ export class ManageStructureComponent {
     if(this.editVariables.type === "blocks") {
       changes.type = this.editForm.value.blockType === this.editVariables.structure.question_type_id ? null : this.editForm.value.blockType;
       changes.score = this.editForm.value.blockScore === this.editVariables.structure.max_score ? null : this.editForm.value.blockScore;
+      changes.individual_score = this.editForm.value.puntuation === this.editVariables.structure.individual_score ? null : this.editForm.value.puntuation;
       if(this.editForm.value.secondId === this.editVariables.structure.skill_id) changes.secondId = null;
     };
     if(this.editVariables.type === "skills") {
@@ -566,6 +571,12 @@ export class ManageStructureComponent {
       changes.skill_id_1 = this.editForm.value.skill1 === this.editVariables.structure.skill_id_1 ? null : this.editForm.value.skill1;
       changes.skill_id_2 = this.editForm.value.skill2 === this.editVariables.structure.skill_id_2 ? null : this.editForm.value.skill2;
       changes.level_id = this.editForm.value.level === this.editVariables.structure.level_id ? null : this.editForm.value.level;
+      changes.max_puntuation = this.editForm.value.puntuation === this.editVariables.structure.max_puntuation ? null : this.editForm.value.puntuation;
+
+      if(this.editForm.value.skill1 === this.editForm.value.skill2){
+        this.val === false;
+        alert("Las destrezas tienen que ser diferentes");
+      };
 
     }
     console.log(changes)
@@ -856,7 +867,8 @@ export class ManageStructureComponent {
       skill1: new FormControl(skillUnion.skill_id_1),
       skill2: new FormControl(skillUnion.skill_id_2),
       level: new FormControl(skillUnion.level_id),
-      statement: new FormControl(skillUnion.statement)
+      statement: new FormControl(skillUnion.statement),
+      puntuation: new FormControl(skillUnion.max_puntuation),
     });
     this.loadSkillToUnions();
 

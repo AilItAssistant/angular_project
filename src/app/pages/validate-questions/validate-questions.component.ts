@@ -14,7 +14,7 @@ import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 export class ValidateQuestionsComponent {
 
   charge: boolean = false;
-  exams: any;
+  exams: any = [];
 
   selectQuestion: any = {
     statement: "",
@@ -39,6 +39,10 @@ export class ValidateQuestionsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+    //this.loadExams();
+  };
+
+  loadExams(){
     this.http.get<any>('http://localhost:4000/api/exams').subscribe({
       next: (res) => {
         this.exams = res;
@@ -50,7 +54,6 @@ export class ValidateQuestionsComponent {
   };
 
   //EDIT
-
   openEditModal(exam: any, question: any){
 
     this.selectQuestion = {
@@ -60,22 +63,22 @@ export class ValidateQuestionsComponent {
       D: "",
       E: "",
     };
-    
+
     for(let i: number = 0; question.responses.length > i; i++){
       switch (question.responses[i].letter) {
-        case "A": 
+        case "A":
           this.selectQuestion.A= question.responses[i].response;
           break;
-        case "B": 
+        case "B":
           this.selectQuestion.B = question.responses[i].response;
           break;
-        case "C": 
+        case "C":
           this.selectQuestion.C = question.responses[i].response;
           break;
-        case "D": 
+        case "D":
           this.selectQuestion.D = question.responses[i].response;
           break;
-        case "E": 
+        case "E":
           this.selectQuestion.E = question.responses[i].response;
           break;
         }
@@ -105,7 +108,6 @@ export class ValidateQuestionsComponent {
   editQuestion(){};
 
   //DELETE
-
   openDeleteModal(exam: any, question: any){
 
     this.selectQuestion = {
@@ -118,19 +120,19 @@ export class ValidateQuestionsComponent {
     };
     for(let i: number = 0; question.responses.length > i; i++){
       switch (question.responses[i].letter) {
-        case "A": 
+        case "A":
           this.selectQuestion.A= question.responses[i].response;
           break;
-        case "B": 
+        case "B":
           this.selectQuestion.B = question.responses[i].response;
           break;
-        case "C": 
+        case "C":
           this.selectQuestion.C = question.responses[i].response;
           break;
-        case "D": 
+        case "D":
           this.selectQuestion.D = question.responses[i].response;
           break;
-        case "E": 
+        case "E":
           this.selectQuestion.E = question.responses[i].response;
           break;
         }
@@ -149,7 +151,6 @@ export class ValidateQuestionsComponent {
   deleteQuestion(){};
 
   //ADD
-
   openAddModal(exam: any, question: any){
     this.selectQuestion = {
       statement: question.statement,
@@ -161,19 +162,19 @@ export class ValidateQuestionsComponent {
     };
     for(let i: number = 0; question.responses.length > i; i++){
       switch (question.responses[i].letter) {
-        case "A": 
+        case "A":
           this.selectQuestion.A= question.responses[i].response;
           break;
-        case "B": 
+        case "B":
           this.selectQuestion.B = question.responses[i].response;
           break;
-        case "C": 
+        case "C":
           this.selectQuestion.C = question.responses[i].response;
           break;
-        case "D": 
+        case "D":
           this.selectQuestion.D = question.responses[i].response;
           break;
-        case "E": 
+        case "E":
           this.selectQuestion.E = question.responses[i].response;
           break;
         }

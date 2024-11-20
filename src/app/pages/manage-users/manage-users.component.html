@@ -17,11 +17,23 @@
                       <input type="text" formControlName="username" class="form-control mt-3 col-3" placeholder="Busqueda por nombre de usuario">
                       <input type="text" formControlName="phone_number" class="form-control mt-3 col-3" placeholder="Busqueda por número de teléfono">
                       <input type="text" formControlName="email" class="form-control mt-3 col-3" placeholder="Busqueda por email">
-                      <input type="text" formControlName="city" class="form-control mt-3 col-3" placeholder="Busqueda por ciudad">
-                      <input type="text" formControlName="permissions" class="form-control mt-3 col-3" placeholder="Busqueda por permisos">
+                      <label for="city" class="form-label">Busqueda por ciudad</label>
+                      <select id="city" class="form-select mt-2 sm" formControlName="city">
+                        @for(city of cities; track city.id){
+                          <option [value]="city.id">{{city.name}}</option>
+                        }
+                      </select>
+                      <label for="permissions" class="form-label">Busqueda por permisos</label>
+                      <select class="form-select mb-3" placeholder="A1" formControlName="permission" aria-label="A1">
+                        @for(permission of permissions; track permission.id){
+                          <option [value]="permission.id">{{permission.name}}</option>
+                        }
+                      </select>
+                      <label for="status" class="form-label">Busqueda por estado</label>
                       <select id="status" class="form-select mt-2 sm" formControlName="status">
-                        <option value="active">Activo</option>
-                        <option value="inactive">Inactivos</option>
+                        @for(st of status; track st.id){
+                          <option [value]="st.id">{{st.name}}</option>
+                        }
                       </select>
                       <button class="btn btn-primary col-5 mx-3 mt-3" (click)="filter()" type="button">Buscar</button>
                       <button class="btn btn-primary col-5 mx-3 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
@@ -42,7 +54,7 @@
                 <option value="role_desc">Cargo descendente</option>
                 <option value="created_asc">Fecha creación ascendente</option>
                 <option value="created_desc">Fecha creación descendente</option>
-            </select> 
+            </select>
         </div>
     </div>
 </form>
@@ -55,7 +67,7 @@
         <div class="col-2">Número de télefono</div>
         <div class="col-2">Email</div>
         <div class="col-1">Ciudad</div>
-        <div class="col-1">Permisos</div>
+        <div class="col-1">Permiso</div>
         <div class="col-1">Creado</div>
         <div class="col-1">Estado</div>
         <div class="col-1"></div>
@@ -88,7 +100,7 @@
           {{ user.city}}
         </div>
         <div class="col-1">
-          {{ user.permissions}}
+          {{ user.permission}}
         </div>
         <div class="col-1">
             {{ user.created_at }}
@@ -175,45 +187,31 @@
       </div>
       <div class="col-4">
         <label for="city" class="form-label">Ciudad</label>
-        <input
-          type="text"
-          class="form-control"
-          id="city"
-          formControlName="city"
-          placeholder="Madrid"
-        />
+        <select class="form-select mb-3" placeholder="A1" formControlName="city" aria-label="A1">
+          @for(city of cities; track city.id){
+            <option [value]="city.id">{{city.name}}</option>
+          }
+        </select>
       </div>
     </div>
     <div class="row">
       <div class="col-2">
         <label for="permissions" class="form-label">Permisos</label>
-        <select
-          id="permissions"
-          class="form-select"
-          formControlName="permissions"
-        >
-          <option value="admin">Admistrador</option>
-          <option value="employee">Administracion</option>
-          <option value="teacher">Profesor</option>
-          <option value="student">Alumno</option>
+        <select class="form-select mb-3" placeholder="A1" formControlName="permission" aria-label="A1">
+          @for(permission of permissions; track permission.id){
+            <option [value]="permission.id">{{permission.name}}</option>
+          }
         </select>
       </div>
       <div class="col-2">
         <label for="created">Fecha de creación</label>
         <input id="created" class="form-control mt-2" type="date" formControlName="created" />
       </div>
-      <div class="col-2">
-        <label for="status" class="form-label">Estado</label>
-        <select id="status" class="form-select" formControlName="status">
-          <option value="active">Active</option>
-          <option value="inactive">Disabled</option>
-        </select>
-      </div>
-      <div class="col-3">
+      <div class="col-4">
         <label for="password" class="form-label">Contraseña</label>
         <input type="password"  class="form-control" formControlName="password" id="password" placeholder="Contraseña" aria-label="With textarea" required>
       </div>
-      <div class="col-3" >
+      <div class="col-4" >
         <label for="repitPassword" class="form-label">Repetir ontraseña</label>
         <input type="password" class="form-control" formControlName="repitPassword" id="repitPassword" placeholder="Contraseña" aria-label="With textarea" required>
       </div>
@@ -227,7 +225,6 @@
 </form>
 
 <!-- Edit modal -->
-
 <div class="modal" id="editModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -281,49 +278,33 @@
             placeholder="Email del usuario"
           />
 
-          <p class="mt-1">Ciudad</p>
-          <input
-            type="text"
-            class="form-control"
-            formControlName="city"
-            placeholder="Ciudad del usuario"
-          />
+          <label for="city" class="form-label">Busqueda por ciudad</label>
+          <select id="city" class="form-select mt-2 sm" formControlName="city">
+            @for(city of cities; track city.id){
+              <option [value]="city.id">{{city.name}}</option>
+            }
+          </select>
 
           <p class="mt-1">Username</p>
           <input
             type="text"
-            class="form-control"
+            class="form-control mb-4"
             formControlName="username"
             placeholder="Nombre de usuario"
           />
 
-          <label for="permissions" class="form-label">Permisos</label>
-          <select
-            id="permissions"
-            class="form-select"
-            formControlName="permissions"
-          >
-          <option value="admin">Admistrador</option>
-          <option value="employee">Administracion</option>
-          <option value="teacher">Profesor</option>
-          <option value="student">Alumno</option>
+          <label for="permissions" class="form-label">Busqueda por permisos</label>
+          <select class="form-select mb-3" placeholder="A1" formControlName="permission" aria-label="A1">
+            @for(permission of permissions; track permission.id){
+              <option [value]="permission.id">{{permission.name}}</option>
+            }
           </select>
-         
+
           <label for="password" class="form-label">Contraseña</label>
           <input type="password" class="form-control" formControlName="password" id="password" placeholder="Contraseña" aria-label="With textarea" required>
-          
+
           <label for="repitPassword" class="form-label">Repetir ontraseña</label>
           <input type="password" class="form-control" formControlName="repitPassword" id="repitPassword" placeholder="Contraseña" aria-label="With textarea" required>
-
-          <p class="mt-3">Elige un estado</p>
-          <select
-            class="form-select mb-3"
-            formControlName="status"
-            aria-label="Select-status"
-          >
-            <option value="active">Activo</option>
-            <option value="inactive">Inactivo</option>
-          </select>
         </form>
       </div>
       @if (!charge){
@@ -349,7 +330,6 @@
 </div>
 
 <!-- Delete modal -->
-
 <div class="modal" id="deleteModal">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

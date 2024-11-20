@@ -18,6 +18,9 @@ export class ManageUsersComponent {
   editVariables: any;
   charge: boolean = false;
   users: any = [];
+  permissions: any = [];
+  status: any = [];
+  cities: any = [];
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -28,14 +31,62 @@ export class ManageUsersComponent {
     phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    permissions: new FormControl(""),
-    status: new FormControl(""),
+    permission: new FormControl(""),
+    status: new FormControl("")
   });
 
   ngOnInit() {
     this.load();
-  }
-  
+    this.loadStatus();
+    this.loadCities();
+    this.loadPermission();
+  };
+
+  loadStatus(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/status', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.status = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadCities(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/cities', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.cities = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadPermission(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/permissions', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.permissions = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -58,8 +109,7 @@ export class ManageUsersComponent {
     phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    permissions: new FormControl(""),
-    status: new FormControl(""),
+    permission: new FormControl(""),
     created: new FormControl(""),
     username: new FormControl(""),
     password: new FormControl(""),
@@ -72,8 +122,7 @@ export class ManageUsersComponent {
     phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    permissions: new FormControl(""),
-    status: new FormControl(""),
+    permission: new FormControl(""),
     created: new FormControl(""),
     username: new FormControl(""),
     password: new FormControl(""),
@@ -81,15 +130,13 @@ export class ManageUsersComponent {
   });
 
   addUser(){
-    if(this.addUserForm.value.status === ""){this.addUserForm.value.status = "active"}
     let user: any = {
       name: this.addUserForm.value.name,
       last_name: this.addUserForm.value.last_name,
       phone_number: this.addUserForm.value.phone_number,
       email: this.addUserForm.value.email,
       city: this.addUserForm.value.city,
-      permissions: this.addUserForm.value.permissions,
-      status: this.addUserForm.value.status,
+      permission: this.addUserForm.value.permission,
       created: this.addUserForm.value.created,
       username: this.addUserForm.value.username,
     };
@@ -165,23 +212,21 @@ export class ManageUsersComponent {
     let mod: any = {
       id: this.editVariables.id
     };
-    if ( this.editUserForm.value.name !== null && this.editUserForm.value.name !== undefined && this.editUserForm.value.name !== this.editVariables.name ) { 
+    if ( this.editUserForm.value.name !== null && this.editUserForm.value.name !== undefined && this.editUserForm.value.name !== this.editVariables.name ) {
       mod.name = this.editUserForm.value.name } else {  mod.name = "" };
-    if ( this.editUserForm.value.last_name !== null && this.editUserForm.value.last_name !== undefined && this.editUserForm.value.last_name !== this.editVariables.last_name ) { 
+    if ( this.editUserForm.value.last_name !== null && this.editUserForm.value.last_name !== undefined && this.editUserForm.value.last_name !== this.editVariables.last_name ) {
       mod.last_name = this.editUserForm.value.last_name } else {  mod.last_name = "" };
-    if ( this.editUserForm.value.phone_number !== null && this.editUserForm.value.phone_number !== undefined && this.editUserForm.value.phone_number !== this.editVariables.phone_number ) { 
+    if ( this.editUserForm.value.phone_number !== null && this.editUserForm.value.phone_number !== undefined && this.editUserForm.value.phone_number !== this.editVariables.phone_number ) {
       mod.phone_number = this.editUserForm.value.phone_number } else {  mod.phone_number = "" };
-    if ( this.editUserForm.value.status !== null && this.editUserForm.value.status !== undefined && this.editUserForm.value.status !== this.editVariables.status ) { 
-      mod.status = this.editUserForm.value.status } else {  mod.status = "" };
-    if ( this.editUserForm.value.email !== null && this.editUserForm.value.email !== undefined && this.editUserForm.value.email !== this.editVariables.email ) { 
+    if ( this.editUserForm.value.email !== null && this.editUserForm.value.email !== undefined && this.editUserForm.value.email !== this.editVariables.email ) {
       mod.email = this.editUserForm.value.email } else {  mod.email = "" };
-    if ( this.editUserForm.value.city !== null && this.editUserForm.value.city !== undefined && this.editUserForm.value.city !== this.editVariables.city ) { 
+    if ( this.editUserForm.value.city !== null && this.editUserForm.value.city !== undefined && this.editUserForm.value.city !== this.editVariables.city ) {
       mod.city = this.editUserForm.value.city } else {  mod.city = "" };
-    if ( this.editUserForm.value.permissions !== null && this.editUserForm.value.permissions !== undefined && this.editUserForm.value.permissions !== this.editVariables.permissions ) { 
-      mod.permissions = this.editUserForm.value.permissions } else {  mod.permissions = "" };
-    if ( this.editUserForm.value.created !== null && this.editUserForm.value.created !== undefined && this.editUserForm.value.created !== this.editVariables.created ) { 
+    if ( this.editUserForm.value.permission !== null && this.editUserForm.value.permission !== undefined && this.editUserForm.value.permission !== this.editVariables.permission ) {
+      mod.permission = this.editUserForm.value.permission } else {  mod.permission = "" };
+    if ( this.editUserForm.value.created !== null && this.editUserForm.value.created !== undefined && this.editUserForm.value.created !== this.editVariables.created ) {
       mod.created = this.editUserForm.value.created } else {  mod.created = "" };
-    if ( this.editUserForm.value.username !== null && this.editUserForm.value.username !== undefined && this.editUserForm.value.username !== this.editVariables.username ) { 
+    if ( this.editUserForm.value.username !== null && this.editUserForm.value.username !== undefined && this.editUserForm.value.username !== this.editVariables.username ) {
       mod.username = this.editUserForm.value.username } else {  mod.username = "" };
 
     if ( this.editUserForm.value.password !== "" || this.editUserForm.value.repitPassword !== ""){
@@ -218,9 +263,8 @@ export class ManageUsersComponent {
       last_name: new FormControl(user.last_name),
       phone_number: new FormControl(user.phone_number),
       email: new FormControl(user.email),
-      city: new  FormControl(user.city),
-      permissions: new FormControl(user.permissions),
-      status: new FormControl(user.status),
+      city: new  FormControl(user.city_id),
+      permission: new FormControl(user.permission_id),
       created: new FormControl(user.created),
       username: new FormControl(user.username),
       password: new FormControl(""),
@@ -230,6 +274,7 @@ export class ManageUsersComponent {
     let editModal: any;
     editModal = document.getElementById('editModal');
     editModal.style.display="block";
+    console.log(user)
   };
 
   desactivate(user: any){
@@ -292,22 +337,22 @@ export class ManageUsersComponent {
           }
           return 0});
         break;
-      case "permissions_asc":
+      case "permission_asc":
         this.users.sort( (a:any, b:any) => {
-          if (a.permissions > b.permissions) {
+          if (a.permission > b.permission) {
             return 1;
           }
-          if (a.permissions < b.permissions) {
+          if (a.permission < b.permission) {
             return -1;
           }
           return 0});
         break;
-      case "permissions_desc":
+      case "permission_desc":
         this.users.sort( (a:any, b:any) => {
-          if (a.permissions < b.permissions) {
+          if (a.permission < b.permission) {
             return 1;
           }
-          if (a.permissions > b.permissions) {
+          if (a.permission > b.permission) {
             return -1;
           }
           return 0});
@@ -362,18 +407,18 @@ export class ManageUsersComponent {
       username: this.orderForm.value.username,
       phone_number: this.orderForm.value.phone_number,
       city: this.orderForm.value.city,
-      permissions: this.orderForm.value.permissions,
+      permission: this.orderForm.value.permission,
       status: this.orderForm.value.status,
-      
+
     };
     if(filters.city === ""){filters.city = null};
     if(filters.last_name === ""){filters.last_name = null};
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.username === ""){filters.username = null};
     if(filters.email === ""){filters.email = null};
-    if(filters.permissions === ""){filters.permissions = null};
+    if(filters.permission === ""){filters.permission = null};
     if(filters.status === ""){filters.status = null};
-    
+
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -396,7 +441,7 @@ export class ManageUsersComponent {
       phone_number:"",
       email:"",
       city:"",
-      permissions:"",
+      permission:"",
       status:"",
     });
   };

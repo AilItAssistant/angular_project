@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { scheduled } from 'rxjs';
 
 @Component({
+  standalone: true,
     selector: 'app-manage-classes',
     imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
     templateUrl: './manage-classes.component.html',

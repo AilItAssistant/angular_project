@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+    standalone: true,
     selector: 'app-students-details',
     imports: [],
     templateUrl: './students-details.component.html',

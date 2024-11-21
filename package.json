@@ -9,6 +9,7 @@
     "test": "ng test",
     "serve:ssr:exam-project": "node dist/exam-project/server/server.mjs"
   },
+  "type": "module",
   "private": true,
   "dependencies": {
     "@angular/animations": "^19.0.0",

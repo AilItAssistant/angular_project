@@ -3,6 +3,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
+    standalone: true,
     selector: 'app-home',
     imports: [HeaderComponent, FooterComponent],
     templateUrl: './home.component.html',

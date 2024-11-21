@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
+    standalone: true,
     selector: 'app-search-exams',
     imports: [HeaderComponent, FooterComponent],
     templateUrl: './search-exams.component.html',

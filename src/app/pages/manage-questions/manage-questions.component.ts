@@ -7,10 +7,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { response } from 'express';
 
 @Component({
-    selector: 'app-manage-questions',
-    imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
-    templateUrl: './manage-questions.component.html',
-    styleUrl: './manage-questions.component.scss'
+  standalone: true,
+  selector: 'app-manage-questions',
+  imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
+  templateUrl: './manage-questions.component.html',
+  styleUrl: './manage-questions.component.scss'
 })
 export class ManageQuestionsComponent {
   exams: any = [];

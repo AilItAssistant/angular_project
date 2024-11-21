@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
 @Component({
+    standalone: true,
     selector: 'app-add-exams-notes',
     imports: [HeaderComponent, FooterComponent],
     templateUrl: './add-exams-notes.component.html',

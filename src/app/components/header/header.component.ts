@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: true,
     selector: 'app-header',
-    imports: [],
     templateUrl: './header.component.html',
     styleUrl: './header.component.scss'
 })

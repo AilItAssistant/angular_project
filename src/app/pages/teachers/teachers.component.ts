@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
     selector: 'app-teachers',
     imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
     templateUrl: './teachers.component.html',
@@ -27,7 +28,7 @@ export class TeachersComponent {
   ngOnInit() {
     this.load();
   }
-  
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({

@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
+  standalone: true,
     selector: 'app-login',
     imports: [FooterComponent, ReactiveFormsModule],
     templateUrl: './login.component.html',
@@ -21,7 +22,7 @@ export class LoginComponent {
   };
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router) {}
 
   verify(){

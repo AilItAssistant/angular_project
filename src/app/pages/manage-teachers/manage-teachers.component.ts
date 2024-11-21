@@ -5,10 +5,11 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
-    selector: 'app-manage-teachers',
-    imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
-    templateUrl: './manage-teachers.component.html',
-    styleUrl: './manage-teachers.component.scss'
+  standalone: true,
+  selector: 'app-manage-teachers',
+  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+  templateUrl: './manage-teachers.component.html',
+  styleUrl: './manage-teachers.component.scss'
 })
 export class ManageTeachersComponent {
 

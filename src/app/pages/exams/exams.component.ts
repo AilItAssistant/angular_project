@@ -3,16 +3,18 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+(<any>pdfMake).addVirtualFileSystem(pdfFonts);
 
 @Component({
+    standalone: true,
     selector: 'app-exams',
-    imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+    imports: [ReactiveFormsModule, FooterComponent, HeaderComponent],
     templateUrl: './exams.component.html',
-    styleUrl: './exams.component.scss'
+    styleUrl: './exams.component.scss',
 })
+
 export class ExamsComponent {
 
   levels: any = [];

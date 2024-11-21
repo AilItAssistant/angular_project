@@ -14,7 +14,7 @@ import { last } from 'rxjs';
 })
 export class StudentsComponent {
 
-  students: any;
+  students: any = [];
 
   constructor(private http: HttpClient) {}
 
@@ -29,8 +29,8 @@ export class StudentsComponent {
 
   ngOnInit() {
     this.load();
-  }
-  
+  };
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -106,7 +106,7 @@ export class StudentsComponent {
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.city === ""){filters.city = null};
     if(filters.email === ""){filters.email = null};
-    
+
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth

@@ -21,12 +21,14 @@ export class ManageStudentsComponent {
   classes: any;
   classesId: any;
   student: any = [];
+  cities: any = [];
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.load();
     this.loadLevels();
+    this.loadCities();
   }
 
   orderForm = new FormGroup({
@@ -37,7 +39,7 @@ export class ManageStudentsComponent {
     email: new FormControl(""),
     city: new FormControl("")
   });
-  
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -62,7 +64,6 @@ export class ManageStudentsComponent {
     phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    status: new FormControl(""),
     level: new FormControl(""),
     enrollment_date: new FormControl(""),
     address: new FormControl("")
@@ -76,7 +77,6 @@ export class ManageStudentsComponent {
     phone_number: new FormControl(""),
     email: new FormControl(""),
     city: new FormControl(""),
-    status: new FormControl(""),
     level: new FormControl(""),
     enrollment_date: new FormControl(""),
     address: new FormControl("")
@@ -116,6 +116,7 @@ export class ManageStudentsComponent {
   };
 
   openEditModal(student: any){
+    console.log(student)
     this.editForm = new FormGroup({
       name: new FormControl(student.name),
       last_name: new FormControl(student.last_name),
@@ -123,9 +124,8 @@ export class ManageStudentsComponent {
       birthday: new FormControl(student.birthday),
       phone_number: new FormControl(student.phone_number),
       email: new FormControl(student.email),
-      city: new FormControl(student.city),
-      status: new FormControl(student.status),
-      level: new FormControl(student.level),
+      city: new FormControl(student.city_id),
+      level: new FormControl(student.student_level_id),
       enrollment_date: new FormControl(student.enrollment_date),
       address: new FormControl(student.address)
     });
@@ -163,7 +163,7 @@ export class ManageStudentsComponent {
   modify(){
     let mod: any = {}
       mod.id = this.editVariables.student_id;
-    
+
     if( this.editForm.value.name !== this.editVariables.name && this.editForm.value.name !== undefined && this.editForm.value.name !== null ){
       mod.name = this.editForm.value.name;
     } else mod.name = "";
@@ -183,13 +183,10 @@ export class ManageStudentsComponent {
       mod.email = this.editForm.value.email;
     } else mod.email = "";
     if( this.editForm.value.city !== this.editVariables.city && this.editForm.value.city !== undefined && this.editForm.value.city !== null ){
-      mod.city = this.editForm.value.city;
-    } else mod.city = "";
-    if( this.editForm.value.status !== this.editVariables.status && this.editForm.value.status !== undefined && this.editForm.value.status !== null ){
-      mod.status = this.editForm.value.status;
-    };
+      mod.city_id = this.editForm.value.city;
+    } else mod.city_id = "";
     if( this.editForm.value.level !== this.editVariables.level && this.editForm.value.level !== undefined && this.editForm.value.level !== null ){
-      mod.level = this.editForm.value.level;
+      mod.level_id = this.editForm.value.level;
     } else mod.level = "";
     if( this.editForm.value.document !== this.editVariables.id_document && this.editForm.value.document !== undefined && this.editForm.value.document !== null ){
       mod.document = this.editForm.value.document;
@@ -200,7 +197,7 @@ export class ManageStudentsComponent {
     if( this.editForm.value.address !== this.editVariables.address && this.editForm.value.address !== undefined && this.editForm.value.address !== null ){
       mod.address = this.editForm.value.address;
     } else mod.address = "";
-    if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
+    if( mod.name && mod.last_name && mod.phone_number && mod.hire_date && mod.address && mod.department && mod.email ){
       this.charge = true;
       let auth: any = localStorage.getItem('token');
       let httpHeaders: any = new HttpHeaders({
@@ -221,7 +218,6 @@ export class ManageStudentsComponent {
             phone_number: "",
             email: "",
             city: "",
-            status: "",
             level: "",
             enrollment_date: "",
             address: ""
@@ -242,9 +238,8 @@ export class ManageStudentsComponent {
       birthday: this.addStudentsForm.value.birthday,
       phone_number: this.addStudentsForm.value.phone_number,
       email: this.addStudentsForm.value.email,
-      city: this.addStudentsForm.value.city,
-      status: this.addStudentsForm.value.status,
-      level: this.addStudentsForm.value.level,
+      city_id: this.addStudentsForm.value.city,
+      level_id: this.addStudentsForm.value.level,
       enrollment_date: this.addStudentsForm.value.enrollment_date,
       address: this.addStudentsForm.value.address
     }
@@ -253,6 +248,7 @@ export class ManageStudentsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
+    if(add.name && add.last_name && add.document && add.birthday && add.email && add.level_id && add.enrollment_date && add.address)
     this.http.post<any>('http://localhost:4000/api/alumnos/add',add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         let editModal: any;
@@ -267,7 +263,6 @@ export class ManageStudentsComponent {
           phone_number: "",
           email: "",
           city: "",
-          status: "",
           level: "",
           enrollment_date: "",
           address: ""
@@ -340,7 +335,7 @@ export class ManageStudentsComponent {
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.city === ""){filters.city = null};
     if(filters.email === ""){filters.email = null};
-    
+
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -371,9 +366,25 @@ export class ManageStudentsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
+    this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res.levels;
+        console.log(res)
+        this.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadCities(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/cities', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.cities = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -416,7 +427,7 @@ export class ManageStudentsComponent {
     this.loadClasses();
     this.getClassesById(id);
     this.student = student;
-    
+
     let classModal: any;
     classModal = document.getElementById('classModal');
     classModal.style.display="block";
@@ -469,5 +480,4 @@ export class ManageStudentsComponent {
     classModal = document.getElementById('classModal');
     classModal.style.display="none";
   };
-
 }

@@ -5,11 +5,10 @@ import {FormControl, FormGroup, ReactiveFormsModule, FormArray } from '@angular/
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
-  selector: 'app-manage-structure',
-  standalone: true,
-  imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
-  templateUrl: './manage-structure.component.html',
-  styleUrl: './manage-structure.component.scss'
+    selector: 'app-manage-structure',
+    imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
+    templateUrl: './manage-structure.component.html',
+    styleUrl: './manage-structure.component.scss'
 })
 export class ManageStructureComponent {
 

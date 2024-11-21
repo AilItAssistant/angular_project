@@ -8,11 +8,10 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
-  selector: 'app-exams',
-  standalone: true,
-  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
-  templateUrl: './exams.component.html',
-  styleUrl: './exams.component.scss'
+    selector: 'app-exams',
+    imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+    templateUrl: './exams.component.html',
+    styleUrl: './exams.component.scss'
 })
 export class ExamsComponent {
 

@@ -7,11 +7,10 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { text } from 'stream/consumers';
 
 @Component({
-  selector: 'app-add-questions',
-  standalone: true,
-  imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
-  templateUrl: './add-questions.component.html',
-  styleUrl: './add-questions.component.scss'
+    selector: 'app-add-questions',
+    imports: [FooterComponent, HeaderComponent, ReactiveFormsModule],
+    templateUrl: './add-questions.component.html',
+    styleUrl: './add-questions.component.scss'
 })
 export class AddQuestionsComponent {
 

@@ -3,11 +3,10 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-online-exam',
-  standalone: true,
-  imports: [],
-  templateUrl: './online-exam.component.html',
-  styleUrl: './online-exam.component.scss'
+    selector: 'app-online-exam',
+    imports: [],
+    templateUrl: './online-exam.component.html',
+    styleUrl: './online-exam.component.scss'
 })
 export class OnlineExamComponent {
 

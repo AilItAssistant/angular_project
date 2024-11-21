@@ -6,8 +6,8 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-manage-users',
   standalone: true,
+  selector: 'app-manage-users',
   imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
   templateUrl: './manage-users.component.html',
   styleUrl: './manage-users.component.scss'

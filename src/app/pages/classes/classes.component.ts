@@ -5,11 +5,11 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-classes',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
-  templateUrl: './classes.component.html',
-  styleUrl: './classes.component.scss'
+    selector: 'app-classes',
+    imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+    templateUrl: './classes.component.html',
+    styleUrl: './classes.component.scss'
 })
 export class ClassesComponent {
 
@@ -28,7 +28,7 @@ export class ClassesComponent {
   ngOnInit() {
     this.load();
   }
-  
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({

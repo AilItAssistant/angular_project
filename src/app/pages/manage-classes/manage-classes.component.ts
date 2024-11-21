@@ -6,11 +6,11 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { scheduled } from 'rxjs';
 
 @Component({
-  selector: 'app-manage-classes',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
-  templateUrl: './manage-classes.component.html',
-  styleUrl: './manage-classes.component.scss'
+    selector: 'app-manage-classes',
+    imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
+    templateUrl: './manage-classes.component.html',
+    styleUrl: './manage-classes.component.scss'
 })
 export class ManageClassesComponent {
 

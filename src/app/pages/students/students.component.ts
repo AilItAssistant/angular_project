@@ -6,8 +6,8 @@ import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { last } from 'rxjs';
 
 @Component({
-  selector: 'app-students',
   standalone: true,
+  selector: 'app-students',
   imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
   templateUrl: './students.component.html',
   styleUrl: './students.component.scss'

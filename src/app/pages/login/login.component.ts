@@ -5,11 +5,11 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
   standalone: true,
-  imports: [FooterComponent, ReactiveFormsModule],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [FooterComponent, ReactiveFormsModule],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   loginForm = new FormGroup({
@@ -22,7 +22,7 @@ export class LoginComponent {
   };
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private router: Router) {}
 
   verify(){

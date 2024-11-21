@@ -5,8 +5,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import {FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
 
 @Component({
-  selector: 'app-validate-questions',
   standalone: true,
+  selector: 'app-validate-questions',
   imports: [HeaderComponent, FooterComponent, ReactiveFormsModule],
   templateUrl: './validate-questions.component.html',
   styleUrl: './validate-questions.component.scss'

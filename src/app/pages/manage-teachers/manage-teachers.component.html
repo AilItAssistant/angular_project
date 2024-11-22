@@ -7,21 +7,27 @@
             <div class="col-6 mt-2">
                 <p class="d-inline-flex">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      Filtros
+                        Filtros
                     </button>
-                  </p>
-                  <div class="collapse" id="collapseExample">
+                </p>
+                <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                         <div class="container row">
                             <input type="text" formControlName="last_name" class="form-control col-3" placeholder="Busqueda por apellido">
                             <input type="text" formControlName="department" class="form-control mt-3 col-3" placeholder="Busqueda por departamento">
+                            <label for="department" class="form-label">Busqueda por departamento</label>
+                            <select id="department" class="form-select mt-2 sm" formControlName="department">
+                                @for(department of departments; track department.id){
+                                <option [value]="department.id">{{department.name}}</option>
+                                }
+                            </select>
                             <input type="text" formControlName="phone_number" class="form-control mt-3 col-3" placeholder="Busqueda por número de teléfono">
                             <input type="text" formControlName="email" class="form-control mt-3 col-3" placeholder="Busqueda por email">
                             <button class="btn btn-primary col-5 mx-3 mt-3" (click)="filter()" type="button">Buscar</button>
                             <button class="btn btn-primary col-5 mx-3 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
                         </div>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="col-1 mt-2">Ordenar:</div>
             <div class="col-2">
@@ -30,7 +36,7 @@
                     <option value="lastName_desc">Apellido descendente</option>
                     <option value="department_asc">Departamento ascendente</option>
                     <option value="department_desc">Departamento descendente</option>
-                </select> 
+                </select>
             </div>
         </div>
     </form>
@@ -69,7 +75,7 @@
 <div class="accordion container-fluid mb-5" id="accordionExample">
     @for(teacher of teachers; track teacher.teacher_id){
         <div class="accordion-item">
-            
+
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
@@ -95,7 +101,7 @@
                                 {{teacher.hire_date}}
                             </div>
                             <div class="col-1">
-                                @if (teacher.teacher_status === "active") {
+                                @if (teacher.teacher_status === 1) {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
@@ -105,13 +111,13 @@
                                 <button class="btn btn-success btn-sm" (click)="openClassModal(teacher)">C</button>
                                 <button class="btn btn-primary btn-sm" (click)="openEditModal(teacher)">M</button>
                                 <button class="btn btn-secondary btn-sm" (click)="desactivate(teacher)">D</button>
-                                <button class="btn btn-danger btn-sm" (click)="openDeleteModal(teacher)">E</button>     
+                                <button class="btn btn-danger btn-sm" (click)="openDeleteModal(teacher)">E</button>
                             </div>
                             <div class="col-1 text-end">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + teacher.teacher_id" aria-expanded="true" [attr.aria-controls]="teacher.teacher_id">
                                 </button>
                             </div>
-                        </div>       
+                        </div>
                     </li>
                 </ul>
 
@@ -145,9 +151,8 @@
                         </ul>
                     </div>
                 </div>
-            
         </div>
-    }  
+    }
 </div>
 
 <form [formGroup] = "addTeachersForm">
@@ -172,8 +177,12 @@
         </div>
         <div class="row mb-4">
             <div class="col-3">
-                <label for="department" class="form-label">Departamento</label>
-                <input type="text" class="form-control" id="department" formControlName="department" placeholder="Departamento">
+                <label for="department" class="form-label">Busqueda por departamento</label>
+                <select id="department" class="form-select mt-2 sm" formControlName="department">
+                    @for(department of departments; track department.id){
+                    <option [value]="department.id">{{department.name}}</option>
+                    }
+                </select>
             </div>
             <div class="col-2">
                 <label for="hire_date">Fecha de contratación</label>
@@ -198,109 +207,109 @@
 </form>
 
 <!-- Edit modal -->
-
 <div class="modal" id="editModal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header"> 
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
+                @if(!charge){
+                    <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+                } @else {
+                    <div class="spinner-border text-secondary mx-auto" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                }
+            </div>
+            <div class="modal-body">
+                <form [formGroup] = "editTeachersForm" id="editForm">
+
+                    <p class="mt-1">Nombre</p>
+                    <input type="text" class="form-control" formControlName="name" placeholder="Nombre del profesor">
+
+                    <p class="mt-1">Apellidos</p>
+                    <input type="text" class="form-control" formControlName="last_name" placeholder="Apellidos del profesor">
+
+                    <p class="mt-1">Número de teléfono</p>
+                    <input type="text" class="form-control" formControlName="phone_number" placeholder="Numero del profesor">
+
+                    <p class="mt-1">Email</p>
+                    <input type="email" class="form-control" formControlName="email" placeholder="Email del profesor">
+
+                    <label for="department" class="form-label">Busqueda por departamento</label>
+                    <select id="department" class="form-select mt-2 sm" formControlName="department">
+                        @for(department of departments; track department.id){
+                        <option [value]="department.id">{{department.name}}</option>
+                        }
+                    </select>
+
+                    <p class="mt-1">Dirección</p>
+                    <input type="text" class="form-control" formControlName="address" placeholder="Calle Falsa 123">
+
+                    <label for="hire_date">Fecha de contratación</label>
+                    <input id="hire_date" class="form-control mt-2" type="date" formControlName="hire_date" />
+
+                    <p class="mt-3">Elige un estado</p>
+                    <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
+                        <option value="active">Activo</option>
+                        <option value="inactive">Inactivo</option>
+                    </select>
+                </form>
+
+            </div>
+            @if (!charge){
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
+                </div>
+            } @else {
+                <div class="spinner-border text-primary mx-auto mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
         </div>
-        <div class="modal-body">
-          
-            <form [formGroup] = "editTeachersForm" id="editForm">
-
-                <p class="mt-1">Nombre</p>
-                <input type="text" class="form-control" formControlName="name" placeholder="Nombre del profesor">
-
-                <p class="mt-1">Apellidos</p>
-                <input type="text" class="form-control" formControlName="last_name" placeholder="Apellidos del profesor">
-
-                <p class="mt-1">Número de teléfono</p>
-                <input type="text" class="form-control" formControlName="phone_number" placeholder="Numero del profesor">
-
-                <p class="mt-1">Email</p>
-                <input type="email" class="form-control" formControlName="email" placeholder="Email del profesor">
-
-                <p class="mt-1">Departamento</p>
-                <input type="text" class="form-control" formControlName="department" placeholder="Departamento">
-
-                <p class="mt-1">Dirección</p>
-                <input type="text" class="form-control" formControlName="address" placeholder="Calle Falsa 123">
-
-                <label for="hire_date">Fecha de contratación</label>
-                <input id="hire_date" class="form-control mt-2" type="date" formControlName="hire_date" />
-
-                <p class="mt-3">Elige un estado</p>
-                <select class="form-select mb-3" formControlName="status" aria-label="Select-status">
-                    <option value="active">Activo</option>
-                    <option value="inactive">Inactivo</option>
-                </select>
-            </form>
-        
-        </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
-          </div>
-        } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
-        }
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- Delete modal -->
+<!-- Delete modal -->
 
-  <div class="modal" id="deleteModal">
+<div class="modal" id="deleteModal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
-        </div>
-        <div class="modal-body text-center">
-          
-            <p>Nombre: {{deleteVariables.name}}</p>
-            <p>Apellido: {{deleteVariables.last_name}}</p>
-            <p>Número de teléfono: {{deleteVariables.phone_number}}</p>
-            <p>Email: {{deleteVariables.email}}</p>
-            <p>Departamento: {{deleteVariables.department}}</p>
-            <p>Dirección: {{deleteVariables.address}}</p>
-            <p>Estado: {{deleteVariables.teacher_status}}</p>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
+            @if(!charge){
+                <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+            } @else {
+                <div class="spinner-border text-secondary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            </div>
+            <div class="modal-body text-center">
+                <p>Nombre: {{deleteVariables.name}}</p>
+                <p>Apellido: {{deleteVariables.last_name}}</p>
+                <p>Número de teléfono: {{deleteVariables.phone_number}}</p>
+                <p>Email: {{deleteVariables.email}}</p>
+                <p>Departamento: {{deleteVariables.department}}</p>
+                <p>Dirección: {{deleteVariables.address}}</p>
+                <p>Estado: {{deleteVariables.teacher_status}}</p>
 
+            </div>
+            @if (!charge){
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+                </div>
+            } @else {
+                <div class="spinner-border text-primary mx-auto mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            }
         </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
-          </div>
-        } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
-        }
-      </div>
     </div>
-  </div>
+</div>
 
     <!-- Classes modal -->
-
 <div class="modal" id="classModal">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
@@ -311,7 +320,7 @@
             } @else {
                 <div class="spinner-border text-secondary mx-auto" role="status">
                 <span class="visually-hidden">Loading...</span>
-                </div>            
+                </div>
             }
             </div>
             <div class="modal-body text-center">
@@ -331,7 +340,6 @@
                             <div class="col-3">
                                 Apellidos profesor
                             </div>
-                            
                         </div>
                         @for(classId of classesId; track classId.class_id){
                             <div class="row mb-3 me-1">
@@ -368,7 +376,6 @@
                             <div class="col-3">
                                 Apellidos profesor
                             </div>
-                            
                         </div>
                         @for(class of classes; track class.class_id){
                             <div class="row mb-3">

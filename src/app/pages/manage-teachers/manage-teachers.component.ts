@@ -20,6 +20,7 @@ export class ManageTeachersComponent {
   classes: any;
   classesId: any;
   teacher: any = {};
+  departments: any = [];
 
   constructor(private http: HttpClient) {}
 
@@ -33,8 +34,9 @@ export class ManageTeachersComponent {
 
   ngOnInit() {
     this.load();
-  }
-  
+    this.loadDepartments();
+  };
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -43,6 +45,20 @@ export class ManageTeachersComponent {
     this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.teachers = res.teachers;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+  loadDepartments(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/departments', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.departments = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -66,7 +82,6 @@ export class ManageTeachersComponent {
     last_name: new FormControl(""),
     phone_number: new FormControl(""),
     email: new FormControl(""),
-    status: new FormControl(""),
     department: new FormControl(""),
     address: new FormControl(""),
     hire_date: new FormControl("")
@@ -141,8 +156,8 @@ export class ManageTeachersComponent {
   modify(){
     this.charge = true;
     let mod: any = {}
-      mod.id = this.editVariables.teacher_id;
-    
+    mod.id = this.editVariables.teacher_id;
+
     if( this.editTeachersForm.value.name !== this.editVariables.name && this.editTeachersForm.value.name !== undefined && this.editTeachersForm.value.name !== null ){
       mod.name = this.editTeachersForm.value.name;
     } else mod.name = "";
@@ -152,12 +167,9 @@ export class ManageTeachersComponent {
     if( this.editTeachersForm.value.phone_number !== this.editVariables.phone_number && this.editTeachersForm.value.phone_number !== undefined && this.editTeachersForm.value.phone_number !== null ){
       mod.phone_number = this.editTeachersForm.value.phone_number;
     } else mod.phone_number = "";
-    if( this.editTeachersForm.value.status !== this.editVariables.status && this.editTeachersForm.value.status !== undefined && this.editTeachersForm.value.status !== null ){
-      mod.status = this.editTeachersForm.value.status;
-    } else mod.status = "";
     if( this.editTeachersForm.value.hire_date !== this.editVariables.hire_date && this.editTeachersForm.value.hire_date !== undefined && this.editTeachersForm.value.hire_date !== null ){
       mod.hire_date = this.editTeachersForm.value.hire_date;
-    } else mod.hire_date = ""; 
+    } else mod.hire_date = "";
     if( this.editTeachersForm.value.address !== this.editVariables.address && this.editTeachersForm.value.address !== undefined && this.editTeachersForm.value.address !== null ){
       mod.address = this.editTeachersForm.value.address;
     } else  mod.address = "";
@@ -168,7 +180,7 @@ export class ManageTeachersComponent {
       mod.email = this.editTeachersForm.value.email;
     } else mod.email = "";
 
-    if( mod.name || mod.last_name || mod.phone_number || mod.status || mod.hire_date || mod.address || mod.department || mod.email ){
+    if( mod.name || mod.last_name || mod.phone_number || mod.hire_date || mod.address || mod.department || mod.email ){
 
       let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -196,7 +208,6 @@ export class ManageTeachersComponent {
       last_name: new FormControl(teacher.last_name),
       phone_number: new FormControl(teacher.phone_number),
       email: new FormControl(teacher.email),
-      status: new FormControl(teacher.status),
       department: new FormControl(teacher.department),
       address: new FormControl(teacher.address),
       hire_date: new FormControl(teacher.hire_date)
@@ -342,7 +353,7 @@ export class ManageTeachersComponent {
     this.loadClasses();
     this.getClassesById(id);
     this.teacher = teacher;
-    
+
     let classModal: any;
     classModal = document.getElementById('classModal');
     classModal.style.display="block";

@@ -17,7 +17,12 @@
                             <input type="text" formControlName="identification_number" class="form-control mt-3 col-3" placeholder="Busqueda por DNI">
                             <input type="text" formControlName="phone_number" class="form-control mt-3 col-3" placeholder="Busqueda por número de teléfono">
                             <input type="text" formControlName="email" class="form-control mt-3 col-3" placeholder="Busqueda por email">
-                            <input type="text" formControlName="city" class="form-control mt-3 col-3" placeholder="Busqueda por ciudad">
+                            <label for="city" class="form-label">Busqueda por ciudad</label>
+                            <select id="city" class="form-select mt-2 sm" formControlName="city">
+                                @for(city of cities; track city.id){
+                                <option [value]="city.id">{{city.name}}</option>
+                                }
+                            </select>
                             <button class="btn btn-primary col-5 mx-3 mt-3" (click)="filter()" type="button">Buscar</button>
                             <button class="btn btn-primary col-5 mx-3 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
                         </div>

@@ -15,6 +15,7 @@ import { last } from 'rxjs';
 export class StudentsComponent {
 
   students: any = [];
+  cities: any =[];
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +30,7 @@ export class StudentsComponent {
 
   ngOnInit() {
     this.load();
+    this.loadCities();
   };
 
   load(){
@@ -39,6 +41,21 @@ export class StudentsComponent {
     this.http.get<any>('http://localhost:4000/api/alumnos', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.students = res.students;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadCities(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/cities', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.cities = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);

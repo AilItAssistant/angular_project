@@ -29,7 +29,7 @@ export class ManageStudentsComponent {
     this.load();
     this.loadLevels();
     this.loadCities();
-  }
+  };
 
   orderForm = new FormGroup({
     select: new FormControl(""),

@@ -7,10 +7,10 @@
             <div class="col-7 mt-2">
                 <p class="d-inline-flex">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      Filtros
+                        Filtros
                     </button>
-                  </p>
-                  <div class="collapse" id="collapseExample">
+                </p>
+                <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                         <div class="container row">
                             <input type="text" formControlName="class" class="form-control col-3" placeholder="Busqueda por nombre del aula">
@@ -21,7 +21,7 @@
                             <button class="btn btn-primary col-5 mx-3 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
                         </div>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="col-1 mt-2">Ordenar:</div>
             <div class="col-2">
@@ -32,7 +32,7 @@
                     <option value="level_desc">Nivel descendente</option>
                     <option value="className_asc">Clase ascendente</option>
                     <option value="className_desc">Clase descendente</option>
-                </select> 
+                </select>
             </div>
         </div>
     </form>
@@ -57,9 +57,7 @@
                 <div class="col-2 mt-3">
                     <h5>Nombre del aula</h5>
                 </div>
-                <div class="col-1">
-                    
-                </div>
+                <div class="col-1"></div>
             </div>
         </li>
     </ul>
@@ -68,7 +66,6 @@
 <div class="accordion container mb-5" id="accordionExample">
     @for(class of classes; track class.class_id){
         <div class="accordion-item">
-            
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
@@ -94,7 +91,7 @@
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.class_id" aria-expanded="true" [attr.aria-controls]="class.class_id">
                                 </button>
                             </div>
-                        </div>       
+                        </div>
                     </li>
                 </ul>
 
@@ -118,9 +115,7 @@
                                     <div class="col-1">
                                         <h5>Ciudad</h5>
                                     </div>
-                                    
                                     @for(student of class.students; track student.student_id){
-                                        
                                         <div class="col-2 my-3">
                                             {{student.student_name}}
                                         </div>
@@ -140,11 +135,10 @@
                                 </div>
                             </li>
                         </ul>
-                                    
                     </div>
                 </div>
         </div>
-    }  
+    }
 </div>
 
 <app-footer></app-footer>

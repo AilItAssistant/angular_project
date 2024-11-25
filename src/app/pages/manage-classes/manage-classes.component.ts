@@ -41,7 +41,7 @@ export class ManageClassesComponent {
     this.loadTeachers();
     this.loadlevels();
   }
-  
+
   load(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -50,6 +50,7 @@ export class ManageClassesComponent {
     this.http.get<any>('http://localhost:4000/api/classes', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.classes = res.classes;
+        console.log(this.classes)
       },
       error: (err) => {
         alert('Cargar fallo' + err);

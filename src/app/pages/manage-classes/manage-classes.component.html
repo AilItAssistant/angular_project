@@ -7,10 +7,10 @@
             <div class="col-5 mt-2">
                 <p class="d-inline-flex">
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                      Filtros
+                        Filtros
                     </button>
-                  </p>
-                  <div class="collapse" id="collapseExample">
+                </p>
+                <div class="collapse" id="collapseExample">
                     <div class="card card-body">
                         <div class="container row">
                             <input type="text" formControlName="class" class="form-control col-3" placeholder="Busqueda por nombre de la clase">
@@ -21,7 +21,7 @@
                             <button class="btn btn-primary col-5 mx-2 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
                         </div>
                     </div>
-                  </div>
+                </div>
             </div>
             <div class="col-1 mt-2">Ordenar:</div>
             <div class="col-2">
@@ -32,7 +32,7 @@
                     <option value="level_desc">Nivel descendente</option>
                     <option value="className_asc">Clase ascendente</option>
                     <option value="className_desc">Clase descendente</option>
-                </select> 
+                </select>
             </div>
         </div>
     </form>
@@ -68,7 +68,6 @@
 <div class="accordion container mb-5" id="accordionExample">
     @for(class of classes; track class.class_id){
         <div class="accordion-item">
-            
                 <ul class="list-group text-center accordion-header">
                     <li class="list-group-item">
                         <div class="row">
@@ -91,7 +90,7 @@
                                 {{class.room_number}}
                             </div>
                             <div class="col-1">
-                                @if (class.class_status === "active") {
+                                @if (class.class_status_id === 1) {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
@@ -108,7 +107,7 @@
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#' + class.class_id" aria-expanded="true" [attr.aria-controls]="class.class_id">
                                 </button>
                             </div>
-                        </div>       
+                        </div>
                     </li>
                 </ul>
 
@@ -139,7 +138,6 @@
                                         <h5>Ciudad</h5>
                                     </div>
                                     @for(student of class.students; track student.id){
-                                        
                                         <div class="col-1 my-3">
                                             {{student.name}}
                                         </div>
@@ -165,11 +163,10 @@
                                 </div>
                             </li>
                         </ul>
-                                    
                     </div>
                 </div>
         </div>
-    }  
+    }
 </div>
 
 <form [formGroup] = "addClassesForm">
@@ -223,98 +220,92 @@
 
 <div class="modal" id="editModal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header"> 
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeEditModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Editar usuario</h1>
+                @if(!charge){
+                    <button type="button" class="btn-close" (click)="closeEditModal()"></button>
+                } @else {
+                    <div class="spinner-border text-secondary mx-auto" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                    </div>
+                }
+            </div>
+            <div class="modal-body">
+                <form [formGroup] = "editClassesForm" id="editForm">
+                    <label for="namme" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
+                    <label for="level" class="form-label">Level</label>
+                    <select id="level" class="form-select" formControlName="level">
+                        @for(level of levels; track level.id){
+                            <option [value]="level.id">{{level.name}}</option>
+                        }
+                    </select>
+                    <label for="schedule" class="form-label">Calendario</label>
+                    <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
+
+                    <label for="class" class="form-label">Clase</label>
+                    <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
+
+                    <label for="status" class="form-label">Estado</label>
+                    <select id="status" class="form-select" formControlName="status">
+                        <option value="active">Activo</option>
+                        <option value="inactive">Inactivo</option>
+                    </select>
+                </form>
+            </div>
+            @if (!charge){
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
+            </div>
+            } @else {
+            <div class="spinner-border text-primary mx-auto mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            }
         </div>
-        <div class="modal-body">
-          
-            <form [formGroup] = "editClassesForm" id="editForm">                   
-                <label for="namme" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" formControlName="name" placeholder="Nombre">
-                    
-                <label for="level" class="form-label">Level</label>
-                <select id="level" class="form-select" formControlName="level">
-                    @for(level of levels; track level.id){
-                        <option [value]="level.id">{{level.name}}</option>
-                    }
-                </select>
-                    
-                <label for="schedule" class="form-label">Calendario</label>
-                <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
-                   
-                <label for="class" class="form-label">Clase</label>
-                <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
-                   
-                <label for="status" class="form-label">Estado</label>
-                <select id="status" class="form-select" formControlName="status">
-                    <option value="active">Activo</option>
-                    <option value="inactive">Inactivo</option>
-                </select>
-            </form>
-        
-        </div>
-        @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeEditModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="modify()">Editar</button>
-          </div>
-        } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
-        }
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- Delete modal -->
+<!-- Delete modal -->
 
-  <div class="modal" id="deleteModal">
+<div class="modal" id="deleteModal">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
-          @if(!charge){
-            <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
-          } @else {
-            <div class="spinner-border text-secondary mx-auto" role="status">
-              <span class="visually-hidden">Loading...</span>
-            </div>            
-          }
-        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Borrar este profesor?</h1>
+            @if(!charge){
+                <button type="button" class="btn-close" (click)="closeDeleteModal()"></button>
+            } @else {
+                <div class="spinner-border text-secondary mx-auto" role="status">
+                <span class="visually-hidden">Loading...</span>
+                </div>
+            }
+            </div>
         <div class="modal-body text-center">
-          
             <p>Nombre: {{deleteVariables.teacher}}</p>
             <p>Apellido: {{deleteVariables.level}}</p>
             <p>Número de teléfono: {{deleteVariables.type}}</p>
             <p>Email: {{deleteVariables.status}}</p>
-
         </div>
         @if (!charge){
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
-          </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeDeleteModal()">Cerrar</button>
+                <button type="button" class="btn btn-primary" (click)="delete()">Delete</button>
+            </div>
         } @else {
-          <div class="spinner-border text-primary mx-auto mb-3" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>          
+            <div class="spinner-border text-primary mx-auto mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         }
-      </div>
+        </div>
     </div>
-  </div>
+</div>
 
-  <!-- Teachers modal -->
+<!-- Teachers modal -->
 
-  <div class="modal" id="classTeachersModal">
+<div class="modal" id="classTeachersModal">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -326,7 +317,7 @@
             } @else {
                 <div class="spinner-border text-secondary mx-auto" role="status">
                 <span class="visually-hidden">Loading...</span>
-                </div>            
+                </div>
             }
             </div>
             <div class="modal-body text-center">
@@ -397,9 +388,8 @@
     </div>
 </div>
 
-  <!-- Students modal -->
-
-  <div class="modal" id="classStudentsModal">
+<!-- Students modal -->
+<div class="modal" id="classStudentsModal">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -411,7 +401,7 @@
             } @else {
                 <div class="spinner-border text-secondary mx-auto" role="status">
                 <span class="visually-hidden">Loading...</span>
-                </div>            
+                </div>
             }
             </div>
             <div class="modal-body text-center">
@@ -467,7 +457,6 @@
                             <div class="col-3">
                                 Apellidos profesor
                             </div>
-                            
                         </div>
                         @for(student of students; track student.student_id){
                             <div class="row mb-3">

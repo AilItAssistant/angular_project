@@ -45,12 +45,14 @@ export class ManageTeachersComponent {
     this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.teachers = res.teachers;
+        console.log(this.teachers)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
       },
     });
   };
+
   loadDepartments(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -71,7 +73,6 @@ export class ManageTeachersComponent {
     last_name: new FormControl(""),
     phone_number: new FormControl(""),
     email: new FormControl(""),
-    status: new FormControl(""),
     department: new FormControl(""),
     address: new FormControl(""),
     hire_date: new FormControl("")
@@ -94,7 +95,6 @@ export class ManageTeachersComponent {
       phone_number: this.addTeachersForm.value.phone_number,
       email: this.addTeachersForm.value.email,
       hire_date: this.addTeachersForm.value.hire_date,
-      status: this.addTeachersForm.value.status,
       address: this.addTeachersForm.value.address,
       department:this.addTeachersForm.value.department
     };
@@ -108,7 +108,7 @@ export class ManageTeachersComponent {
         this.load();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
       });
   };
@@ -208,9 +208,9 @@ export class ManageTeachersComponent {
       last_name: new FormControl(teacher.last_name),
       phone_number: new FormControl(teacher.phone_number),
       email: new FormControl(teacher.email),
-      department: new FormControl(teacher.department),
+      department: new FormControl(teacher.department_id),
       address: new FormControl(teacher.address),
-      hire_date: new FormControl(teacher.hire_date)
+      hire_date: new FormControl(teacher.hire_date),
     });
 
     let editModal: any;

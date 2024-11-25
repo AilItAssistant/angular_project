@@ -15,7 +15,8 @@ export class TeachersComponent {
 
   constructor(private http: HttpClient) {}
 
-  teachers: any;
+  teachers: any = [];
+  departments: any = [];
 
   orderForm = new FormGroup({
     select: new FormControl(""),
@@ -27,7 +28,8 @@ export class TeachersComponent {
 
   ngOnInit() {
     this.load();
-  }
+    this.loadDepartments();
+  };
 
   load(){
     let auth: any = localStorage.getItem('token');
@@ -37,6 +39,21 @@ export class TeachersComponent {
     this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.teachers = res.teachers;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  loadDepartments(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/departments', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.departments = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -102,19 +119,18 @@ export class TeachersComponent {
     if(filters.last_name === ""){filters.last_name = null};
     if(filters.phone_number === ""){filters.phone_number = null};
     if(filters.email === ""){filters.email = null};
-    
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.put<any>('http://localhost:4000/api/teachers/filter', filters).subscribe({
-      next: (res) => {
-        this.teachers = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
+      this.http.put<any>('http://localhost:4000/api/teachers/filter', filters, {headers: httpHeaders}).subscribe({
+        next: (res) => {
+          this.teachers = res;
+        },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+        },
+      });
   };
 
   deleteFilter(){

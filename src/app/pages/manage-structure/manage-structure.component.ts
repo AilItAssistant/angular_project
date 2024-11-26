@@ -76,11 +76,11 @@ export class ManageStructureComponent {
   ngOnInit() {
     this.loadLevels();
     this.loadActiveLevels();
-    this.loadSkills();
-    this.loadBlocks();
-    this.loadQuestionType();
-    this.loadBlocksToExam();
-    this.loadSkillsUnions();
+    //this.loadSkills();
+    //this.loadBlocks();
+    //this.loadQuestionType();
+    //this.loadBlocksToExam();
+    //this.loadSkillsUnions();
   };
 
   loadActiveLevels(){
@@ -357,17 +357,10 @@ export class ManageStructureComponent {
   };
 
   addLevel(){
-    let status: any;
-    if(this.structureForm.value.statusLevel !== "active" && this.structureForm.value.statusLevel !== "inactive") {
-      status = "active";
-    }else {
-      status = this.structureForm.value.statusLevel;
-    }
     let add: any = {
       name: this.structureForm.value.level,
-      status: status,
-    }
-    let type: any = "add_level"
+    };
+    let type: any = "add_level";
     this.validation(add, type);
     if ( this.val ) {
       let auth: any = localStorage.getItem('token');
@@ -474,10 +467,10 @@ export class ManageStructureComponent {
 
   desactivateLevel(level: any){
     let change: any;
-    if ( level.status === "active" ) {
-      change = "inactive"
+    if ( level.status_name === "active" ) {
+      change = 0
     } else {
-      change = "active"
+      change = 1
     }
     let status: any = {
       id: level.id,
@@ -499,10 +492,10 @@ export class ManageStructureComponent {
 
   desactivateBlock(block: any){
     let change: any;
-    if ( block.status === "active" ) {
-      change = "inactive"
+    if ( block.status_name === "active" ) {
+      change = 0
     } else {
-      change = "active"
+      change = 1
     }
     let status: any = {
       id: block.id,
@@ -524,10 +517,10 @@ export class ManageStructureComponent {
 
   desactivateSkill(skill: any){
     let change: any;
-    if ( skill.status === "active" ) {
-      change = "inactive"
+    if ( skill.status_name === "active" ) {
+      change = 0
     } else {
-      change = "active"
+      change = 1
     }
     let status: any = {
       id: skill.id,
@@ -876,4 +869,5 @@ export class ManageStructureComponent {
     editModal = document.getElementById('editModal');
     editModal.style.display="block";
   };
+
 };

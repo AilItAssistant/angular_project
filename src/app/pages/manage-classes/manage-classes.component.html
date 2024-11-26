@@ -16,7 +16,12 @@
                             <input type="text" formControlName="class" class="form-control col-3" placeholder="Busqueda por nombre de la clase">
                             <input type="text" formControlName="last_name" class="form-control mt-3 col-3" placeholder="Busqueda por apellido del profesor">
                             <input type="text" formControlName="class_name" class="form-control mt-3 col-3" placeholder="Busqueda por nombre de la clase">
-                            <input type="text" formControlName="level" class="form-control mt-3 col-3" placeholder="Busqueda por nivel">
+                            <label for="level" class="form-label">Level</label>
+                            <select id="level" class="form-select" formControlName="level">
+                                @for(level of levels; track level.id){
+                                    <option [value]="level.id">{{level.name}}</option>
+                                }
+                            </select>
                             <button class="btn btn-primary col-5 mx-2 mt-3" (click)="filter()" type="button">Buscar</button>
                             <button class="btn btn-primary col-5 mx-2 mt-3" (click)="deleteFilter()" type="button">Borrar flitros</button>
                         </div>
@@ -90,7 +95,7 @@
                                 {{class.room_number}}
                             </div>
                             <div class="col-1">
-                                @if (class.class_status_id === 1) {
+                                @if (class.class_status_id === "1") {
                                     <p class="text-success">Activo</p>
                                 } @else {
                                     <p class="text-danger">Inactivo</p>
@@ -194,21 +199,15 @@
             </div>
         </div>
         <div class="row text-center">
-            <div class="col-5">
+            <div class="col-7">
                 <label for="schedule" class="form-label">Calendario</label>
                 <input type="text" class="form-control" id="schedule" formControlName="schedule" placeholder="Lunes y Miércoles 10:00-12:00 ">
             </div>
-            <div class="col-4">
+            <div class="col-5">
                 <label for="class" class="form-label">Clase</label>
                 <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
             </div>
-            <div class="col-3">
-                <label for="status" class="form-label">Estado</label>
-                <select id="status" class="form-select" formControlName="status">
-                    <option value="active">Activo</option>
-                    <option value="inactive">Inactivo</option>
-                </select>
-            </div>
+
         </div>
         <div class="text-center">
             <button class="btn btn-primary my-5" (click)="addClass()">Añadir clase</button>
@@ -217,7 +216,6 @@
 </form>
 
 <!-- Edit modal -->
-
 <div class="modal" id="editModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -246,12 +244,6 @@
 
                     <label for="class" class="form-label">Clase</label>
                     <input type="text" class="form-control" id="class" formControlName="class" placeholder="Aula 101">
-
-                    <label for="status" class="form-label">Estado</label>
-                    <select id="status" class="form-select" formControlName="status">
-                        <option value="active">Activo</option>
-                        <option value="inactive">Inactivo</option>
-                    </select>
                 </form>
             </div>
             @if (!charge){
@@ -269,7 +261,6 @@
 </div>
 
 <!-- Delete modal -->
-
 <div class="modal" id="deleteModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

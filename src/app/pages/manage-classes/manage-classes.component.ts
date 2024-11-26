@@ -50,7 +50,6 @@ export class ManageClassesComponent {
     this.http.get<any>('http://localhost:4000/api/classes', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.classes = res.classes;
-        console.log(this.classes)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -66,6 +65,7 @@ export class ManageClassesComponent {
     this.http.get<any>('http://localhost:4000/api/teachers', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.teachers = res.teachers;
+        console.log(this.teachers)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -78,20 +78,19 @@ export class ManageClassesComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.get<any>('http://localhost:4000/api/levels', {headers: httpHeaders}).subscribe({
+    this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.levels = res.levels;
+        this.levels = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
       },
     });
   };
-  
+
   addClassesForm = new FormGroup({
     teacher: new FormControl(""),
     level: new FormControl(""),
-    status: new FormControl(""),
     schedule: new FormControl(""),
     name: new FormControl(""),
     class: new FormControl("")
@@ -100,7 +99,6 @@ export class ManageClassesComponent {
   editClassesForm = new FormGroup({
     teacher: new FormControl(""),
     level: new FormControl(""),
-    status: new FormControl(""),
     schedule: new FormControl(""),
     name: new FormControl(""),
     class: new FormControl("")
@@ -113,9 +111,7 @@ export class ManageClassesComponent {
       schedule: this.addClassesForm.value.schedule,
       level: this.addClassesForm.value.level,
       class: this.addClassesForm.value.class,
-      status: this.addClassesForm.value.status,
     };
-    
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
@@ -123,9 +119,16 @@ export class ManageClassesComponent {
     this.http.post<any>('http://localhost:4000/api/classes/add', classes, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.load();
+        this.addClassesForm = new FormGroup({
+          teacher: new FormControl(""),
+          level: new FormControl(""),
+          schedule: new FormControl(""),
+          name: new FormControl(""),
+          class: new FormControl("")
+        });
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
       });
   };
@@ -178,7 +181,6 @@ export class ManageClassesComponent {
       teacher: this.editClassesForm.value.teacher,
       schedule: this.editClassesForm.value.schedule,
       class: this.editClassesForm.value.class,
-      status: this.editClassesForm.value.status,
       id:this.editVaribles.class_id
     };
     let auth: any = localStorage.getItem('token');
@@ -205,7 +207,6 @@ export class ManageClassesComponent {
     this.editClassesForm = new FormGroup({
       teacher: new FormControl(classes.teacher_id),
       level: new FormControl(classes.level_id),
-      status: new FormControl(classes.class_status),
       schedule: new FormControl(classes.schedule),
       name: new FormControl(classes.class_name),
       class: new FormControl(classes.room_number)
@@ -228,7 +229,7 @@ export class ManageClassesComponent {
         this.load();
       },
       error: (err) => {
-        //alert('Cargar fallo' + err);
+        alert('Cargar fallo' + err);
       },
     });
   };
@@ -423,7 +424,7 @@ export class ManageClassesComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.put<any>('http://localhost:4000/api/teachers/addTeacherToClass', add, {headers: httpHeaders}).subscribe({
+    this.http.put<any>('http://localhost:4000/api/teachers/addClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadTeachersById(id);
       },
@@ -443,7 +444,7 @@ export class ManageClassesComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.put<any>('http://localhost:4000/api/teachers/deleteTeacherToClass', add, {headers: httpHeaders}).subscribe({
+    this.http.put<any>('http://localhost:4000/api/teachers/deleteClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadTeachersById(id);
       },
@@ -463,7 +464,7 @@ export class ManageClassesComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.put<any>('http://localhost:4000/api/alumnos/addStudentToClass', add, {headers: httpHeaders}).subscribe({
+    this.http.put<any>('http://localhost:4000/api/alumnos/addClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadStudentsById(id);
       },
@@ -483,7 +484,7 @@ export class ManageClassesComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.put<any>('http://localhost:4000/api/alumnos/deleteStudentToClass', add, {headers: httpHeaders}).subscribe({
+    this.http.put<any>('http://localhost:4000/api/alumnos/deleteClass', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadStudentsById(id);
       },

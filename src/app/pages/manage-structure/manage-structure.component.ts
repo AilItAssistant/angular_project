@@ -76,7 +76,7 @@ export class ManageStructureComponent {
   ngOnInit() {
     this.loadLevels();
     this.loadActiveLevels();
-    //this.loadSkills();
+    this.loadSkills();
     //this.loadBlocks();
     //this.loadQuestionType();
     //this.loadBlocksToExam();

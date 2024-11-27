@@ -42,6 +42,7 @@ export class ManageStructureComponent {
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
     puntuation: new FormControl(""),
+    is_selected: new FormControl(""),
   });
 
   editForm = new FormGroup({
@@ -210,8 +211,9 @@ export class ManageStructureComponent {
         id = document.getElementById('block');
         if (
           data.name === "" || data.name === null || data.name === undefined &&
-          data.skillId === "" || data.skillId == null || data.skillId === undefined
-          && data.score === "" || data.score == null || data.score === undefined ){
+          data.score === "" || data.score == null || data.score === undefined &&
+          data.puntuation === "" || data.puntuation == null || data.puntuation === undefined &&
+          data.type === "" || data.type == null || data.type === undefined ){
           this.val = false;
           id.style.display="is-invalid";
         } else {
@@ -442,8 +444,9 @@ export class ManageStructureComponent {
       name: this.structureForm.value.block,
       puntuation: this.structureForm.value.puntuation,
       score: this.structureForm.value.blockScore,
+      type: this.structureForm.value.blockType,
+      is_selected: this.structureForm.value.is_selected,
     }
-    if( this.structureForm.value.blockType !== "" ) { add.type = this.structureForm.value.blockType } else { add.type = null };
     this.validation(add, "add_block");
     if ( this.val ) {
       let auth: any = localStorage.getItem('token');

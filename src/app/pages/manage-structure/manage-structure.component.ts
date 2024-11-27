@@ -26,6 +26,7 @@ export class ManageStructureComponent {
   blocksExams: any = [];
   unionsSkills: any = [];
   skillToUnion: any = [];
+  activeSkills: any = [];
 
   structureForm = new FormGroup({
     level: new FormControl(""),
@@ -40,6 +41,7 @@ export class ManageStructureComponent {
     searchSkillBlock: new FormControl(""),
     blockScore: new FormControl(""),
     blockType: new FormControl(""),
+    puntuation: new FormControl(""),
   });
 
   editForm = new FormGroup({
@@ -52,6 +54,8 @@ export class ManageStructureComponent {
     level: new FormControl(""),
     statement: new FormControl(""),
     puntuation: new FormControl(""),
+    is_selected: new FormControl(""),
+    skill: new FormControl(""),
   });
 
   blocksToExams = new FormGroup({
@@ -73,10 +77,27 @@ export class ManageStructureComponent {
     this.loadLevels();
     this.loadActiveLevels();
     this.loadSkills();
-    //this.loadBlocks();
-    //this.loadQuestionType();
+    this.loadBlocks();
+    this.loadActiveSkills();
+    this.loadQuestionType();
     //this.loadBlocksToExam();
     //this.loadSkillsUnions();
+  };
+
+  loadActiveSkills(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.get<any>('http://localhost:4000/api/skills/active', {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.activeSkills = res;
+        console.log(res)
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   loadActiveLevels(){
@@ -245,7 +266,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/skills', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.skills = res;
-        console.log(this.skills)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -261,6 +281,7 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/blocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocks = res.blocks;
+        console.log(this.blocks)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -296,6 +317,8 @@ export class ManageStructureComponent {
       level: new FormControl(""),
       statement: new FormControl(""),
       puntuation: new FormControl(""),
+      is_selected:new FormControl(""),
+      skill: new FormControl(""),
     });
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -319,6 +342,8 @@ export class ManageStructureComponent {
       level: new FormControl(""),
       statement: new FormControl(""),
       puntuation: new FormControl(""),
+      is_selected: new FormControl(""),
+      skill: new FormControl(""),
     });
 
     let editModal: any;
@@ -343,6 +368,8 @@ export class ManageStructureComponent {
       level: new FormControl(""),
       statement: new FormControl(""),
       puntuation: new FormControl(block.individual_score),
+      is_selected: new FormControl(block.is_selected),
+      skill: new FormControl(""),
     });
 
     let editModal: any;
@@ -413,8 +440,7 @@ export class ManageStructureComponent {
   addBlock(){
     let add: any = {
       name: this.structureForm.value.block,
-      skillId: this.structureForm.value.skillBlock,
-      status: status,
+      puntuation: this.structureForm.value.puntuation,
       score: this.structureForm.value.blockScore,
     }
     if( this.structureForm.value.blockType !== "" ) { add.type = this.structureForm.value.blockType } else { add.type = null };
@@ -472,7 +498,7 @@ export class ManageStructureComponent {
 
   desactivateBlock(block: any){
     let change: any;
-    if ( block.status_name === "active" ) {
+    if ( block.status === "active" ) {
       change = 0
     } else {
       change = 1
@@ -525,15 +551,15 @@ export class ManageStructureComponent {
     let changes: any = {
       name: this.editForm.value.name === this.editVariables.structure.name ? null : this.editForm.value.name,
       action: this.editVariables.action === this.editVariables.action ? null : this.editVariables.action,
-      id: this.editVariables.id,
-      secondId: this.editForm.value.secondId
+      id: this.editVariables.id
     };
     if(changes.secondId === "") changes.secondId = null;
     if(this.editVariables.type === "blocks") {
       changes.type = this.editForm.value.blockType === this.editVariables.structure.question_type_id ? null : this.editForm.value.blockType;
       changes.score = this.editForm.value.blockScore === this.editVariables.structure.max_score ? null : this.editForm.value.blockScore;
       changes.individual_score = this.editForm.value.puntuation === this.editVariables.structure.individual_score ? null : this.editForm.value.puntuation;
-      if(this.editForm.value.secondId === this.editVariables.structure.skill_id) changes.secondId = null;
+
+      changes.is_selected = this.editForm.value.is_selected === this.editVariables.structure.is_selected ? null : this.editForm.value.is_selected;
     };
     if(this.editVariables.type === "skills_unions"){
       changes.statement = this.editForm.value.statement === this.editVariables.structure.statement ? null : this.editForm.value.statement;
@@ -836,6 +862,8 @@ export class ManageStructureComponent {
       level: new FormControl(skillUnion.level_id),
       statement: new FormControl(skillUnion.statement),
       puntuation: new FormControl(skillUnion.max_puntuation),
+      is_selected: new FormControl(""),
+      skill: new FormControl(""),
     });
     this.loadSkillToUnions();
 
@@ -884,6 +912,48 @@ export class ManageStructureComponent {
           level:""
         });
         this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addSkilltoBlock(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      block_id: this.editVariables.id,
+      skill_id: this.editForm.value.skill,
+    };
+    console.log(add)
+    this.http.post<any>('http://localhost:4000/api/blocks/addSkilltoBlock', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadBlocks();
+        this.editVariables.structure.skills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteSkilltoBlock(skill: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      block_id: this.editVariables.id,
+      skill_id: skill.skill_id,
+    };
+    console.log(add)
+    this.http.put<any>('http://localhost:4000/api/blocks/deleteSkilltoBlock', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadBlocks();
+        this.editVariables.structure.skills = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);

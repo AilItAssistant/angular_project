@@ -510,6 +510,7 @@
                             <option value="30">30</option>
                         </select>
                     } @else if (editVariables.type === "skills") {
+                        <p class="mt-4 ms-1">Niveles</p>
                         @for(level of editVariables.structure.levels; track level.level_id){
                             <div class="mx-3 my-4">
                                 {{level.level}}
@@ -517,7 +518,7 @@
                             </div>
                         }
                         <div class="mt-4">
-                            <label for="level" class="form-label">Nivel</label>
+                            <label for="level" class="form-label">Añadir nivel</label>
                             <select id="level" class="form-select" formControlName="level">
                                 @for(level of activeLevels; track level.id){
                                     <option [value]="level.id">{{level.name}}</option>

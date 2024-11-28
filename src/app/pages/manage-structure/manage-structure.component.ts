@@ -67,9 +67,7 @@ export class ManageStructureComponent {
   skillsUnions = new FormGroup({
     name: new FormControl(""),
     statement: new FormControl(""),
-    skill1: new FormControl(""),
-    skill2: new FormControl(""),
-    level:new FormControl("")
+    max_score: new FormControl("")
   });
 
   constructor(private http: HttpClient) {}
@@ -82,7 +80,7 @@ export class ManageStructureComponent {
     this.loadActiveSkills();
     this.loadQuestionType();
     this.loadBlocksToExam();
-    //this.loadSkillsUnions();
+    this.loadSkillsUnions();
   };
 
   loadActiveSkills(){
@@ -93,7 +91,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/skills/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.activeSkills = res;
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -109,28 +106,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.activeLevels = res;
-      },
-      error: (err) => {
-        alert('Cargar fallo' + err);
-      },
-    });
-  };
-
-  loadSkillToUnions(){
-    let auth: any = localStorage.getItem('token');
-    let httpHeaders: any = new HttpHeaders({
-      'authorization': auth
-    });
-    let level: any;
-    if( !this.skillsUnions.value.level || this.skillsUnions.value.level === "" ||
-      this.skillsUnions.value.level === undefined || this.skillsUnions.value.level === null ){
-        level = { id: this.editForm.value.level };
-      } else {
-        level = { id: this.skillsUnions.value.level }
-      }
-    this.http.post<any>('http://localhost:4000/api/skills/skillsLevel', level, {headers: httpHeaders}).subscribe({
-      next: (res) => {
-        this.skillToUnion = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -162,7 +137,6 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/levels/activeLevelsSkillsBlocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocksExams = res;
-        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -567,15 +541,8 @@ export class ManageStructureComponent {
     };
     if(this.editVariables.type === "skills_unions"){
       changes.statement = this.editForm.value.statement === this.editVariables.structure.statement ? null : this.editForm.value.statement;
-      changes.skill_id_1 = this.editForm.value.skill1 === this.editVariables.structure.skill_id_1 ? null : this.editForm.value.skill1;
-      changes.skill_id_2 = this.editForm.value.skill2 === this.editVariables.structure.skill_id_2 ? null : this.editForm.value.skill2;
-      changes.level_id = this.editForm.value.level === this.editVariables.structure.level_id ? null : this.editForm.value.level;
-      changes.max_puntuation = this.editForm.value.puntuation === this.editVariables.structure.max_puntuation ? null : this.editForm.value.puntuation;
-
-      if(this.editForm.value.skill1 === this.editForm.value.skill2){
-        this.val === false;
-        alert("Las destrezas tienen que ser diferentes");
-      };
+      changes.name = this.editForm.value.name === this.editVariables.structure.name ? null : this.editForm.value.name;
+      changes.max_score = this.editForm.value.puntuation === this.editVariables.structure.max_puntuation ? null : this.editForm.value.puntuation;
     }
     console.log(changes)
     this.validation(changes, this.editVariables.type);
@@ -828,9 +795,7 @@ export class ManageStructureComponent {
     let add: any = {
       name: this.skillsUnions.value.name,
       statement: this.skillsUnions.value.statement,
-      skill_id_1: this.skillsUnions.value.skill1,
-      skill_id_2: this.skillsUnions.value.skill2,
-      level_id: this.skillsUnions.value.level,
+      max_score: this.skillsUnions.value.max_score,
     };
     console.log(add)
     this.http.post<any>('http://localhost:4000/api/skills_unions/add', add, {headers: httpHeaders}).subscribe({
@@ -841,9 +806,7 @@ export class ManageStructureComponent {
         this.skillsUnions.reset({
           name: "",
           statement: "",
-          skill1: "",
-          skill2: "",
-          level:""
+          max_score:""
         });
       },
       error: (err) => {
@@ -862,15 +825,14 @@ export class ManageStructureComponent {
       name: new FormControl(skillUnion.name),
       blockScore: new FormControl(""),
       blockType: new FormControl(""),
-      skill1: new FormControl(skillUnion.skill_id_1),
-      skill2: new FormControl(skillUnion.skill_id_2),
-      level: new FormControl(skillUnion.level_id),
+      skill1: new FormControl(""),
+      skill2: new FormControl(""),
+      level: new FormControl(""),
       statement: new FormControl(skillUnion.statement),
-      puntuation: new FormControl(skillUnion.max_puntuation),
+      puntuation: new FormControl(skillUnion.max_score),
       is_selected: new FormControl(""),
       skill: new FormControl(""),
     });
-    this.loadSkillToUnions();
 
     let editModal: any;
     editModal = document.getElementById('editModal');
@@ -889,9 +851,6 @@ export class ManageStructureComponent {
     this.http.post<any>('http://localhost:4000/api/skills/addLeveltoSkill', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadSkills();
-        this.editForm.reset({
-          level:""
-        });
         this.editVariables.structure.levels = res;
       },
       error: (err) => {
@@ -913,9 +872,6 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/skills/deleteLeveltoSkill', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadSkills();
-        this.editForm.reset({
-          level:""
-        });
         this.editVariables.structure.levels = res;
       },
       error: (err) => {
@@ -966,9 +922,6 @@ export class ManageStructureComponent {
     });
   };
 
-
-
-
   addLeveltoBlock(){
     let auth: any = localStorage.getItem('token');
     let httpHeaders: any = new HttpHeaders({
@@ -981,9 +934,6 @@ export class ManageStructureComponent {
     this.http.post<any>('http://localhost:4000/api/blocks/addLeveltoBlock', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocks();
-        this.editForm.reset({
-          level:""
-        });
         this.editVariables.structure.levels = res;
       },
       error: (err) => {
@@ -1005,10 +955,89 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/deleteLeveltoBlock', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocks();
-        this.editForm.reset({
-          level:""
-        });
         this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addLeveltoUnion(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      union_id: this.editVariables.id,
+      level_id: this.editForm.value.level,
+    };
+    this.http.post<any>('http://localhost:4000/api/skills_unions/addLeveltoUnion', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+        this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteLeveltoUnion(level: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      union_id: this.editVariables.id,
+      level_id: level.level_id,
+    };
+    console.log(add)
+    this.http.put<any>('http://localhost:4000/api/skills_unions/deleteLeveltoUnion', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+        this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  addSkilltoUnion(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      union_id: this.editVariables.id,
+      skill_id: this.editForm.value.skill,
+    };
+    this.http.post<any>('http://localhost:4000/api/skills_unions/addSkilltoUnion', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+        this.editVariables.structure.skills = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteSkilltoUnion(skill: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      union_id: this.editVariables.id,
+      skill_id: skill.skill_id,
+    };
+    console.log(add)
+    this.http.put<any>('http://localhost:4000/api/skills_unions/deleteSkilltoUnion', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadSkillsUnions();
+        this.editVariables.structure.skills = res;
       },
       error: (err) => {
         alert('Cargar fallo' + err);

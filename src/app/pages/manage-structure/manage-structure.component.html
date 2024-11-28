@@ -334,14 +334,11 @@
                 <div class="col-2">
                     Enunciado
                 </div>
-                <div class="col-1">
-                    Nivel
+                <div class="col-2">
+                    Niveles
                 </div>
-                <div class="col-1">
-                    Destreza 1
-                </div>
-                <div class="col-1">
-                    Destreza 2
+                <div class="col-2">
+                    Destrezas
                 </div>
                 <div class="col-1">
                     Puntuación
@@ -349,7 +346,7 @@
                 <div class="col-1">
                     Estado
                 </div>
-                <div class="col-4"></div>
+                <div class="col-3"></div>
             </div>
         </li>
         @for(unionSkill of unionsSkills; track unionSkill.id){
@@ -361,17 +358,18 @@
                     <div class="col-2">
                         {{unionSkill.statement}}
                     </div>
-                    <div class="col-1">
-                        {{unionSkill.level_name}}
+                    <div class="col-2">
+                        @for(level of unionSkill.levels; track level.level_id){
+                            {{level.level}}
+                        }
+                    </div>
+                    <div class="col-2">
+                        @for(skill of unionSkill.skills; track skill.skill_id){
+                            {{skill.skill}}
+                        }
                     </div>
                     <div class="col-1">
-                        {{unionSkill.skill_name_1}}
-                    </div>
-                    <div class="col-1">
-                        {{unionSkill.skill_name_2}}
-                    </div>
-                    <div class="col-1">
-                        {{unionSkill.max_puntuation}}
+                        {{unionSkill.max_score}}
                     </div>
                     <div class="col-1">
                         @if (unionSkill.status === "active") {
@@ -380,10 +378,10 @@
                             <p class="text-danger">Inactivo</p>
                         }
                     </div>
-                    <div class="col-4 text-center rounded-end">
-                        <button class="btn btn-primary m-auto me-3" (click)="openSkillsUnionEdit(unionSkill)">Modificar</button>
-                        <button class="btn btn-secondary m-auto" (click)="statusUnion(unionSkill.id)">Desactivar</button>
-                        <button class="btn btn-danger m-auto ms-3" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
+                    <div class="col-3 text-center rounded-end">
+                        <button class="btn btn-primary m-auto me-3 btn-sm" (click)="openSkillsUnionEdit(unionSkill)">Modificar</button>
+                        <button class="btn btn-secondary m-auto btn-sm" (click)="statusUnion(unionSkill.id)">Desactivar</button>
+                        <button class="btn btn-danger m-auto ms-3 btn-sm" (click)="deleteUnionModal(unionSkill)">Eliminar</button>
                     </div>
                 </div>
             </li>
@@ -392,44 +390,27 @@
     <form [formGroup] = "skillsUnions" id="skillsUnions">
         <div class="row">
             <div class="col-1"></div>
-            <div class="col-4">
+            <div class="col-3">
                 <p>Nombre de la unión:</p>
                 <input type="text" class="form-control" formControlName="name" id="name">
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <label for="statementUnion" class="form-label">Enunciado para la unión:</label>
-                <textarea class="form-control" formControlName="statement" id="statementUnion" rows="2"></textarea>
+                <textarea class="form-control" formControlName="statement" id="statementUnion" rows="1"></textarea>
             </div>
-            <div class="col-1"></div>
-        </div>
-        <div class="row">
-            <div class="col-1"></div>
-            <div class="col-3">
-                <p>Nivel de la unión:</p>
-                <select id="level" class="form-select" formControlName="level" (change)="loadSkillToUnions()">
-                    @for(level of activeLevels; track level.id){
-                        <option [value]="level.id">{{level.name}}</option>
-                    }
+            <div class="col-2">
+                <p>Puntuación individual</p>
+                <select id="blockScore" class="form-select" formControlName="max_score">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                    <option value="25">25</option>
+                    <option value="30">30</option>
                 </select>
             </div>
-            @if(skillsUnions.value.level){
-                <div class="col-3">
-                    <p>Destreza 1:</p>
-                    <select id="skill1" class="form-select" formControlName="skill1">
-                        @for(skill of skillToUnion; track skill.id){
-                            <option [value]="skill.id">{{skill.name}}</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-3">
-                    <p>Destreza 2:</p>
-                    <select id="skill2" class="form-select" formControlName="skill2">
-                        @for(skill of skillToUnion; track skill.id){
-                            <option [value]="skill.id">{{skill.name}}</option>
-                        }
-                    </select>
-                </div>
-            }
             <div class="col-1">
                 <div class="col-2 mt-4 text-center"><button class="btn btn-success mt-3" (click)="addSkillUnion()">Añadir</button></div>
             </div>
@@ -531,27 +512,9 @@
                             <button class="btn btn-success mt-4" (click)="addLeveltoBlock()">Añadir</button>
                         </div>
                     } @else if (editVariables.type === "skills_unions") {
-                        <p>Nivel de la unión:</p>
-                        <select id="level" class="form-select" formControlName="level" (change)="loadSkillToUnions()">
-                            @for(level of activeLevels; track level.id){
-                                <option [value]="level.id">{{level.name}}</option>
-                            }
-                        </select>
-                        <label for="statementUnion" class="form-label">Enunciado para la unión:</label>
+                        <label for="statementUnion" class="form-label mt-3">Enunciado para la unión:</label>
                         <textarea class="form-control" formControlName="statement" id="statementUnion" rows="2"></textarea>
-                        <p>Destreza 1:</p>
-                        <select id="skill1" class="form-select" formControlName="skill1">
-                            @for(skill of skillToUnion; track skill.id){
-                                <option [value]="skill.id">{{skill.name}}</option>
-                            }
-                        </select>
-                        <p>Destreza 2:</p>
-                        <select id="skill2" class="form-select" formControlName="skill2">
-                            @for(skill of skillToUnion; track skill.id){
-                                <option [value]="skill.id">{{skill.name}}</option>
-                            }
-                        </select>
-                        <p>Puntuación:</p>
+                        <p class="mt-3">Puntuación:</p>
                         <select id="blockScore" class="form-select" formControlName="puntuation">
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -562,6 +525,38 @@
                             <option value="25">25</option>
                             <option value="30">30</option>
                         </select>
+                        <p class="mt-5 ms-1">Destrezas</p>
+        <!-- skills --> @for(skill of editVariables.structure.skills; track skill.skill_id){
+                            <div class="mx-3 my-4">
+                                {{skill.skill}}
+                                <button class="btn btn-danger ms-5" (click)="deleteSkilltoUnion(skill)">Eliminar</button>
+                            </div>
+                        }
+                        <div class="mt-4">
+                            <label for="skill" class="form-label">Añadir destreza</label>
+                            <select id="skill" class="form-select" formControlName="skill">
+                                @for(skill of activeSkills; track skill.id){
+                                    <option [value]="skill.id">{{skill.name}}</option>
+                                }
+                            </select>
+                            <button class="btn btn-success mt-4" (click)="addSkilltoUnion()">Añadir</button>
+                        </div>
+                        <p class="mt-5 ms-1">Niveles</p>
+        <!-- levels --> @for(level of editVariables.structure.levels; track level.level_id){
+                            <div class="mx-3 my-4">
+                                {{level.level}}
+                                <button class="btn btn-danger ms-5" (click)="deleteLeveltoUnion(level)">Eliminar</button>
+                            </div>
+                        }
+                        <div class="mt-4">
+                            <label for="level" class="form-label">Añadir nivel</label>
+                            <select id="level" class="form-select" formControlName="level">
+                                @for(level of activeLevels; track level.id){
+                                    <option [value]="level.id">{{level.name}}</option>
+                                }
+                            </select>
+                            <button class="btn btn-success mt-4" (click)="addLeveltoUnion()">Añadir</button>
+                        </div>
                     } @else if (editVariables.type === "skills") {
                         <p class="mt-4 ms-1">Niveles</p>
                         @for(level of editVariables.structure.levels; track level.level_id){

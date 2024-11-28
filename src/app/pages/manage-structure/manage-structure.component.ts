@@ -81,7 +81,7 @@ export class ManageStructureComponent {
     this.loadBlocks();
     this.loadActiveSkills();
     this.loadQuestionType();
-    //this.loadBlocksToExam();
+    this.loadBlocksToExam();
     //this.loadSkillsUnions();
   };
 
@@ -162,6 +162,7 @@ export class ManageStructureComponent {
     this.http.get<any>('http://localhost:4000/api/levels/activeLevelsSkillsBlocks', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocksExams = res;
+        console.log(res)
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -764,6 +765,7 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/selected', block, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocksToExam();
+        this.loadBlocks();
       },
       error: (err) => {
         alert('Cargar fallo' + err);

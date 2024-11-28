@@ -150,6 +150,9 @@
                         <div class="col-1 mt-3">
                             Nombre
                         </div>
+                        <div class="col-1 mt-3">
+                            Niveles
+                        </div>
                         <div class="col-2 mt-3">
                             Destrezas
                         </div>
@@ -166,7 +169,7 @@
                             En exámen
                         </div>
                         <div class="col-1 col-lg-1 mt-3">Estado</div>
-                        <div class="col-4 mt-3"></div>
+                        <div class="col-3 mt-3"></div>
                     </div>
                 </li>
                 @for(block of blocks; track block.id){
@@ -174,6 +177,11 @@
                         <div class="row text-center">
                             <div class="col-1 mt-3">
                                 {{block.name}}
+                            </div>
+                            <div class="col-1 mt-3">
+                                @for(level of block.levels; track level.level_id){
+                                    {{level.level}}
+                                }
                             </div>
                             <div class="col-2 mt-3">
                                 @for(skill of block.skills; track skill.skill_id){
@@ -203,10 +211,10 @@
                                     <p class="text-danger">Inactivo</p>
                                 }
                             </div>
-                            <div class="col-4 mt-3">
-                                <button class="btn btn-primary" (click)="openEditBlockModal(block)">Modificar</button>
-                                <button class="btn btn-secondary ms-3" (click)="desactivateBlock(block)">Desactivar</button>
-                                <button class="btn btn-danger ms-3" (click)="deleteBlock(block)">Eliminar</button>
+                            <div class="col-3 mt-3">
+                                <button class="btn btn-primary btn-sm" (click)="openEditBlockModal(block)">Modificar</button>
+                                <button class="btn btn-secondary ms-1 btn-sm" (click)="desactivateBlock(block)">Desactivar</button>
+                                <button class="btn btn-danger ms-1 btn-sm" (click)="deleteBlock(block)">Eliminar</button>
                             </div>
                         </div>
                     </li>
@@ -490,7 +498,7 @@
                             <option value="1">Si</option>
                             <option value="2">No</option>
                         </select>
-                        <p class="mt-4 ms-1">Niveles</p>
+                        <p class="mt-5 ms-1">Destrezas</p>
                         @for(skill of editVariables.structure.skills; track skill.skill_id){
                             <div class="mx-3 my-4">
                                 {{skill.skill}}
@@ -498,13 +506,29 @@
                             </div>
                         }
                         <div class="mt-4">
-                            <label for="skill" class="form-label">Añadir nivel</label>
+                            <label for="skill" class="form-label">Añadir destreza</label>
                             <select id="skill" class="form-select" formControlName="skill">
                                 @for(skill of activeSkills; track skill.id){
                                     <option [value]="skill.id">{{skill.name}}</option>
                                 }
                             </select>
                             <button class="btn btn-success mt-4" (click)="addSkilltoBlock()">Añadir</button>
+                        </div>
+                        <p class="mt-5 ms-1">Niveles</p>
+                        @for(level of editVariables.structure.levels; track level.level_id){
+                            <div class="mx-3 my-4">
+                                {{level.level}}
+                                <button class="btn btn-danger ms-5" (click)="deleteLeveltoBlock(level)">Eliminar</button>
+                            </div>
+                        }
+                        <div class="mt-4">
+                            <label for="level" class="form-label">Añadir nivel</label>
+                            <select id="level" class="form-select" formControlName="level">
+                                @for(level of activeLevels; track level.id){
+                                    <option [value]="level.id">{{level.name}}</option>
+                                }
+                            </select>
+                            <button class="btn btn-success mt-4" (click)="addLeveltoBlock()">Añadir</button>
                         </div>
                     } @else if (editVariables.type === "skills_unions") {
                         <p>Nivel de la unión:</p>

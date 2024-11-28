@@ -966,4 +966,54 @@ export class ManageStructureComponent {
     });
   };
 
+
+
+
+  addLeveltoBlock(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      block_id: this.editVariables.id,
+      level_id: this.editForm.value.level,
+    };
+    this.http.post<any>('http://localhost:4000/api/blocks/addLeveltoBlock', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadBlocks();
+        this.editForm.reset({
+          level:""
+        });
+        this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
+  deleteLeveltoBlock(level: any){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let add: any = {
+      block_id: this.editVariables.id,
+      level_id: level.level_id,
+    };
+    console.log(add)
+    this.http.put<any>('http://localhost:4000/api/blocks/deleteLeveltoBlock', add, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.loadBlocks();
+        this.editForm.reset({
+          level:""
+        });
+        this.editVariables.structure.levels = res;
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
+  };
+
 };

@@ -112,10 +112,10 @@
                                                 <div class="card-body text-center row">
                                                     @for(answer of question.answers; track answer.id){
                                                         <div class="col-3">
-                                                            @if(answer.is_correct){
+                                                            @if(answer.is_correct === 1){
                                                                 <p class="list-group"> <span class="text-success fs-3">{{answer.letter}}.</span> </p>
                                                                 @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
-                                                            } @else{
+                                                            } @else if(answer.is_correct === 0){
                                                                 <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
                                                             }
                                                             @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
@@ -439,7 +439,6 @@
     }
 
     <!-- Select statement modal -->
-
 <div class="modal" id="statementModal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

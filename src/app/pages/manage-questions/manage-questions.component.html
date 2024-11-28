@@ -55,7 +55,7 @@
                 <p class="text-danger">Inactivo</p>
             }
           </div>
-          <p class="col-3">Puntuación: {{question.puntuation}}</p>
+          <p class="col-3">Puntuación: {{question.score}}</p>
           <h4 class="col">Pregunta</h4>
           <div class="col-4 text-end">
             <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
@@ -169,7 +169,7 @@
                       <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
                       <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
                       <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
-                  </div>
+                    </div>
                   </div>
                 </div>
                 <div class="card-body text-center list-group list-group p-3">
@@ -202,11 +202,11 @@
                             }
                           <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
                           <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
-                            @if(answer.is_correct === "1" && answer.response === null){
+                            @if(answer.is_correct === 1 && answer.response === null){
                               <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
                             }
-                            @if (answer.is_correct === "0" && answer.response === null){
+                            @if (answer.is_correct === 0 && answer.response === null){
                               <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
                             }
@@ -234,7 +234,6 @@
   }
 
 <!-- Delete modal -->
-
   <div class="modal" id="deleteModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -268,7 +267,6 @@
   </div>
 
   <!-- Edit modal -->
-
   <div class="modal modal-lg" id="editModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">

@@ -200,7 +200,7 @@
                             <div class="col-1 col-lg-1 mt-3 text-center">
                                 @if (block.is_selected === 1) {
                                     <p class="text-success">Seleccionado</p>
-                                } @else if (block.is_selected === 0 ) {
+                                } @else {
                                     <p class="text-danger">No seleccionado</p>
                                 }
                             </div>
@@ -239,6 +239,7 @@
                     <select id="blockScore" class="form-select" formControlName="blockScore">
                         <option value="1">1</option>
                         <option value="2">2</option>
+                        <option value="5">5</option>
                         <option value="10">10</option>
                         <option value="15">15</option>
                         <option value="10">20</option>

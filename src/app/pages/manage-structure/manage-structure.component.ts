@@ -368,6 +368,7 @@ export class ManageStructureComponent {
       this.http.post<any>('http://localhost:4000/api/levels/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.loadLevels();
+          this.loadActiveLevels();
           let form: any = document.getElementById("structureForm");
           form.reset();
           this.structureForm.reset({
@@ -398,6 +399,7 @@ export class ManageStructureComponent {
       this.http.post<any>('http://localhost:4000/api/skills/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           this.loadSkills();
+          this.loadActiveSkills();
           let form: any = document.getElementById("structureForm");
           form.reset();
           this.structureForm.reset({
@@ -434,6 +436,7 @@ export class ManageStructureComponent {
           let form: any = document.getElementById("structureForm");
           form.reset();
           this.loadBlocks();
+          this.loadBlocksToExam();
           this.structureForm.reset({
             block: "",
             skillBlock: ""
@@ -492,6 +495,7 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/blocks/status', status, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadBlocks();
+        this.loadBlocksToExam();
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -517,6 +521,7 @@ export class ManageStructureComponent {
     this.http.put<any>('http://localhost:4000/api/skills/status', status, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.loadSkills();
+        this.loadActiveSkills();
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -558,10 +563,13 @@ export class ManageStructureComponent {
           let form: any = document.getElementById("editForm");
           if( this.editVariables.type === "levels" ){
             this.loadLevels();
+            this.loadActiveLevels();
           }else if( this.editVariables.type === "skills" ){
             this.loadSkills();
+            this.loadActiveSkills();
           }else if( this.editVariables.type === "blocks" ){
             this.loadBlocks();
+            this.loadBlocksToExam();
           }else if( this.editVariables.type === "skills_unions" ){
             this.loadSkillsUnions();
           }
@@ -624,10 +632,13 @@ export class ManageStructureComponent {
         this.charge = false;
         if( this.deleteVariables.type === "levels" ){
           this.loadLevels();
+          this.loadActiveLevels();
         }else if( this.deleteVariables.type === "skills" ){
           this.loadSkills();
+          this.loadActiveSkills();
         }else if( this.deleteVariables.type === "blocks" ){
           this.loadBlocks();
+          this.loadBlocksToExam();
         }
         this.charge = false;
         this.closeDeleteModal();

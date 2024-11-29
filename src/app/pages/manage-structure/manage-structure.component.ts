@@ -629,7 +629,6 @@ export class ManageStructureComponent {
     });
     this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`, del, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.charge = false;
         if( this.deleteVariables.type === "levels" ){
           this.loadLevels();
           this.loadActiveLevels();
@@ -644,6 +643,8 @@ export class ManageStructureComponent {
         this.closeDeleteModal();
       },
       error: (err) => {
+        this.charge = false;
+        this.closeDeleteModal();
         alert('Cargar fallo' + err);
       },
     });
@@ -903,8 +904,12 @@ export class ManageStructureComponent {
     console.log(add)
     this.http.post<any>('http://localhost:4000/api/blocks/addSkilltoBlock', add, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        this.loadBlocks();
-        this.editVariables.structure.skills = res;
+        if(res === "Already exist"){
+          alert("Solo se puede añadir una destreza por bloque")
+        } else {
+          this.loadBlocks();
+          this.editVariables.structure.skills = res;
+        }
       },
       error: (err) => {
         alert('Cargar fallo' + err);

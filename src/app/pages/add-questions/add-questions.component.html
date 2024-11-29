@@ -17,9 +17,19 @@
                     @if( statementForm.value.level ){
                     <div class="col">
                             <p>Elige una destreza</p>
-                            <select id="skillStatement" class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza">
+                            <select id="skillStatement" class="form-select" placeholder="Elige una destreza" formControlName="skill" aria-label="Elige una destreza" (change)="loadBlocksbySkillId()">
                                 @for(skill of skillsStatement; track skill.id){
                                     <option [value]="skill.id">{{skill.name}}</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    @if( statementForm.value.skill ){
+                        <div class="col">
+                            <p>Elige un bloque</p>
+                            <select id="skillStatement" class="form-select" placeholder="Elige una destreza" formControlName="block" aria-label="Elige una destreza">
+                                @for(block of blocksbySkillId; track block.id){
+                                    <option [value]="block.id">{{block.name}}</option>
                                 }
                             </select>
                         </div>
@@ -27,32 +37,32 @@
                 </div>
             </div>
             <div class="row my-3">
-                @if( statementForm.value.skill ){
+                @if( statementForm.value.block ){
                     <div class="col text-center">
                         <p>Enunciado</p>
                         <textarea class="form-control" formControlName="statement" placeholder="Enunciado" id="statement" aria-label="With textarea"></textarea>
                     </div>
                 }
                 <div class="col col-sm-2 text-center">
-                    @if( statementForm.value.skill ){
-                        <p>Puntuacion</p>
-                        <select class="form-select" formControlName="puntuation" id="puntuation">
-                            <option value=5>5</option>
-                            <option value=10>10</option>
-                            <option value=15>15</option>
-                            <option value=20>20</option>
-                            <option value=25>25</option>
-                            <option value=30>30</option>
-                        </select>
-                    }
+                @if( statementForm.value.block ){
+                    <p>Puntuacion</p>
+                    <select class="form-select" formControlName="puntuation" id="puntuation">
+                        <option value=5>5</option>
+                        <option value=10>10</option>
+                        <option value=15>15</option>
+                        <option value=20>20</option>
+                        <option value=25>25</option>
+                        <option value=30>30</option>
+                    </select>
+                }
                 </div>
             </div>
-                @if( statementForm.value.skill ) {
+                @if( statementForm.value.block ) {
                     <p class="mt-2 text-center">Texto</p>
                     <textarea class="form-control mb-4" formControlName="text" id="text" placeholder="Texto" aria-label="With textarea" required></textarea>
                 }
             <div class="mb-3">
-                @if ( statementForm.value.skill ) {
+                @if ( statementForm.value.block ) {
                     <label for="formFile" class="form-label">Foto del enunciado</label>
                     <input class="form-control" type="file" id="statementPhoto" formControlName="statementPhoto" (change)="statementPhotoConvert($event)">
                 }
@@ -149,7 +159,7 @@
     <form [formGroup] = "questionForm" id="questionForm">
         <h3 class="text-center my-5"><strong>Añadir pregunta</strong></h3>
         <div class="row text-center">
-            @if( !selectedStatement || selectedStatement === "" ){
+            @if( !selectedStatement || selectedStatement === "" || selectedStatement.length === 0 ){
                 <div class="col">
                     <p>Elige un nivel</p>
                     <select class="form-select mb-3" placeholder="A1" formControlName="level" aria-label="A1" (change)="chargeSkillsQuestions()">
@@ -178,27 +188,26 @@
                         }
                     </select>
                 </div>
-                <div class="col-7">
+                @if( questionForm.value.block || selectedStatement ){
+                    <div class="col">
+                        <p>Tipo de respuesta</p>
+                        <select class="form-select" formControlName="responsesMode" id="response">
+                            <option value="phrase">Frases para rellenar</option>
+                            <option value="photo">Fotografías tipo test de una sola respuesta</option>
+                            <option value="multiple">Respuestas con múltiples soluciones</option>
+                            <option value="test">Tipo test de una solución</option>
+                        </select>
+                    </div>
+                }
+            }
+        </div>
+        @if( questionForm.value.responsesMode){
+            <div class="row">
+                <div class="col-9">
                     <p class="text-center">Pregunta</p>
                     <textarea class="form-control" formControlName="question" id="question" placeholder="Pregunta" aria-label="With textarea"></textarea>
                 </div>
-            }
-        </div>
-        @if( questionForm.value.skill || selectedStatement ){
-            <div class="row">
-                <div class="my-4 col-5">
-                    <label for="formFile" class="form-label text-center">Tipo de pregunta</label>
-                    <select class="form-select" formControlName="responsesMode" id="response">
-                        <option value="phrase">Respuestas basadas en frases</option>
-                        <option value="photo">Respuestas basadas en fotografías</option>
-                        <option value="multiple">Respuestas múltiples</option>
-                    </select>
-                </div>
-                <div class="col-5 mt-4">
-                    <label for="formFile" class="form-label text-center">Foto de la pregunta</label>
-                    <input class="form-control" type="file" id="questionPhoto" formControlName="photoQuestion" (change)="questionPhotoConvert($event, 'question')">
-                </div>
-                <div class="col-2 my-4">
+                <div class="col-3 my-4">
                     <label for="formFile" class="form-label text-center">Puntuacion</label>
                     <select class="form-select" formControlName="puntuation" id="puntuation">
                         <option value=1>1</option>
@@ -223,7 +232,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event, 'A')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" ) {
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -243,7 +252,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoB" (change)="questionPhotoConvert($event, 'B')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" ) {
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -263,7 +272,7 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoC" (change)="questionPhotoConvert($event, 'C')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" ) {
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
@@ -284,7 +293,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoD" (change)="questionPhotoConvert($event, 'D')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -306,7 +315,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoE" (change)="questionPhotoConvert($event, 'E')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -328,7 +337,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoF" (change)="questionPhotoConvert($event, 'F')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -350,7 +359,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoG" (change)="questionPhotoConvert($event, 'G')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseG" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -372,7 +381,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoH" (change)="questionPhotoConvert($event, 'H')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseH" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -394,7 +403,7 @@
                             @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                                 <input class="form-control" type="file" id="questionPhoto" formControlName="photoI" (change)="questionPhotoConvert($event, 'I')">
                             }
-                            @if( questionForm.value.responsesMode === "phrase" ) {
+                            @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseI" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
@@ -411,7 +420,7 @@
                         </div>
                     }
                 </div>
-                @if(questionForm.value.responsesMode !== "multiple"){
+                @if(questionForm.value.responsesMode !== "multiple" && questionForm.value.responsesMode !== "phrase"){
                     <div class="row">
                         <div class="col col-lg-2 text-center">
                             <p>Respuesta correcta</p>
@@ -430,7 +439,7 @@
         }
     </form>
 
-    @if( questionForm.value.skill || selectedStatement ){
+    @if( questionForm.value.question || selectedStatement ){
         <div class="row text-center my-4">
             <div class="col">
                 <button type="submit" class="btn btn-primary me-5" (click)="sendQuestion()">Añadir pregunta</button>

@@ -33,6 +33,7 @@ export class AddQuestionsComponent {
   validatedStatement: boolean = false;
   photos: any = {};
   idSatement: any;
+  blocksbySkillId: any = [];
 
   modalForm = new FormGroup({
     statement: new FormControl(""),
@@ -81,6 +82,7 @@ export class AddQuestionsComponent {
   statementForm = new FormGroup({
     level: new FormControl(""),
     skill: new FormControl(""),
+    block: new FormControl(""),
     statement: new FormControl(""),
     puntuation: new FormControl(""),
     text: new FormControl(""),
@@ -89,6 +91,24 @@ export class AddQuestionsComponent {
 
   ngOnInit() {
     this.loadLevels();
+  };
+
+  loadBlocksbySkillId(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    let data: any = {
+      skill_id: this.statementForm.value.skill,
+    }
+    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', data, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        this.blocksbySkillId = res;
+      },
+        error: (err) => {
+          alert('Cargar fallo' + err);
+      },
+    });
   };
 
   loadLevels(){
@@ -122,7 +142,7 @@ export class AddQuestionsComponent {
     //this.validateQuestion();
     if ( true/*this.validatedQuestion*/) {
       let responses: any;
-      if( this.questionForm.value.responsesMode === "photo" ){
+      if( this.questionForm.value.responsesMode === "photo"){
         responses = [
           {
             photo: this.photos.photoA,
@@ -182,7 +202,7 @@ export class AddQuestionsComponent {
             is_correct: false
           })
         };
-      } else if ( this.questionForm.value.responsesMode === "phrase" ) {
+      } else if ( this.questionForm.value.responsesMode === "phrase"  || this.questionForm.value.responsesMode === "test" ) {
         responses = [
           {
             content: this.questionForm.value.responseA,
@@ -321,7 +341,9 @@ export class AddQuestionsComponent {
           })
         };
       };
-      if( this.questionForm.value.responsesMode === "photo" || this.questionForm.value.responsesMode === "phrase" ){
+      if( this.questionForm.value.responsesMode === "photo" ||
+        this.questionForm.value.responsesMode === "phrase" ||
+        this.questionForm.value.responsesMode === "test" ){
         responses.forEach((element: any) => {
           if(this.questionForm.value.correctResponse === element.letter){
             element.is_correct = true
@@ -356,7 +378,9 @@ export class AddQuestionsComponent {
           form.reset();
           this.questionForm.patchValue({
             responsesMode: '',
-            level: ''
+            level: '',
+            skill: '',
+            block: ''
           });
           this.photos = {};
         },
@@ -373,6 +397,7 @@ export class AddQuestionsComponent {
       let add: any = {
         level: this.statementForm.value.level,
         skills: this.statementForm.value.skill,
+        block: this.statementForm.value.block,
         statement: this.statementForm.value.statement,
         puntuation: this.statementForm.value.puntuation,
         text: this.statementForm.value.text,
@@ -391,10 +416,14 @@ export class AddQuestionsComponent {
           this.statementForm.patchValue({
             level: '',
             skill: '',
+            block: '',
             statement: '',
             puntuation: '',
             text: '',
             statementPhoto: '',
+          });
+          this.questionForm.patchValue({
+            responsesMode: '',
           });
           this.statementPhoto = "";
         },
@@ -439,7 +468,6 @@ export class AddQuestionsComponent {
   };
 
   selectStatement(id: any){
-    let statementRes: any;
     if ( id !== "" ) {
       this.idSatement = id;
     } else {
@@ -487,6 +515,12 @@ export class AddQuestionsComponent {
     console.log(this.selectedStatement)
     this.statement = false;
     this.selectedStatement = [];
+    this.questionForm.reset({
+      responsesMode: '',
+      level: "",
+      skill: "",
+      block: ""
+    });
   };
 
   statementPhotoConvert(event: any){

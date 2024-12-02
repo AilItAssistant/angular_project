@@ -629,23 +629,27 @@ export class ManageStructureComponent {
     });
     this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`, del, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        if( this.deleteVariables.type === "levels" ){
-          this.loadLevels();
-          this.loadActiveLevels();
-        }else if( this.deleteVariables.type === "skills" ){
-          this.loadSkills();
-          this.loadActiveSkills();
-        }else if( this.deleteVariables.type === "blocks" ){
-          this.loadBlocks();
-          this.loadBlocksToExam();
+        if(res = "No se pudo borrar"){
+          alert(res);
+        } else {
+          if( this.deleteVariables.type === "levels" ){
+            this.loadLevels();
+            this.loadActiveLevels();
+          }else if( this.deleteVariables.type === "skills" ){
+            this.loadSkills();
+            this.loadActiveSkills();
+          }else if( this.deleteVariables.type === "blocks" ){
+            this.loadBlocks();
+            this.loadBlocksToExam();
+          }
         }
         this.charge = false;
         this.closeDeleteModal();
       },
       error: (err) => {
+        alert('Cargar fallo' + err);
         this.charge = false;
         this.closeDeleteModal();
-        alert('Cargar fallo' + err);
       },
     });
   };

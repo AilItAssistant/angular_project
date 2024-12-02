@@ -474,7 +474,7 @@ export class ExamsComponent {
       };
 
       //*QUESTIONS
-      if(this.exam[ex].type.question > 0 && this.exam[ex].questions){
+      if(this.exam[ex].type.question > 0 && this.exam[ex].questions && this.exam[ex].questions !== undefined ){
         for(let q: any = 0; this.exam[ex].questions.length > q; q++){
           if(this.exam[ex].questions[q + 1]){
             let questionBase: any = [
@@ -714,25 +714,26 @@ export class ExamsComponent {
         ];
 
         let column: any = 1;
-        for(let q: any = 0; this.exam[ex].questions.length > q; q++){
-          for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
-            if(this.exam[ex].questions[q].answers[a].is_correct === 1){
-              let columns: any = q + 1;
-
-              if(columns / 5 === 1 || columns / 5 === 2 || columns / 5 === 3 || columns / 5 === 4 || columns / 5 === 5 || columns / 5 === 6){
-                statement.push({columns:[]})
-                column++
+        if(this.exam[ex].questions){
+          for(let q: any = 0; this.exam[ex].questions.length > q; q++){
+            for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
+              if(this.exam[ex].questions[q].answers[a].is_correct === 1){
+                let columns: any = q + 1;
+                if(columns / 5 === 1 || columns / 5 === 2 || columns / 5 === 3 || columns / 5 === 4 || columns / 5 === 5 || columns / 5 === 6){
+                  statement.push({columns:[]})
+                  column++
+                };
+                statement[column].columns.push(
+                  {
+                  text: `${q + 1}. ${this.exam[ex].questions[q].answers[a].letter}`,
+                  width: '20%',
+                  style: 'readAnswers'
+                  },
+                );
               };
-              statement[column].columns.push(
-                {
-                text: `${q + 1}. ${this.exam[ex].questions[q].answers[a].letter}`,
-                width: '20%',
-                style: 'readAnswers'
-                },
-              );
             };
           };
-        };
+        }
         pdfResult.content.push(statement);
       };
     };

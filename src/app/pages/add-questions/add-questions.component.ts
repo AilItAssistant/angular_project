@@ -98,10 +98,11 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    let data: any = {
-      skill_id: this.statementForm.value.skill,
-    }
-    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', data, {headers: httpHeaders}).subscribe({
+    let ids: any = {
+      level_id: this.statementForm.value.level,
+      skill_id: this.statementForm.value.skill
+    };
+    this.http.post<any>('http://localhost:4000/api/blocks/getBlocksByLevelSkill', ids, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocksbySkillId = res;
       },
@@ -207,59 +208,68 @@ export class AddQuestionsComponent {
           {
             content: this.questionForm.value.responseA,
             letter: "A",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkA,
           },
           {
             content: this.questionForm.value.responseB,
             letter: "B",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkB,
           },
           {
             content: this.questionForm.value.responseC,
             letter: "C",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkC,
           },
         ];
         if(this.questionForm.value.responseD !== "" && this.questionForm.value.responseD !== null){
           responses.push({
             content: this.questionForm.value.responseD,
             letter: "D",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkD,
           })
         };
         if(this.questionForm.value.responseE !== "" && this.questionForm.value.responseE !== null){
           responses.push({
             content: this.questionForm.value.responseE,
             letter: "E",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkE,
           })
         };
         if(this.questionForm.value.responseF !== "" && this.questionForm.value.responseF !== null){
           responses.push({
             content: this.questionForm.value.responseF,
             letter: "F",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkF,
           })
         };
         if(this.questionForm.value.responseG !== "" && this.questionForm.value.responseG !== null){
           responses.push({
             content: this.questionForm.value.responseG,
             letter: "G",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkG,
           })
         };
         if(this.questionForm.value.responseH !== "" && this.questionForm.value.responseH !== null){
           responses.push({
             content: this.questionForm.value.responseH,
             letter: "H",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkH,
           })
         };
         if(this.questionForm.value.responseI !== "" && this.questionForm.value.responseI !== null){
           responses.push({
             content: this.questionForm.value.responseI,
             letter: "I",
-            is_correct: false
+            is_correct: false,
+            response: this.questionForm.value.linkI,
           })
         };
       } else if ( this.questionForm.value.responsesMode === "multiple" ){
@@ -371,6 +381,7 @@ export class AddQuestionsComponent {
       let httpHeaders: any = new HttpHeaders({
         'authorization': auth
       });
+      console.log(add)
       this.http.post<any>('http://localhost:4000/api/questions/add', add, {headers: httpHeaders}).subscribe({
         next: (res) => {
           if(this.statementSelected)this.selectStatement(this.idSatement);
@@ -678,7 +689,15 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', skill, {headers: httpHeaders}).subscribe({
+    let ids: any = {};
+    if ( this.selectedStatement ) {
+      ids.skill_id = this.selectedStatement.skill_id;
+      ids.level_id = this.selectedStatement.level_id;
+    } else {
+      ids.skill_id = this.questionForm.value.skill;
+      ids.level_id = this.questionForm.value.level;
+    };
+    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', ids, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocks = res;
       },
@@ -687,5 +706,4 @@ export class AddQuestionsComponent {
       },
     });
   };
-
 }

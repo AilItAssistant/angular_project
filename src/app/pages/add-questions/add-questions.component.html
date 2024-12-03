@@ -194,7 +194,7 @@
                         <select class="form-select" formControlName="responsesMode" id="response">
                             <option value="phrase">Frases para rellenar</option>
                             <option value="photo">Fotografías tipo test de una sola respuesta</option>
-                            <option value="multiple">Respuestas con múltiples soluciones</option>
+                            <option value="multiple">Fotografías con múltiples soluciones</option>
                             <option value="test">Tipo test de una solución</option>
                         </select>
                     </div>
@@ -232,8 +232,9 @@
                         @if( questionForm.value.responsesMode === "photo" || questionForm.value.responsesMode === "multiple" ){
                             <input class="form-control" type="file" id="questionPhoto" formControlName="photoA" (change)="questionPhotoConvert($event, 'A')">
                         }
-                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" || questionForm.value.responsesMode === "test" ) {
+                        @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseA" placeholder="Respuesta" aria-label="ResponseA" aria-describedby="ResponseA">
+                            <input type="text" class="form-control" placeholder="Solución" formControlName="linkA" id="linkA">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
                             <select class="form-select" formControlName="linkA" id="linkA">
@@ -254,6 +255,7 @@
                         }
                         @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseB" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            <input type="text" class="form-control" placeholder="Solución" formControlName="linkB" id="linkB">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
                             <select class="form-select" formControlName="linkB" id="linkB">
@@ -274,6 +276,7 @@
                         }
                         @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                             <input type="text" class="form-control" formControlName="responseC" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                            <input type="text" class="form-control" placeholder="Solución" formControlName="linkC" id="linkC">
                         }
                         @if( questionForm.value.responsesMode === "multiple" ){
                             <select class="form-select" formControlName="linkC" id="linkC">
@@ -295,6 +298,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseD" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkD" id="linkD">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkD" id="linkD">
@@ -317,6 +321,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseE" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkE" id="linkE">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkE" id="linkE">
@@ -339,6 +344,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseF" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkF" id="linkF">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkF" id="linkF">
@@ -361,6 +367,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseG" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkG" id="linkG">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkG" id="linkG">
@@ -383,6 +390,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseH" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkH" id="linkH">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkH" id="linkH">
@@ -405,6 +413,7 @@
                             }
                             @if( questionForm.value.responsesMode === "phrase" || questionForm.value.responsesMode === "test" ) {
                                 <input type="text" class="form-control" formControlName="responseI" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
+                                <input type="text" class="form-control" placeholder="Solución" formControlName="linkI" id="linkI">
                             }
                             @if( questionForm.value.responsesMode === "multiple" ){
                                 <select class="form-select" formControlName="linkI" id="linkI">

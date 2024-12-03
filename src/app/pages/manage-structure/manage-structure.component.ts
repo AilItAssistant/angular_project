@@ -629,9 +629,7 @@ export class ManageStructureComponent {
     });
     this.http.put<any>(`http://localhost:4000/api/${this.deleteVariables.type}/delete`, del, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        if(res = "No se pudo borrar"){
-          alert(res);
-        } else {
+        if(res === 200){
           if( this.deleteVariables.type === "levels" ){
             this.loadLevels();
             this.loadActiveLevels();
@@ -642,6 +640,8 @@ export class ManageStructureComponent {
             this.loadBlocks();
             this.loadBlocksToExam();
           }
+        } else {
+          alert(res);
         }
         this.charge = false;
         this.closeDeleteModal();

@@ -149,9 +149,10 @@ export class ManageQuestionsComponent {
       'authorization': auth
     });
     let id: any = {
-      skill_id: this.filterForm.value.skill
+      skill_id: this.filterForm.value.skill,
+      level_id: this.filterForm.value.level,
     }
-    this.http.post<any>('http://localhost:4000/api/blocks/blocksId', id, {headers: httpHeaders}).subscribe({
+    this.http.post<any>('http://localhost:4000/api/blocks/getBlocksByLevelSkill', id, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.blocks = res;
       },
@@ -169,50 +170,22 @@ export class ManageQuestionsComponent {
     let data: any = {
       level_id: this.filterForm.value.level ? this.filterForm.value.level : this.edit.oldStatement.level_id,
       skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
+      block_id: this.filterForm.value.block
     };
-    if(this.filterForm.value.block !== ""){
-      this.mode = "questions";
-      data.block_id = this.filterForm.value.block
-      this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswersByBlockId', data, {headers: httpHeaders}).subscribe({
-        next: (res) => {
-          console.log(res)
-          this.questions = res;
-        },
-        error: (err) => {
-          alert('Cargar fallo' + err);
-        },
-      });
-    } else {
-      this.mode = "statements";
-      this.http.post<any>('http://localhost:4000/api/statements/levelSkill', data, {headers: httpHeaders}).subscribe({
-        next: ( res ) => {
-          console.log(res)
-          this.statements = res;
-          this.statements.forEach( ( statement: any ) => {
-            statement.questions = [];
-            if(statement.photo_id !== null){
-              let id: any = { id: statement.photo_id };
-              this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
-                next: (res) => { statement.photo_id = res[0].base64_data; },
-                error: (err) => { alert('Cargar fallo' + err); },
-              });
-            };
-          });
-        },
-        error: ( err ) => {alert('Cargar fallo' + err);},
-        complete: () => {
-          this.statements.forEach(( statement: any ) => {
-            let data: any = { statement_id: statement.id };
-            this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
-              next: ( res ) => {
-                if ( res !== undefined ) statement.questions.push(res);
-              },
-              error: (err) => { alert('Cargar fallo' + err); }
-            });
-          });
+    //this.mode = "questions";
+    this.http.post<any>('http://localhost:4000/api/statements/getAllByStructureIds', data, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        console.log(res.data)
+        if (res.type === "statements") {
+          this.statements = res.data;
+        }else if (res.type === "questions"){
+          this.questions = res.data;
         }
-      });
-    };
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   cleanFilter(){
@@ -997,7 +970,6 @@ export class ManageQuestionsComponent {
     let status: any = {};
     switch (type) {
       case "answer":
-        console.log(input);
         status = {
           id: input.id,
           status: input.status

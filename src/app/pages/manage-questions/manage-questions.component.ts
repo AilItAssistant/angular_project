@@ -111,10 +111,6 @@ export class ManageQuestionsComponent {
     this.http.get<any>('http://localhost:4000/api/levels/active', {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.levels = res;
-        this.filterForm.patchValue({
-          skill: '',
-          block: ''
-        });
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -133,9 +129,6 @@ export class ManageQuestionsComponent {
     this.http.post<any>('http://localhost:4000/api/skills/skillsId', id, {headers: httpHeaders}).subscribe({
       next: (res) => {
         this.skills = res;
-        this.filterForm.patchValue({
-          block: ''
-        });;
       },
       error: (err) => {
         alert('Cargar fallo' + err);
@@ -172,14 +165,15 @@ export class ManageQuestionsComponent {
       skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
       block_id: this.filterForm.value.block
     };
-    //this.mode = "questions";
+    console.log(data);
     this.http.post<any>('http://localhost:4000/api/statements/getAllByStructureIds', data, {headers: httpHeaders}).subscribe({
       next: (res) => {
-        console.log(res.data)
         if (res.type === "statements") {
           this.statements = res.data;
+          this.mode = "statements";
         }else if (res.type === "questions"){
           this.questions = res.data;
+          this.mode = "questions";
         }
       },
       error: (err) => {
@@ -203,6 +197,7 @@ export class ManageQuestionsComponent {
   };
 
   openDeleteModal(data: any, type: any) {
+    console.log(data.id)
     let deleteModal: any;
     deleteModal = document.getElementById('deleteModal');
     deleteModal.style.display = 'block';
@@ -212,6 +207,7 @@ export class ManageQuestionsComponent {
 
   openEditModal(old: any, type: any) {
     console.log(old)
+    old = old[0]
     this.chargeSkills();
     this.chargeLevels();
     this.edit.type = type;
@@ -253,7 +249,7 @@ export class ManageQuestionsComponent {
         this.questionForm = new FormGroup({
           level: new FormControl(''),
           skill: new FormControl(''),
-          puntuation: new FormControl(old.puntuation),
+          puntuation: new FormControl(old.score),
           statement: new FormControl(''),
           text: new FormControl(old.text),
           block: new FormControl(old.block_id),
@@ -967,13 +963,12 @@ export class ManageQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    let status: any = {};
+    let status: any = {
+      id: input.id,
+      status: input.status_name
+    };
     switch (type) {
       case "answer":
-        status = {
-          id: input.id,
-          status: input.status
-        };
         this.http.put<any>('http://localhost:4000/api/answers/status', status, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
@@ -984,11 +979,6 @@ export class ManageQuestionsComponent {
         });
         break;
       case "question":
-        console.log(input.id);
-        status = {
-          id: input.id,
-          status: input.status
-        };
         this.http.put<any>('http://localhost:4000/api/questions/status', status, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();
@@ -999,11 +989,6 @@ export class ManageQuestionsComponent {
         });
         break;
       case "statement":
-        console.log(input.id);
-        status = {
-          id: input.id,
-          status: input.status
-        };
         this.http.put<any>('http://localhost:4000/api/statements/status', status, {headers: httpHeaders}).subscribe({
           next: (res) => {
             this.chargeStatements();

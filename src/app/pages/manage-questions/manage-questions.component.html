@@ -35,8 +35,8 @@
       }
       @if(filterForm.value.level && filterForm.value.skill && filterForm.value.block){
         <div class="col-2 mt-4">
-          <button class="btn btn-success mt-3 me-2" (click)="chargeStatements()">Buscar</button>
-          <button class="btn btn-success mt-3 ms-2" (click)="cleanFilter()">Limpiar</button>
+          <button class="btn btn-sm btn-success mt-3 me-2" (click)="chargeStatements()">Buscar</button>
+          <button class="btn btn-sm btn-success mt-3 ms-2" (click)="cleanFilter()">Limpiar</button>
         </div>
       }
     </div>
@@ -60,9 +60,9 @@
                 <p class="col-3">Puntuación: {{statement.score}}</p>
                 <h4 class="col">Enunciado</h4>
                 <div class="col-4 text-end">
-                  <button class="btn btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
-                  <button class="btn btn-secondary ms-3" (click)="statusChange(statement, 'statement')">Desactivar</button>
-                  <button class="btn btn-danger ms-3" (click)="openDeleteModal(statement, 'statement')">Eliminar</button>
+                  <button class="btn btn-sm btn-primary ms-5" (click)="openEditModal(statement, 'statement')">Modificar</button>
+                  <button class="btn btn-sm btn-secondary ms-3" (click)="statusChange(statement, 'statement')">Desactivar</button>
+                  <button class="btn btn-sm btn-danger ms-3" (click)="openDeleteModal(statement, 'statement')">Eliminar</button>
               </div>
               </div>
             </div>
@@ -72,7 +72,7 @@
               @if(statement.photo !== null){
                 <p>Imagen del enunciado:</p>
                 <img [src]="statement.photo" style="max-width: 40rem; max-height: 35rem;">
-                <button class="btn btn-danger" (click)="deletePhoto(statement.id, 'statement')">Borrar imagen</button>
+                <button class="btn btn-sm btn-danger" (click)="deletePhoto(statement.id, 'statement')">Borrar imagen</button>
               }
             </div>
             @for(question of statement.questions[0]; track question.id){
@@ -89,9 +89,9 @@
                     <p class="col-3">Puntuación: {{question.score}}</p>
                     <h4 class="col">Pregunta</h4>
                     <div class="col-4 text-end">
-                      <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
-                      <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
-                      <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
+                      <button class="btn btn-sm btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
+                      <button class="btn btn-sm btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
+                      <button class="btn btn-sm btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
                     </div>
                   </div>
                 </div>
@@ -101,7 +101,7 @@
                     @if(question.photo !== null){
                       <p>Imagen de la pregunta:</p>
                       <img [src]="question.photo" style="max-width: 30rem; max-height: 25rem;">
-                      <button class="btn btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
+                      <button class="btn btn-sm btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
                     }
                   </div>
                   <div class="card m-2">
@@ -111,7 +111,7 @@
                           <div class="col-3"></div>
                           <h4 class="col">Respuestas</h4>
                           <div class="col-4 text-end">
-                            <button class="btn btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
+                            <button class="btn btn-sm btn-primary ms-5" (click)="openEditModal(question.answers, 'answers')">Modificar</button>
                           </div>
                         </div>
                       </div>
@@ -123,8 +123,8 @@
                             } @else {
                               <p class="text-danger">Inactivo</p>
                             }
-                          <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
-                          <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
+                          <button class="btn btn-sm btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
+                          <button class="btn btn-sm btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                             @if(answer.is_correct === 1 && answer.response === null){
                               <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                               @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
@@ -169,9 +169,9 @@
           <p class="col-3">Puntuación: {{question.score}}</p>
           <h4 class="col">Pregunta</h4>
           <div class="col-4 text-end">
-            <button class="btn btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
-            <button class="btn btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
-            <button class="btn btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
+            <button class="btn btn-sm btn-primary ms-5" (click)="openEditModal(question, 'question')">Modificar</button>
+            <button class="btn btn-sm btn-secondary ms-3" (click)="statusChange(question, 'question')">Desactivar</button>
+            <button class="btn btn-sm btn-danger ms-3" (click)="openDeleteModal(question, 'question')">Eliminar</button>
         </div>
         </div>
       </div>
@@ -181,7 +181,7 @@
           @if(question.photo !== null){
             <p>Imagen de la pregunta:</p>
             <img [src]="question.photo" style="max-width: 30rem; max-height: 25rem;">
-            <button class="btn btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
+            <button class="btn btn-sm btn-danger" (click)="deletePhoto(question.id, 'question')">Borrar imagen</button>
           }
         </div>
         <div class="card m-2">
@@ -203,8 +203,8 @@
                   } @else {
                     <p class="text-danger">Inactivo</p>
                   }
-                <button class="btn btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
-                <button class="btn btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
+                  <button class="btn btn-sm btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
+                  <button class="btn btn-sm btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                   @if(answer.is_correct && answer.response === null){
                     <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                     @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
@@ -220,7 +220,7 @@
                   }
                   @if(answer.photo_id !== null){
                     <img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">
-                    <button class="btn btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button>
+                    <button class="btn btn-sm btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button>
                   }
                 </div>
               }
@@ -383,9 +383,9 @@
                     <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                   </div>
                 }
-                @if (answer.base64_data) {
+                @if (true) {
                   <span class="input-group-file" [id]="'PhotoSpan'+answer.letter" for="'Photo'+answer.letter">Foto {{answer.letter}}</span>
-                  <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)"> <!--HERE-->
+                  <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)">
                 }
                 @if(answer.response || answer.response === null && edit.oldAnswers.length > 6){
                   <p class="mt-2">Relacion {{answer.letter}} con mensajes de audio:</p>

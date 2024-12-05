@@ -441,12 +441,12 @@ export class ExamsComponent {
             columns: [
               {
                 text: `${ex + 1}. ${this.exam[ex].content}`,
-                width: '84%',
+                width: '82%',
                 style: 'statement'
               },
               {
                 text: `___/${this.exam[ex].score}`,
-                width: '16%',
+                width: '18%',
                 style: 'puntuationStatement'
               }
             ]

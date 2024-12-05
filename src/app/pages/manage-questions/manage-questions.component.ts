@@ -207,7 +207,11 @@ export class ManageQuestionsComponent {
 
   openEditModal(old: any, type: any) {
     console.log(old)
-    old = old[0]
+    if(old[0]){
+      old = old[0];
+    } else {
+      old = old;
+    }
     this.chargeSkills();
     this.chargeLevels();
     this.edit.type = type;

@@ -242,7 +242,7 @@ export class ExamsComponent {
     //TODO RESULT TEST
     let pdfResult: any = {
       pageSize: 'A4',
-      pageMargins: [ 40, 60, 40, 60 ],
+      pageMargins: [ 50, 60, 65, 60 ],
       content: [],
       styles: {
         statement: {
@@ -271,7 +271,7 @@ export class ExamsComponent {
     //TODO Basic
     let pdf: any = {
       pageSize: 'A4',
-      pageMargins: [ 35, 60, 60, 60 ],
+      pageMargins: [ 35, 60, 70, 60 ],
       header: [
         {
           columns: [
@@ -772,9 +772,9 @@ export class ExamsComponent {
 
     //!GENERATE EXAM
     //pdfMake.createPdf(pdf).open();
-    pdfMake.createPdf(pdf).download("exam.pdf");
+    pdfMake.createPdf(pdf).download("Examen.pdf");
 
     //!GENERATE RESULTS TO EXAM TESTS
-    pdfMake.createPdf(pdfResult).download("solutions.pdf");
+    pdfMake.createPdf(pdfResult).download("Soluciones.pdf");
   };
 };

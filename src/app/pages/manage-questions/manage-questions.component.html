@@ -203,8 +203,6 @@
                   } @else {
                     <p class="text-danger">Inactivo</p>
                   }
-                  <button class="btn btn-sm btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
-                  <button class="btn btn-sm btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                   @if(answer.is_correct && answer.response === null){
                     <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
                     @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<p>{{answer.content}}</p>}
@@ -219,9 +217,11 @@
                     <p>Se relaciona con el mensaje: {{answer.response}}</p>
                   }
                   @if(answer.photo_id !== null){
-                    <img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;">
-                    <button class="btn btn-sm btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button>
+                    <div><img [src]="answer.base64_data"  style="max-width: 20rem; max-height: 15rem;"></div>
+                    <div><button class="btn btn-sm btn-danger" (click)="deletePhoto(answer.id, 'answer')">Borrar imagen</button></div>
                   }
+                  <button class="btn btn-sm btn-secondary" (click)="statusChange(answer, 'answer')">Desactivar</button>
+                  <button class="btn btn-sm btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                 </div>
               }
             </div>
@@ -382,11 +382,13 @@
                     <span class="input-group-text" id="Response">Respuesta {{answer.letter}}</span>
                     <input type="text" class="form-control" [formControlName]="'response'+answer.letter" placeholder="Respuesta" aria-label="Response" aria-describedby="Response">
                   </div>
+                  <div class="input-group mb-1">
+                    <span class="input-group-text" id="Solution">Solucion {{answer.letter}}</span>
+                    <input type="text" class="form-control" [formControlName]="'solution'+answer.letter" placeholder="Solucion" aria-label="Solution" aria-describedby="Solution">
+                  </div>
                 }
-                @if (true) {
                   <span class="input-group-file" [id]="'PhotoSpan'+answer.letter" for="'Photo'+answer.letter">Foto {{answer.letter}}</span>
                   <input class="form-control" type="file" id="questionPhoto" [id]="'Photo'+answer.letter" (change)="photoConvert($event, answer.letter)">
-                }
                 @if(answer.response || answer.response === null && edit.oldAnswers.length > 6){
                   <p class="mt-2">Relacion {{answer.letter}} con mensajes de audio:</p>
                   <select class="form-select" [formControlName]='"link"+answer.letter' id="puntuation">

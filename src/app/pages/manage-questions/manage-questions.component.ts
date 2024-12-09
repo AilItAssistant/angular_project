@@ -44,6 +44,15 @@ export class ManageQuestionsComponent {
     responseG: new FormControl(''),
     responseH: new FormControl(''),
     responseI: new FormControl(''),
+    solutionA: new FormControl(''),
+    solutionB: new FormControl(''),
+    solutionC: new FormControl(''),
+    solutionD: new FormControl(''),
+    solutionE: new FormControl(''),
+    solutionF: new FormControl(''),
+    solutionG: new FormControl(''),
+    solutionH: new FormControl(''),
+    solutionI: new FormControl(''),
     linkA: new FormControl(''),
     linkB: new FormControl(''),
     linkC: new FormControl(''),
@@ -85,6 +94,15 @@ export class ManageQuestionsComponent {
       linkI: new FormControl(''),
       skill: new FormControl(''),
       text: new FormControl(''),
+      solutionA: new FormControl(''),
+      solutionB: new FormControl(''),
+      solutionC: new FormControl(''),
+      solutionD: new FormControl(''),
+      solutionE: new FormControl(''),
+      solutionF: new FormControl(''),
+      solutionG: new FormControl(''),
+      solutionH: new FormControl(''),
+      solutionI: new FormControl(''),
       puntuation: new FormControl(''),
       statement: new FormControl(''),
       correctResponse: new FormControl('')
@@ -165,9 +183,9 @@ export class ManageQuestionsComponent {
       skill_id: this.filterForm.value.skill ? this.filterForm.value.skill : this.skill,
       block_id: this.filterForm.value.block
     };
-    console.log(data);
     this.http.post<any>('http://localhost:4000/api/statements/getAllByStructureIds', data, {headers: httpHeaders}).subscribe({
       next: (res) => {
+        console.log(res.data)
         if (res.type === "statements") {
           this.statements = res.data;
           this.mode = "statements";
@@ -245,6 +263,15 @@ export class ManageQuestionsComponent {
           linkG: new FormControl(''),
           linkH: new FormControl(''),
           linkI: new FormControl(''),
+          solutionA: new FormControl(''),
+          solutionB: new FormControl(''),
+          solutionC: new FormControl(''),
+          solutionD: new FormControl(''),
+          solutionE: new FormControl(''),
+          solutionF: new FormControl(''),
+          solutionG: new FormControl(''),
+          solutionH: new FormControl(''),
+          solutionI: new FormControl(''),
           correctResponse: new FormControl('')
         });
         break;
@@ -276,6 +303,15 @@ export class ManageQuestionsComponent {
           linkG: new FormControl(''),
           linkH: new FormControl(''),
           linkI: new FormControl(''),
+          solutionA: new FormControl(''),
+          solutionB: new FormControl(''),
+          solutionC: new FormControl(''),
+          solutionD: new FormControl(''),
+          solutionE: new FormControl(''),
+          solutionF: new FormControl(''),
+          solutionG: new FormControl(''),
+          solutionH: new FormControl(''),
+          solutionI: new FormControl(''),
           correctResponse: new FormControl('')
         });
         break;
@@ -306,6 +342,15 @@ export class ManageQuestionsComponent {
           linkG: new FormControl(old[6] && old[6].response !== 'undefined' && old[6].response !== undefined ? old[6].response : ''),
           linkH: new FormControl(old[7] && old[7].response !== 'undefined' && old[7].response !== undefined ? old[7].response : ''),
           linkI: new FormControl(old[8] && old[8].response !== 'undefined' && old[8].response !== undefined ? old[8].response : ''),
+          solutionA: new FormControl(old[0] && old[0].response !== 'undefined' && old[0].response !== undefined ? old[0].response : ''),
+          solutionB: new FormControl(old[1] && old[1].response !== 'undefined' && old[1].response !== undefined ? old[1].response : ''),
+          solutionC: new FormControl(old[2] && old[2].response !== 'undefined' && old[2].response !== undefined ? old[2].response : ''),
+          solutionD: new FormControl(old[3] && old[3].response !== 'undefined' && old[3].response !== undefined ? old[3].response : ''),
+          solutionE: new FormControl(old[4] && old[4].response !== 'undefined' && old[4].response !== undefined ? old[4].response : ''),
+          solutionF: new FormControl(old[5] && old[5].response !== 'undefined' && old[5].response !== undefined ? old[5].response : ''),
+          solutionG: new FormControl(old[6] && old[6].response !== 'undefined' && old[6].response !== undefined ? old[6].response : ''),
+          solutionH: new FormControl(old[7] && old[7].response !== 'undefined' && old[7].response !== undefined ? old[7].response : ''),
+          solutionI: new FormControl(old[8] && old[8].response !== 'undefined' && old[8].response !== undefined ? old[8].response : ''),
           correctResponse: new FormControl('')
         });
         this.edit.oldAnswers = old;
@@ -867,6 +912,119 @@ export class ManageQuestionsComponent {
             }
           });
         };
+
+
+
+        if( this.questionForm.value.solutionA && this.questionForm.value.solutionA !== separatedAnswers.answerA.response ) {
+          changes.responseA.link = this.questionForm.value.solutionA;
+          if(!changes.responseA.link) { changes.responseA.link === null };
+          if(!changes.responseA.photo) { changes.responseA.photo === null };
+          if(!changes.responseA.content && changes.responseA.content === undefined) {changes.responseA.content = null;};
+          if(changes.responseA.is_correct !== 0 && changes.responseA.is_correct !== 1) { changes.responseA.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "A" ){
+              changes.responseA.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionB && this.questionForm.value.solutionB !== separatedAnswers.answerB.response ) {
+          changes.responseB.link = this.questionForm.value.solutionB;
+          if(!changes.responseB.link) { changes.responseB.link === null };
+          if(!changes.responseB.photo) { changes.responseB.photo === null };
+          if(!changes.responseB.content && changes.responseB.content === undefined) {changes.responseB.content = null;};
+          if(changes.responseB.is_correct !== 0 && changes.responseB.is_correct !== 1) { changes.responseB.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "B" ){
+              changes.responseB.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionC && this.questionForm.value.solutionC !== separatedAnswers.answerC.response ) {
+          changes.responseC.link = this.questionForm.value.solutionC;
+          if(!changes.responseC.link) { changes.responseC.link === null };
+          if(!changes.responseC.photo) { changes.responseC.photo === null };
+          if(!changes.responseC.content && changes.responseC.content === undefined) {changes.responseC.content = null;};
+          if(changes.responseC.is_correct !== 0 && changes.responseC.is_correct !== 1) { changes.responseC.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "C" ){
+              changes.responseC.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionD && this.questionForm.value.solutionD !== separatedAnswers.answerD.response ) {
+          changes.responseD.link = this.questionForm.value.solutionD;
+          if(!changes.responseD.link) { changes.responseD.link === null };
+          if(!changes.responseD.photo) { changes.responseD.photo === null };
+          if(!changes.responseD.content && changes.responseD.content === undefined) {changes.responseD.content = null;};
+          if(changes.responseD.is_correct !== 0 && changes.responseD.is_correct !== 1) { changes.responseD.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "D" ){
+              changes.responseD.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionE && this.questionForm.value.solutionE !== separatedAnswers.answerE.response ) {
+          changes.responseE.link = this.questionForm.value.solutionE;
+          if(!changes.responseE.link) { changes.responseE.link === null };
+          if(!changes.responseE.photo) { changes.responseE.photo === null };
+          if(!changes.responseE.content && changes.responseE.content === undefined) {changes.responseE.content = null;};
+          if(changes.responseE.is_correct !== 0 && changes.responseE.is_correct !== 1) { changes.responseE.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "E" ){
+              changes.responseE.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionF && this.questionForm.value.solutionF !== separatedAnswers.answerF.response ) {
+          changes.responseF.link = this.questionForm.value.solutionF;
+          if(!changes.responseF.link) { changes.responseF.link === null };
+          if(!changes.responseF.photo) { changes.responseF.photo === null };
+          if(!changes.responseF.content && changes.responseF.content === undefined) {changes.responseF.content = null;};
+          if(changes.responseF.is_correct !== 0 && changes.responseF.is_correct !== 1) { changes.responseF.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "F" ){
+              changes.responseF.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionG && this.questionForm.value.solutionG !== separatedAnswers.answerG.response ) {
+          changes.responseG.link = this.questionForm.value.solutionG;
+          if(!changes.responseG.link) { changes.responseG.link === null };
+          if(!changes.responseG.photo) { changes.responseG.photo === null };
+          if(!changes.responseG.content && changes.responseG.content === undefined) {changes.responseG.content = null;};
+          if(changes.responseG.is_correct !== 0 && changes.responseG.is_correct !== 1) { changes.responseG.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "G" ){
+              changes.responseG.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionH && this.questionForm.value.solutionH !== separatedAnswers.answerH.response ) {
+          changes.responseH.link = this.questionForm.value.solutionH;
+          if(!changes.responseH.link) { changes.responseH.link === null };
+          if(!changes.responseH.photo) { changes.responseH.photo === null };
+          if(!changes.responseH.content && changes.responseH.content === undefined) {changes.responseH.content = null;};
+          if(changes.responseH.is_correct !== 0 && changes.responseH.is_correct !== 1) { changes.responseH.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "H" ){
+              changes.responseH.id = ans.id;
+            }
+          });
+        };
+        if( this.questionForm.value.solutionI && this.questionForm.value.solutionI !== separatedAnswers.answerI.response ) {
+          changes.responseI.link = this.questionForm.value.solutionI;
+          if(!changes.responseI.link) { changes.responseI.link === null };
+          if(!changes.responseI.photo) { changes.responseI.photo === null };
+          if(!changes.responseI.content && changes.responseI.content === undefined) {changes.responseI.content = null;};
+          if(changes.responseI.is_correct !== 0 && changes.responseI.is_correct !== 1) { changes.responseI.is_correct = null };
+          this.edit.oldAnswers.forEach( ( ans: any ) => {
+            if ( ans.letter === "I" ){
+              changes.responseI.id = ans.id;
+            }
+          });
+        };
+
+
         for (let change in changes) {
           if(Object.keys(changes[change]).length !== 0 ){
             console.log(changes[change]);

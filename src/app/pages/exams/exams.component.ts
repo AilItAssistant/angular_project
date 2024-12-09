@@ -46,10 +46,6 @@ export class ExamsComponent {
     });
   };
 
-  generateExam(){
-    let level: any = this.selectExam.value.level;
-  };
-
   downloadExam(){
     let standard: any = {
       level: "A1",
@@ -247,12 +243,12 @@ export class ExamsComponent {
       styles: {
         statement: {
           margin: [ 30, 35, 0, 15 ],
-          fontSize: 12,
+          fontSize: 14,
           bold: true
         },
         readAnswers: {
           margin: [ 40, 0, 0, 0 ],
-          fontSize: 9.5,
+          fontSize: 11,
         },
       }
     };
@@ -334,7 +330,7 @@ export class ExamsComponent {
           margin: [ 55, 20, 40, 0 ],
         },
         statement: {
-          margin: [ 40, 35, 0, 15 ],
+          margin: [ 45, 35, 0, 15 ],
           fontSize: 12,
           bold: true
         },
@@ -348,7 +344,7 @@ export class ExamsComponent {
           fontSize: 11,
         },
         image: {
-          margin: [ 50, 10, 0, 0 ],
+          margin: [ 0, 10, 0, 0 ],
         },
         readQuestion: {
           margin: [ 55, 10, 0, 5 ],
@@ -364,10 +360,16 @@ export class ExamsComponent {
           fontSize: 9.5,
         },
         textPhoto: {
-          margin: [ 55, 10, 0, 20 ]
+          margin: [ 0, 10, 0, 20 ]
         },
         space: {
           margin: [ 0, 20 ]
+        },
+        spacePhotos: {
+          margin: [ 50, 0, 0, 0 ]
+        },
+        StatementImage: {
+          margin: [ 50, 10, 0, 0 ]
         },
       }
     };
@@ -472,7 +474,7 @@ export class ExamsComponent {
           {
             image: this.exam[ex].photo,
             width: 420,
-            style: 'image',
+            style: 'StatementImage',
           },
         );
       };
@@ -616,6 +618,7 @@ export class ExamsComponent {
                       ],
                     },
                   ],
+                  style: "spacePhotos"
                 },
               ],
             );
@@ -649,8 +652,21 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                    },{
+                      stack: [
+                        {
+                          text:'',
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: '',
+                          style: 'textPhoto'
+                        },
+                      ],
                     },
                   ],
+                  style: "spacePhotos"
                 },
               ],
             );
@@ -672,8 +688,33 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                    },{
+                      stack: [
+                        {
+                          text:'',
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: '',
+                          style: 'textPhoto'
+                        },
+                      ],
+                    },{
+                      stack: [
+                        {
+                          text:'',
+                          width: 100,
+                          style: 'image',
+                        },
+                        {
+                          text: '',
+                          style: 'textPhoto'
+                        },
+                      ],
                     },
                   ],
+                  style: "spacePhotos"
                 },
               ],
             );

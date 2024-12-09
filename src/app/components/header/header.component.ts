@@ -71,19 +71,19 @@ export class HeaderComponent {
         };
         break;
       case "teacher":
-        if( path === "/bitacora" || path === "/triggers" || 
-          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" || 
-          path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" 
-          || path === "/manage_users" || path === "/statistics" || path === "/classes" || 
+        if( path === "/bitacora" || path === "/triggers" ||
+          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
+          path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes"
+          || path === "/manage_users" || path === "/statistics" || path === "/classes" ||
           path === "/students" || path === "/teachers" ) {
           this.router.navigateByUrl(`/`);
         };
         break;
       case "student":
         if( path === "/bitacora" || path === "/triggers" ||
-          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" || 
+          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" || path === "/manage_users"
-          || path === "/manage_users" || path === "/statistics" || path === "/classes" || 
+          || path === "/manage_users" || path === "/statistics" || path === "/classes" ||
           path === "/students" || path === "/teachers" || path === "/exams" || path === "/add_exams_notes" || path === "/search_exams"
           || path === "/add_questions" || path === "/validate_questions" ) {
           this.router.navigateByUrl("/");
@@ -91,9 +91,9 @@ export class HeaderComponent {
         break;
       default:
         if( path === "/bitacora" || path === "/triggers" ||
-          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" || 
+          path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" || path === "/manage_users"
-          || path === "/manage_users" || path === "/statistics" || path === "/classes" || 
+          || path === "/manage_users" || path === "/statistics" || path === "/classes" ||
           path === "/students" || path === "/teachers" || path === "/exams" || path === "/add_exams_notes" || path === "/search_exams"
           || path === "/add_questions" || path === "/validate_questions" ) {
           this.router.navigateByUrl(`/`);

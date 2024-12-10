@@ -377,7 +377,7 @@ export class ExamsComponent {
     //TODO First basic
     let firstPage: any = [
       {
-        text: `Exámen de nivel ${standard.level}`,
+        text: `Examen de nivel ${standard.level}`,
         style: 'title',
       },
       {

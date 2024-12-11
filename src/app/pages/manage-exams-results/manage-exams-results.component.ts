@@ -25,7 +25,7 @@ export class ManageExamsResultsComponent {
         'authorization': auth
         });
         let data: any = { name: "manage_exams"};
-        this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        this.http.post<any>('http://localhost:4000/api/user_actions/entryPage', data, {headers: httpHeaders}).subscribe({
             next: (res) => {},
             error: (err) => { alert('Cargar fallo' + err); },
         });

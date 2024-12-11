@@ -128,7 +128,7 @@ export class ManageQuestionsComponent {
     'authorization': auth
     });
     let data: any = { name: "manage_questions"};
-    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+    this.http.post<any>('http://localhost:4000/api/user_actions/entryPage', data, {headers: httpHeaders}).subscribe({
         next: (res) => {},
         error: (err) => { alert('Cargar fallo' + err); },
     });
@@ -420,7 +420,7 @@ export class ManageQuestionsComponent {
         if(statement && statement !== null && statement !== undefined && statement !== "" && statement !== this.edit.oldStatement.content){
           changes.content = statement;
         } else {changes.content = null;};
-        if(text && text !== null && text !== undefined && text !== "" && text !== this.edit.oldStatement.text){
+        if(text && text !== null && text !== undefined && text !== this.edit.oldStatement.text){
           changes.text = text;
         } else {changes.text = null;};
         if(this.photos.statement && this.photos.statement !== null && this.photos.statement !== undefined && this.photos.statement !== ""){

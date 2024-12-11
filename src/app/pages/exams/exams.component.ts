@@ -28,7 +28,20 @@ export class ExamsComponent {
 
   ngOnInit() {
     this.loadLevels();
+    this.controlPage();
   };
+
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "exams"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+};
 
   loadLevels(){
     let auth: any = localStorage.getItem('token');

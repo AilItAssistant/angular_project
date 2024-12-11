@@ -33,9 +33,22 @@ export class ManageTeachersComponent {
   });
 
   ngOnInit() {
+    this.controlPage();
     this.load();
     this.loadDepartments();
   };
+
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "manage_teachers"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+};
 
   load(){
     let auth: any = localStorage.getItem('token');

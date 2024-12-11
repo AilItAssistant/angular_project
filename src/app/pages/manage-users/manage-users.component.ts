@@ -36,11 +36,24 @@ export class ManageUsersComponent {
   });
 
   ngOnInit() {
+    this.controlPage();
     this.load();
     this.loadStatus();
     this.loadCities();
     this.loadPermission();
   };
+
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "manage_users"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+};
 
   loadStatus(){
     let auth: any = localStorage.getItem('token');

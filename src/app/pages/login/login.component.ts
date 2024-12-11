@@ -12,18 +12,30 @@ import { Router } from '@angular/router';
     styleUrl: './login.component.scss'
 })
 export class LoginComponent {
+
   loginForm = new FormGroup({
     user: new FormControl(""),
     password: new FormControl(""),
   });
 
+  constructor( private http: HttpClient, private router: Router) {}
+
   ngOnInit(){
     this.verify();
+    this.controlPage();
   };
 
-  constructor(
-    private http: HttpClient,
-    private router: Router) {}
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "login"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+  };
 
   verify(){
     if ( localStorage.getItem('token') !== 'undefined' ) {

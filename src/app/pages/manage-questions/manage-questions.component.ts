@@ -119,7 +119,20 @@ export class ManageQuestionsComponent {
 
   ngOnInit() {
     this.chargeLevels();
+    this.controlPage();
   };
+
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "manage_questions"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+};
 
   chargeLevels() {
     let auth: any = localStorage.getItem('token');
@@ -913,8 +926,6 @@ export class ManageQuestionsComponent {
           });
         };
 
-
-
         if( this.questionForm.value.solutionA && this.questionForm.value.solutionA !== separatedAnswers.answerA.response ) {
           changes.responseA.link = this.questionForm.value.solutionA;
           if(!changes.responseA.link) { changes.responseA.link === null };
@@ -1023,7 +1034,6 @@ export class ManageQuestionsComponent {
             }
           });
         };
-
 
         for (let change in changes) {
           if(Object.keys(changes[change]).length !== 0 ){

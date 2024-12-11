@@ -26,10 +26,23 @@ export class ManageStudentsComponent {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
+    this.controlPage();
     this.load();
     this.loadLevels();
     this.loadCities();
   };
+
+  controlPage(){
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+    'authorization': auth
+    });
+    let data: any = { name: "manage_students"};
+    this.http.post<any>('http://localhost:4000/api/user_actions/entrypage', data, {headers: httpHeaders}).subscribe({
+        next: (res) => {},
+        error: (err) => { alert('Cargar fallo' + err); },
+    });
+};
 
   orderForm = new FormGroup({
     select: new FormControl(""),
@@ -197,37 +210,35 @@ export class ManageStudentsComponent {
     if( this.editForm.value.address !== this.editVariables.address && this.editForm.value.address !== undefined && this.editForm.value.address !== null ){
       mod.address = this.editForm.value.address;
     } else mod.address = "";
-    if( mod.name && mod.last_name && mod.phone_number && mod.hire_date && mod.address && mod.department && mod.email ){
-      this.charge = true;
-      let auth: any = localStorage.getItem('token');
-      let httpHeaders: any = new HttpHeaders({
-        'authorization': auth
-      });
-      this.http.put<any>('http://localhost:4000/api/alumnos/edit', mod, {headers: httpHeaders}).subscribe({
-        next: (res) => {
-          let editModal: any;
-          editModal = document.getElementById('editModal');
-          editModal.style.display="none";
-          this.charge = false;
-          this.load();
-          this.editForm.reset({
-            name: "",
-            last_name: "",
-            document: "",
-            birthday: "",
-            phone_number: "",
-            email: "",
-            city: "",
-            level: "",
-            enrollment_date: "",
-            address: ""
-          });
-        },
-        error: (err) => {
-          alert('Cargar fallo' + err);
-        },
-      });
-    }
+    this.charge = true;
+    let auth: any = localStorage.getItem('token');
+    let httpHeaders: any = new HttpHeaders({
+      'authorization': auth
+    });
+    this.http.put<any>('http://localhost:4000/api/alumnos/edit', mod, {headers: httpHeaders}).subscribe({
+      next: (res) => {
+        let editModal: any;
+        editModal = document.getElementById('editModal');
+        editModal.style.display="none";
+        this.charge = false;
+        this.load();
+        this.editForm.reset({
+          name: "",
+          last_name: "",
+          document: "",
+          birthday: "",
+          phone_number: "",
+          email: "",
+          city: "",
+          level: "",
+          enrollment_date: "",
+          address: ""
+        });
+      },
+      error: (err) => {
+        alert('Cargar fallo' + err);
+      },
+    });
   };
 
   addStudent(){

@@ -22,7 +22,6 @@ import { AddExamsNotesComponent } from './pages/add-exams-notes/add-exams-notes.
 import { SearchExamsComponent } from './pages/search-exams/search-exams.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { StudentsDetailsComponent } from './pages/students-details/students-details.component';
-import { TriggersComponent } from './pages/triggers/triggers.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
 
 export const routes: Routes = [
@@ -135,11 +134,6 @@ export const routes: Routes = [
         path: "student_details/:id",
         component: StudentsDetailsComponent,
         title: "Alumno"
-    },
-    {
-        path: "triggers",
-        component: TriggersComponent,
-        title: "Triggers"
     },{
         path: "bitacora",
         component: BitacoraComponent,

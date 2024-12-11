@@ -66,12 +66,12 @@ export class HeaderComponent {
         };*/
         break;
       case "employee":
-        if( path === "/bitacora" || path === "/triggers" ) {
+        if( path === "/bitacora" ) {
           this.router.navigateByUrl(`/`);
         };
         break;
       case "teacher":
-        if( path === "/bitacora" || path === "/triggers" ||
+        if( path === "/bitacora" ||
           path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes"
           || path === "/manage_users" || path === "/statistics" || path === "/classes" ||
@@ -80,7 +80,7 @@ export class HeaderComponent {
         };
         break;
       case "student":
-        if( path === "/bitacora" || path === "/triggers" ||
+        if( path === "/bitacora" ||
           path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" || path === "/manage_users"
           || path === "/manage_users" || path === "/statistics" || path === "/classes" ||
@@ -90,7 +90,7 @@ export class HeaderComponent {
         };
         break;
       default:
-        if( path === "/bitacora" || path === "/triggers" ||
+        if( path === "/bitacora" ||
           path === "/manage_questions" || path === "/manage_structure" || path === "/manage_exams_results" ||
           path === "/manage_students" || path === "/manage_teachers" || path === "/manage_classes" || path === "/manage_users"
           || path === "/manage_users" || path === "/statistics" || path === "/classes" ||

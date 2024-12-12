@@ -103,7 +103,10 @@
                 </div>
                 <div class="card-body text-center list-group list-group p-3">
                   <div class="text-center my-3">
-                    <p>Pregunta: {{question.content}}</p>
+                    <p>Pregunta:</p>
+                    <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                      {{question.content}}
+                    </pre>
                     @if(question.photo !== null){
                       <p>Imagen de la pregunta:</p>
                       <img [src]="question.photo" style="max-width: 30rem; max-height: 25rem;">
@@ -133,15 +136,27 @@
                           <button class="btn btn-sm btn-danger" (click)="openDeleteModal(answer, 'answer')">Eliminar</button>
                             @if(answer.is_correct === 1 && answer.response === null){
                               <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
-                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                                <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                                  {{answer.content}}
+                                </pre>
+                              }
                             }
                             @if (answer.is_correct === 0 && answer.response === null){
                               <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
-                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                                <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                                  {{answer.content}}
+                                </pre>
+                              }
                             }
                             @if(answer.response !== null) {
                               <p class="list-group"> <span class="fs-3">{{answer.letter}}.</span></p>
-                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                              @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                                <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                                  {{answer.content}}
+                                </pre>
+                              }
                               <p>Se relaciona con el mensaje: {{answer.response}}</p>
                             }
                             @if(answer.photo_id !== null){
@@ -183,7 +198,10 @@
       </div>
       <div class="card-body text-center list-group list-group p-3">
         <div class="text-center my-3">
-          <p>Pregunta: {{question.content}}</p>
+          <p>Pregunta:</p>
+          <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+            {{question.content}}
+          </pre>
           @if(question.photo !== null){
             <p>Imagen de la pregunta:</p>
             <img [src]="question.photo" style="max-width: 30rem; max-height: 25rem;">
@@ -211,15 +229,27 @@
                   }
                   @if(answer.is_correct && answer.response === null){
                     <p class="list-group text-success fs-3"> {{answer.letter}}.</p>
-                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                      <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                        {{answer.content}}
+                      </pre>
+                    }
                   }
                   @if(!answer.is_correct && answer.response === null){
                     <p class="list-group"> <span class="text-danger fs-3">{{answer.letter}}.</span></p>
-                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                      <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                        {{answer.content}}
+                      </pre>
+                    }
                   }
                   @if(answer.response !== null) {
                     <p class="list-group"> <span class="fs-3">{{answer.letter}}.</span></p>
-                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){<pre>{{answer.content}}</pre>}
+                    @if(answer.content && answer.content !== undefined && answer.content !== null && answer.content !== "undefined"){
+                      <pre style="white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow: hidden; box-sizing: border-box;">
+                        {{answer.content}}
+                      </pre>
+                    }
                     <p>Se relaciona con el mensaje: {{answer.response}}</p>
                   }
                   @if(answer.photo_id !== null){
@@ -306,6 +336,12 @@
                   <option [value]="skill.id">{{skill.name}}</option>
                 }
               </select>
+              <p class="mt-1">Editar bloque</p>
+              <select class="form-select" formControlName="block" aria-label="Select-block">
+                @for(block of blocks; track block.id){
+                  <option [value]="block.id">{{block.name}}</option>
+                }
+              </select>
               <p class="mt-2">Puntuación</p>
               <select class="form-select" formControlName="puntuation" id="puntuation">
                 <option value=1>1</option>
@@ -326,44 +362,33 @@
 
             } @else if(edit.type === "question") {
               <div class="text-center">
-                <p class="d-inline-flex gap-1">
-                  <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    Cambiar de enunciado
-                  </a>
-                </p>
-                <div class="collapse" id="collapseExample">
-                  <div class="card card-body">
-                    <p>Seleccionar nivel</p>
-                    <select class="form-select" formControlName="level" aria-label="Select-level">
-                      @for(level of levels; track level.id){
-                        <option [value]="level.id">{{level.name}}</option>
-                      }
-                    </select>
-                    @if(questionForm.value.level){
-                      <p class="mt-2">Seleccionar destreza</p>
-                      <select class="form-select" formControlName="skill" aria-label="Select-skill" (change)="chargeStatementsList()">
-                        @for(skill of skills; track skill.id){
-                          <option [value]="skill.id">{{skill.name}}</option>
-                        }
-                      </select>
-                    }
-                    @if(questionForm.value.level && questionForm.value.skill){
-                      <p>Elige un enunciado</p>
-                      <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
-                        @for(statement of statementChange; track statement.id){
-                          <option [value]="statement.id">{{statement.content}}</option>
-                        }
-                      </select>
-                    }
-                  </div>
-                </div>
-              </div>
-                <p class="mt-1">Editar bloque</p>
-                <select class="form-select" formControlName="block" aria-label="Select-block">
-                  @for(block of blocks; track block.id){
-                    <option [value]="block.id">{{block.name}}</option>
+                <p>Editar nivel</p>
+                <select class="form-select" formControlName="level" aria-label="Select-level" (change)="chargeSkills()">
+                  @for(level of levels; track level.id){
+                    <option [value]="level.id">{{level.name}}</option>
                   }
                 </select>
+                <p class="mt-2">Editar destreza</p>
+                <select class="form-select" formControlName="skill" aria-label="Select-skill">
+                  @for(skill of skills; track skill.id){
+                    <option [value]="skill.id">{{skill.name}}</option>
+                  }
+                </select>
+                @if(questionForm.value.level && questionForm.value.skill){
+                  <p>Elige un enunciado</p>
+                  <select class="form-select mb-3" formControlName="statement" aria-label="A1" required>
+                    @for(statement of statementChange; track statement.id){
+                      <option [value]="statement.id">{{statement.content}}</option>
+                    }
+                  </select>
+                }
+              </div>
+              <p class="mt-1">Editar bloque</p>
+              <select class="form-select" formControlName="block" aria-label="Select-block">
+                @for(block of blocks; track block.id){
+                  <option [value]="block.id">{{block.name}}</option>
+                }
+              </select>
               <p class="mt-2">Puntuacion</p>
               <select class="form-select" formControlName="puntuation" id="puntuation">
                 <option value=1>1</option>

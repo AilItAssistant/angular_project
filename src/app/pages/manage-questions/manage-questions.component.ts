@@ -256,7 +256,7 @@ export class ManageQuestionsComponent {
           puntuation: new FormControl(old.score),
           statement: new FormControl(old.content),
           text: new FormControl(old.text),
-          block: new FormControl(''),
+          block: new FormControl(old.block_id),
           question: new FormControl(''),
           responseA: new FormControl(''),
           responseB: new FormControl(''),
@@ -291,8 +291,8 @@ export class ManageQuestionsComponent {
       case "question":
         this.edit.oldQuestion = old;
         this.questionForm = new FormGroup({
-          level: new FormControl(''),
-          skill: new FormControl(''),
+          level: new FormControl(old.level_id),
+          skill: new FormControl(old.skill_id),
           puntuation: new FormControl(old.score),
           statement: new FormControl(''),
           text: new FormControl(old.text),
@@ -411,6 +411,9 @@ export class ManageQuestionsComponent {
         if(level && level !== null && level !== undefined && level !== "" && level !== this.edit.oldStatement.level_id){
           changes.level_id = level;
         } else {changes.level_id = null;};
+        if(block && block !== null && block !== undefined && block !== "" && block !== this.edit.oldStatement.block_id){
+          changes.block_id = block;
+        } else {changes.block_id = null;};
         if(skill && skill !== null && skill !== undefined && skill !== "" && skill !== this.edit.oldStatement.skill_id){
           changes.skill_id = skill;
         } else {changes.skill_id = null;};
@@ -450,6 +453,12 @@ export class ManageQuestionsComponent {
         if(statement && statement !== null && statement !== undefined && statement !== ""){
           changes.statement_id = statement;
         } else { changes.statement_id = null};
+        if(level && level !== null && level !== undefined && level !== "" && level !== this.edit.oldQuestion.level_id){
+          changes.level_id = level;
+        } else { changes.level_id = null};
+        if(skill && skill !== null && skill !== undefined && skill !== "" && skill !== this.edit.oldQuestion.skill_id){
+          changes.skill_id = skill;
+        } else { changes.skill_id = null};
         if(block && block !== null && block !== undefined && block !== "" && block !== this.edit.oldQuestion.block_id){
           changes.block_id = block;
         } else { changes.block_id = null};

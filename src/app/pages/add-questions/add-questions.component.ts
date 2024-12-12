@@ -382,6 +382,7 @@ export class AddQuestionsComponent {
         add.skill_id = this.selectedStatement.skill_id;
         add.level_id = this.selectedStatement.level_id;
         add.statement_id = this.selectedStatement.id;
+        add.block_id = this.selectedStatement.block_id;
       } else {
         add.skill_id = this.questionForm.value.skill;
         add.level_id = this.questionForm.value.level;
@@ -501,36 +502,19 @@ export class AddQuestionsComponent {
     let httpHeaders: any = new HttpHeaders({
       'authorization': auth
     });
-    let data: any = {}
-    this.http.get<any>(`http://localhost:4000/api/statements/${this.idSatement}`, {headers: httpHeaders}).subscribe({
+    let data: any = {
+      statement_id: this.idSatement
+    };
+
+    this.http.post<any>(`http://localhost:4000/api/statements/getStatementByStatementId`, data, {headers: httpHeaders}).subscribe({
       next: ( res ) => {
         console.log(res[0])
         this.selectedStatement = res[0];
         this.statement = true;
-        this.selectedStatement.questions = [];
-          if(this.selectedStatement.photo_id !== null){
-            let id: any = { id: this.selectedStatement.photo_id };
-            this.http.post<any>('http://localhost:4000/api/photo/IdActive', id, {headers: httpHeaders}).subscribe({
-              next: (res) => { this.selectedStatement.photo_id = res[0].base64_data; },
-              error: (err) => { alert('Cargar fallo' + err); },
-            });
-          };
+        this.chargeBlocksQuestions('');
+        this.closeStatementModal();
       },
       error: ( err ) => {alert('Cargar fallo' + err);},
-      complete: () => {
-          let data: any = { statement_id: this.selectedStatement.id };
-          this.http.post<any>('http://localhost:4000/api/questions/getQuestionsAnswers', data, {headers: httpHeaders}).subscribe({
-            next: ( res ) => {
-              if ( res !== undefined ) {
-                this.selectedStatement.questions.push(res);
-                console.log(this.selectedStatement.skill_id);
-                this.chargeBlocksQuestions(this.selectedStatement.skill_id);
-                this.closeStatementModal();
-              };
-            },
-            error: (err) => { alert('Cargar fallo' + err); }
-          });
-      }
     });
   };
 

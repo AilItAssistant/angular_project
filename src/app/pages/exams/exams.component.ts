@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+import { style } from '@angular/animations';
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
 
 @Component({
@@ -280,7 +281,7 @@ export class ExamsComponent {
     //TODO Basic
     let pdf: any = {
       pageSize: 'A4',
-      pageMargins: [ 35, 60, 70, 60 ],
+      pageMargins: [ 35, 110, 70, 60 ],
       header: [
         {
           columns: [
@@ -301,12 +302,16 @@ export class ExamsComponent {
         return [
           {
             text: currentPage.toString(),
-            alignment: 'center'
+            alignment: 'center',
+            style: "footer"
           }
         ]
       },
       content: [],
       styles: {
+        footer: {
+          margin: [ 0, 28, 0, 0 ],
+        },
         headerData: {
           fontSize: 7,
           color: '#EF8533',
@@ -321,7 +326,7 @@ export class ExamsComponent {
           fontSize: 18,
           bold: true,
           alignment: 'center',
-          margin: [ 0, 50 ],
+          margin: [ 0, 10, 0, 40 ],
         },
         studentData: {
           fontSize: 12,
@@ -343,14 +348,14 @@ export class ExamsComponent {
           margin: [ 55, 20, 40, 0 ],
         },
         statement: {
-          margin: [ 45, 35, 0, 15 ],
+          margin: [ 45, 0, 0, 15 ],
           fontSize: 12,
           bold: true
         },
         puntuationStatement: {
           alignment: 'right',
           fontSize: 12,
-          margin: [ 0, 35, 40, 15 ],
+          margin: [ 0, 0, 40, 15 ],
         },
         text: {
           margin: [ 50, 10, 40, 10 ],
@@ -383,6 +388,9 @@ export class ExamsComponent {
         },
         StatementImage: {
           margin: [ 50, 10, 0, 0 ]
+        },
+        spaceText: {
+          margin: [ 0, 20, 0, 20 ]
         },
       }
     };
@@ -478,6 +486,20 @@ export class ExamsComponent {
             style: 'text'
           },
         );
+        if(this.exam[ex].type.space > 2){
+          model.push(
+            {
+              text: '',
+              pageBreak: 'after',
+            },
+          );
+          model.push(
+            {
+              text: '',
+              style: 'spaceText',
+            },
+          );
+        };
       };
 
       //*STATEMENT PHOTO

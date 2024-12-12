@@ -294,7 +294,7 @@ export class ManageQuestionsComponent {
           level: new FormControl(old.level_id),
           skill: new FormControl(old.skill_id),
           puntuation: new FormControl(old.score),
-          statement: new FormControl(''),
+          statement: new FormControl(old.statement_id),
           text: new FormControl(old.text),
           block: new FormControl(old.block_id),
           question: new FormControl(old.content),
@@ -327,6 +327,7 @@ export class ManageQuestionsComponent {
           solutionI: new FormControl(''),
           correctResponse: new FormControl('')
         });
+        this.chargeStatementsList();
         break;
       case "answers":
         this.questionForm = new FormGroup({

@@ -281,7 +281,7 @@ export class ExamsComponent {
     //TODO Basic
     let pdf: any = {
       pageSize: 'A4',
-      pageMargins: [ 35, 110, 70, 60 ],
+      pageMargins: [ 35, 100, 70, 55 ],
       header: [
         {
           columns: [
@@ -310,7 +310,7 @@ export class ExamsComponent {
       content: [],
       styles: {
         footer: {
-          margin: [ 0, 28, 0, 0 ],
+          margin: [ 0, 10, 0, 0 ],
         },
         headerData: {
           fontSize: 7,
@@ -341,14 +341,14 @@ export class ExamsComponent {
         puntuation: {
           bold: true,
           fontSize: 12,
-          margin: [ 40, 25, 0, 10 ],
+          margin: [ 40, 25, 0, 7 ],
         },
         grammarQuestions: {
           fontSize: 10,
           margin: [ 55, 20, 40, 0 ],
         },
         statement: {
-          margin: [ 45, 0, 0, 15 ],
+          margin: [ 45, 0, 0, 7 ],
           fontSize: 12,
           bold: true
         },
@@ -358,7 +358,7 @@ export class ExamsComponent {
           margin: [ 0, 0, 40, 15 ],
         },
         text: {
-          margin: [ 50, 10, 40, 10 ],
+          margin: [ 50, 5, 40, 10 ],
           fontSize: 11,
         },
         image: {
@@ -369,7 +369,7 @@ export class ExamsComponent {
           fontSize: 10,
         },
         readStatement: {
-          margin: [ 50, 5, 0, 2 ],
+          margin: [ 50, 6, 0, 2 ],
           fontSize: 10.5,
           bold: true
         },
@@ -451,6 +451,15 @@ export class ExamsComponent {
     ];
     pdf.content.push(firstPage);
 
+    //*TEST RESULT TITLE
+    let levelStatement: any = [
+      {
+        text: `Examen ${level}`,
+        style: "statement"
+      }
+    ];
+    pdfResult.content.push(levelStatement);
+
     for(let ex = 0; this.exam.length > ex; ex++){
       this.exam[ex]
       let model: any = [];
@@ -479,24 +488,28 @@ export class ExamsComponent {
 
       //*TEXT
       if(this.exam[ex].type.text > 0){
+        this.exam[ex].text.split("/n");
+        console.log(this.exam[ex].text.split("\n"));
+        let texts: any = this.exam[ex].text.split("\n");
         space = space + 10;
-        model.push(
-          {
-            text: this.exam[ex].text,
-            style: 'text'
-          },
-        );
-        if(this.exam[ex].type.space > 2){
+        for(let t: any = 0; texts.length > t; t++){
+          model.push(
+            {
+              stack: [
+                {
+                  text: texts[t],
+                  style: 'text'
+                }
+              ],
+              unbreakable: true,
+            },
+          );
+        };
+        if(this.exam[ex].type.space > 2 && this.exam[ex].type.space !== 6){
           model.push(
             {
               text: '',
               pageBreak: 'after',
-            },
-          );
-          model.push(
-            {
-              text: '',
-              style: 'spaceText',
             },
           );
         };
@@ -530,6 +543,7 @@ export class ExamsComponent {
                   style: 'readStatement'
                 },
               ],
+              unbreakable: true,
             };
             if(this.exam[ex].questions[q].answers){
               for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
@@ -548,6 +562,7 @@ export class ExamsComponent {
                   style: 'readStatement'
                 },
               ],
+              unbreakable: true,
             };
             if(this.exam[ex].questions[q + 1].answers){
               for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
@@ -590,6 +605,7 @@ export class ExamsComponent {
                   style: 'readStatement'
                 },
               ],
+              unbreakable: true,
             };
             if(this.exam[ex].questions[q].answers){
               for(let a: any = 0; this.exam[ex].questions[q].answers.length > a; a++){
@@ -627,6 +643,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -639,6 +656,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -651,6 +669,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },
                   ],
                   style: "spacePhotos"
@@ -675,6 +694,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -687,6 +707,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -699,6 +720,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },
                   ],
                   style: "spacePhotos"
@@ -723,6 +745,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -735,6 +758,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },{
                       stack: [
                         {
@@ -747,6 +771,7 @@ export class ExamsComponent {
                           style: 'textPhoto'
                         },
                       ],
+                      unbreakable: true,
                     },
                   ],
                   style: "spacePhotos"
@@ -785,6 +810,7 @@ export class ExamsComponent {
 
       //*TEST RESULTS
       if(this.exam[ex].type.test_type === 1){
+
         let statement: any = [
           {
             text: `${ex + 1}. `,
@@ -848,9 +874,9 @@ export class ExamsComponent {
 
     //!GENERATE EXAM
     //pdfMake.createPdf(pdf).open();
-    pdfMake.createPdf(pdf).download("Examen.pdf");
+    pdfMake.createPdf(pdf).download(`Examen_${level}.pdf`);
 
     //!GENERATE RESULTS TO EXAM TESTS
-    pdfMake.createPdf(pdfResult).download("Soluciones.pdf");
+    pdfMake.createPdf(pdfResult).download(`Soluciones_${level}.pdf`);
   };
 };

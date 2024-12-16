@@ -5,7 +5,6 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-import { style } from '@angular/animations';
 (<any>pdfMake).addVirtualFileSystem(pdfFonts);
 
 @Component({
@@ -244,6 +243,7 @@ export class ExamsComponent {
       });
     };
   };
+
   completeExam(){
     let level: any;
     this.levels.forEach((element: any) => {

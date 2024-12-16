@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: "NunitoSans";
+    src: url("./app/assets/fonts/NunitoSans-Regular.ttf") format("truetype");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NunitoSans";
+    src: url("./app/assets/fonts/NunitoSans-SemiBold.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "NunitoSans";
+    src: url("./app/assets/fonts/NunitoSans-Bold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+
+* {
+font-family: "NunitoSans", sans-serif !important;
+    font-weight: 200;
+}

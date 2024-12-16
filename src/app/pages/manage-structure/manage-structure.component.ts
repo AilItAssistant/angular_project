@@ -698,6 +698,7 @@ export class ManageStructureComponent {
         }else if ( skill.name !== "" || skill.level !== "" ){
           this.http.put<any>('http://localhost:4000/api/skills/search', skill, {headers: httpHeaders}).subscribe({
             next: (res) => {
+              console.log(res)
               this.skills = res;
             },
             error: (err) => {

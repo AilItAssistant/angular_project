@@ -4,24 +4,16 @@ import { HomeComponent } from './pages/home/home.component';
 import { ExamsComponent } from './pages/exams/exams.component';
 import { AddQuestionsComponent } from './pages/add-questions/add-questions.component';
 import { ManageQuestionsComponent } from './pages/manage-questions/manage-questions.component';
-import { ValidateQuestionsComponent } from './pages/validate-questions/validate-questions.component';
-import { OnlineExamComponent } from './pages/online-exam/online-exam.component';
 import { LoginComponent } from './pages/login/login.component';
 import { ManageStructureComponent } from './pages/manage-structure/manage-structure.component';
 import { ClassesComponent } from './pages/classes/classes.component';
 import { ManageClassesComponent } from './pages/manage-classes/manage-classes.component';
-import { ExamsResultsComponent } from './pages/exams-results/exams-results.component';
 import { ManageExamsResultsComponent } from './pages/manage-exams-results/manage-exams-results.component';
 import { StudentsComponent } from './pages/students/students.component';
 import { ManageStudentsComponent } from './pages/manage-students/manage-students.component';
-import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { TeachersComponent } from './pages/teachers/teachers.component';
 import { ManageTeachersComponent } from './pages/manage-teachers/manage-teachers.component';
 import { ManageUsersComponent } from './pages/manage-users/manage-users.component';
-import { AddExamsNotesComponent } from './pages/add-exams-notes/add-exams-notes.component';
-import { SearchExamsComponent } from './pages/search-exams/search-exams.component';
-import { StatisticsComponent } from './pages/statistics/statistics.component';
-import { StudentsDetailsComponent } from './pages/students-details/students-details.component';
 import { BitacoraComponent } from './pages/bitacora/bitacora.component';
 
 export const routes: Routes = [
@@ -47,15 +39,6 @@ export const routes: Routes = [
         title: "Editar preguntas"
     },
     {
-        path: "validate_questions",
-        component: ValidateQuestionsComponent,
-        title: "Validar preguntas"
-    },
-    {
-        path: "exam/:id",
-        component: OnlineExamComponent
-    },
-    {
         path: "login",
         component: LoginComponent,
         title: "Iniciar sesión"
@@ -76,11 +59,6 @@ export const routes: Routes = [
         title: "Editar clases"
     },
     {
-        path: "exams_results",
-        component: ExamsResultsComponent,
-        title: "Resultados de exámenes"
-    },
-    {
         path: "manage_exams_results",
         component: ManageExamsResultsComponent,
         title: "Editar resultados exámenes"
@@ -94,11 +72,6 @@ export const routes: Routes = [
         path: "manage_students",
         component: ManageStudentsComponent,
         title: "Editar estudiantes"
-    },
-    {
-        path: "sign_in",
-        component: SignInComponent,
-        title: "Registrarse"
     },
     {
         path: "teachers",
@@ -116,25 +89,6 @@ export const routes: Routes = [
         title: "Editar usuarios"
     },
     {
-        path: "add_exams_notes",
-        component: AddExamsNotesComponent,
-        title: "Añadir notas de examenes"
-    },
-    {
-        path: "search_exams",
-        component: SearchExamsComponent,
-        title: "Buscar exámenes"
-    },
-    {
-        path: "statistics",
-        component: StatisticsComponent,
-        title: "Estadísticas"
-    },
-    {
-        path: "student_details/:id",
-        component: StudentsDetailsComponent,
-        title: "Alumno"
-    },{
         path: "bitacora",
         component: BitacoraComponent,
         title: "Bitácora"
